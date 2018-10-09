@@ -5,8 +5,22 @@
  * **/
 package common;
 
+import common.Hand;
+
 public class Entity {
 	/**	TODO
 	 * 	Add functionality
 	 * **/
+	 
+	Hand hand;
+	
+	public Entity()
+	{
+		hand = new Hand();
+	}
+	
+	public drawCards()
+	{
+		
+	}
 }
