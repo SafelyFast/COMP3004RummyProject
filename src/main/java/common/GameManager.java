@@ -17,9 +17,11 @@ public class GameManager {
 	**/
 	List<Entity> players;
 	List<Meld> melds;
+	TileManager TM;
 	
 	// Default constructor
 	public GameManager() {
+		TM = new TileManager();
 		players = new ArrayList<Entity>();
 		melds = new ArrayList<Meld>();
 	}
@@ -44,8 +46,15 @@ public class GameManager {
 	public void dealAll() {
 		
 	}
+	// Deal function, will deal num cards to p
+	public void deal(Entity p, int num) {
+		for (int i=0; i<num; i++) {
+			deal(p);
+		}
+	}
+	// Default deal function, deals 1 cards to entity p
 	public void deal(Entity p) {
-		
+		p.addTile(TM.deck.remove(0));
 	}
 }
 
