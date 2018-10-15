@@ -21,7 +21,7 @@ public class GameManager {
 	// Default constructor
 	public GameManager() {
 		players = new ArrayList<Entity>();
-		melds = new ArrayList<Tile>();
+		melds = new ArrayList<Meld>();
 	}
 	
 	/**TODO
@@ -33,7 +33,7 @@ public class GameManager {
 		return melds.get(i);
 	}
 	public Tile getTile(Meld m, int i) {
-		return m.getTile(i);
+		return m.getTileAt(i);
 	}
 	
 	// Initialize a new game
