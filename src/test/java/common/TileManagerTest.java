@@ -2,6 +2,13 @@ package common;
 
 import static org.junit.Assert.assertNotEquals;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
 import junit.framework.TestCase;
 
 public class TileManagerTest extends TestCase {
@@ -36,6 +43,6 @@ public class TileManagerTest extends TestCase {
 		
 		input.close();
 		
-		assertFalse(Arrays.equals(tm.tiles.toArray(), unshuffledDeck.toArray()));
+		assertFalse(Arrays.equals(tm.tiles.toArray(), unshuffledTiles.toArray()));
 	}
 }

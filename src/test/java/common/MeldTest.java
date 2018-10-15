@@ -71,23 +71,23 @@ public class MeldTest extends TestCase{
 		meld1.addMeldTile(tile1);
 		meld1.addMeldTile(tile2);
 		meld1.addMeldTile(tile3);
-		assertEquals(True,meld1.isMeldValid());
+		assertEquals(true,meld1.isMeldValid());
 		
 		meld2.addMeldTile(tile1);
 		meld2.addMeldTile(tile2);
 		meld2.addMeldTile(tile3);
 		meld2.addMeldTile(tile4);
-		assertEquals(False,meld1.isMeldValid());
+		assertEquals(false,meld2.isMeldValid());
 		
 		meld3.addMeldTile(tile1);
 		meld3.addMeldTile(tile2);
 		meld3.addMeldTile(tile3);
 		meld3.addMeldTile(tile5);
-		assertEquals(False,meld1.isMeldValid());
+		assertEquals(false,meld3.isMeldValid());
 		
-		meld1.addMeldTile(tile1);
-		meld1.addMeldTile(tile2);
-		assertEquals(False,meld1.isMeldValid());
+		meld4.addMeldTile(tile1);
+		meld4.addMeldTile(tile2);
+		assertEquals(false,meld4.isMeldValid());
 		
 		
 		
