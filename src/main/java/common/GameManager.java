@@ -43,9 +43,19 @@ public class GameManager {
 		
 	}
 	
-	public void dealAll() {
-		
+	// Deal a hand of tiles to each player
+	public void dealAll(int num) {
+		for (Entity e : players) {
+			deal(e, num);
+		}
 	}
+	// Default Dealer
+	public void dealAll() {
+		for (Entity e : players) {
+			deal(e, 8);
+		}
+	}
+	
 	// Deal function, will deal num cards to p
 	public void deal(Entity p, int num) {
 		for (int i=0; i<num; i++) {
@@ -54,7 +64,7 @@ public class GameManager {
 	}
 	// Default deal function, deals 1 cards to entity p
 	public void deal(Entity p) {
-		p.addTile(TM.deck.remove(0));
+		p.addTile(TM.getNext());
 	}
 }
 
