@@ -17,7 +17,8 @@ public class AITest extends TestCase {
 	
 	//Tests to confirm if the AI has the right behaviour (AIType_1) initialized.
 	public void testIsType_1() {
-		Entity ai = new AI(new AIType_1());
+		AI ai = new AI(new AIType_1());
+		System.out.println(ai.behaviour instanceof AIType_1);
 		assertEquals(true, ai.behaviour instanceof AIType_1);
 	}
 	
@@ -25,14 +26,18 @@ public class AITest extends TestCase {
 	
 	//Tests to confirm if the AI has the right behaviour (AIType_2) initialized.
 	public void testIsType_2() {
-		
+		AI ai = new AI(new AIType_2());
+		System.out.println(ai.behaviour instanceof AIType_2);
+		assertEquals(true, ai.behaviour instanceof AIType_2);
 	}
 	
 	//Tests for AIType_3 (i.e. Strategy 3) go here:	
 	
 	//Tests to confirm if the AI has the right behaviour (AIType_3) initialized.
 	public void testIsType_3() {
-		
+		AI ai = new AI(new AIType_3());
+		System.out.println(ai.behaviour instanceof AIType_3);
+		assertEquals(true, ai.behaviour instanceof AIType_3);
 	}
 	
 }

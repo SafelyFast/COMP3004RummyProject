@@ -9,6 +9,7 @@ package common;
 import common.Tile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Hand {
 	List<Tile> tiles;

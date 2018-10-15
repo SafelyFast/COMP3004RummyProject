@@ -19,7 +19,7 @@ public class Entity {
 		hand = new Hand();
 	}
 	
-	public drawCards()
+	public void drawCards()
 	{
 		
 	}
