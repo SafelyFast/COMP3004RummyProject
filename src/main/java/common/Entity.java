@@ -24,23 +24,35 @@ public class Entity {
 		
 	}
 	
+	/*
+	 * Method: findRun(List<Tile> handList) 
+	 * 
+	 * Finds a single run meld in a List<Tile> object (most likely the List<Tile> object found in an Entity's Hand object) using the 
+	 * first Tile in the parameter handList as a starting point. 
+	 * Should a run not be found, the first object is removed (as we have proven that it cannot be involved in any runs currently)
+	 * and the next Tile in the list is used as a starting point using recursion.
+	 */
 	public List<Tile> findRun(List<Tile> handList){
 		
-		List<Tile> run = new ArrayList<Tile>();
-		List<Tile> tempList = new ArrayList<Tile>();
+		List<Tile> run = new ArrayList<Tile>(); //The object we will return
+		
+		//A temporary List is used here as we may need the full handList object (the parameter) again iff a run is not found.
+		List<Tile> tempList = new ArrayList<Tile>(); 
 		
 		if(handList.isEmpty())
 			return null;
-		
+
 		tempList.addAll(handList);
 		run.add(tempList.get(0));
 		tempList.remove(0);	
 		
 		for(int i = 0; i < tempList.size(); i++) {
 				
+			//Catches the use case where use all your Tiles in a run (preventing a null pointer error)
 			if(tempList.isEmpty())
 				break;
 			
+			//Checks to see if a tile can be added to the to the run meld here.
 			for(int j = 0; j < run.size(); j++) {	
 				if(run.get(0).getColour().equals(tempList.get(i).getColour())) {			
 					if(run.get(j).getRank() - 1 == tempList.get(i).getRank()) {
@@ -57,6 +69,7 @@ public class Entity {
 			}						
 		}
 		
+		//Returns the run meld if it meet the appropriate size retrictions.
 		if(run.size() < 3) {			
 			handList.remove(0);
 			return findRun(handList);
@@ -66,6 +79,13 @@ public class Entity {
 
 	}
 	
+	/*
+	 * Method: maxCurrentPoints() 
+	 * 
+	 * Determines the maximum amount of points you currently have in your hand.
+	 * 
+	 * (NOT COMPLETE. FINISH THIS)
+	 */
 	public int maxCurrentPoints() {
 		
 		List<Meld> runs = new ArrayList<Meld>();
@@ -84,8 +104,6 @@ public class Entity {
 	        }
 		}
 		while(runs.get(runs.size() - 1).tiles != null);		
-		
-		System.out.println(answer);
 		
 		return answer;
 	}
