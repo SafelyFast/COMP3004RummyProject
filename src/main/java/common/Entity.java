@@ -19,9 +19,9 @@ public class Entity {
 		hand = new Hand();
 	}
 	
-	public void drawCards()
+	public void addTile(Tile t)
 	{
-		
+		hand.tiles.add(t);
 	}
 	
 	/*
