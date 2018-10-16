@@ -24,6 +24,11 @@ public class GameManager {
 		TM = new TileManager();
 		players = new ArrayList<Entity>();
 		melds = new ArrayList<Meld>();
+		
+		players.add(new AI(new AIType_1()));
+		players.add(new AI(new AIType_2()));
+		players.add(new AI(new AIType_3()));
+
 	}
 	
 	/**TODO
