@@ -24,59 +24,92 @@ public class Entity {
 		hand.tiles.add(t);
 	}
 	
+	public List<Tile> sort(List<Tile> handList){
+		
+		// Sorts handList into colour order then numerical order based on the rank and colour of the Tile object
+		if(handList.size() > 1) {
+			Collections.sort(handList, new Comparator<Tile>() {
+				public int compare(Tile c1, Tile c2) {
+					
+		            if (c1.getColour().compareTo(c2.getColour()) != 0) {
+		               return c1.getColour().compareTo(c2.getColour());
+		            } 
+		            if (c1.getRank() < c2.getRank())
+		            	return -1;
+		            else if(c1.getRank() > c2.getRank())
+		            	return 1;
+		            else 
+		            	return 0;
+			  }});
+		}
+		return handList;
+		
+	}
+	
+	public boolean containsRank(List<Tile> l, int x) {
+		
+		for(int i = 0; i < l.size(); i++)
+			if(l.get(i).getRank() == x)
+				return true;
+		
+	    return false;
+	}
+
+	
 	/*
-	 * Method: findRun(List<Tile> handList) 
+	 * Method: findRun(List<Tile> handList, List<Meld> runList) 
 	 * 
-	 * Finds a single run meld in a List<Tile> object (most likely the List<Tile> object found in an Entity's Hand object) using the 
-	 * first Tile in the parameter handList as a starting point. 
+	 * Finds all the run melds in a List<Tile> object (most likely the List<Tile> object found in an Entity's Hand object) 
+	 * using the first Tile in the parameter handList as a starting point. 
 	 * Should a run not be found, the first object is removed (as we have proven that it cannot be involved in any runs currently)
 	 * and the next Tile in the list is used as a starting point using recursion.
+	 * 
+	 * Note: If no runs are found, an empty List<Meld> is returned, not NULL.
 	 */
-	public List<Tile> findRun(List<Tile> handList){
+	
+	public List<Meld> findRuns(List<Tile> handList){
 		
-		List<Tile> run = new ArrayList<Tile>(); //The object we will return
+		Meld run = new Meld();
+		List<Meld> runList = new ArrayList<Meld>();
+		int duplicateCounter;
 		
-		//A temporary List is used here as we may need the full handList object (the parameter) again iff a run is not found.
-		List<Tile> tempList = new ArrayList<Tile>(); 
+		handList = sort(handList);
 		
-		if(handList.isEmpty())
-			return null;
+		while(handList.size() >= 2) {
 
-		tempList.addAll(handList);
-		run.add(tempList.get(0));
-		tempList.remove(0);	
-		
-		for(int i = 0; i < tempList.size(); i++) {
-				
-			//Catches the use case where use all your Tiles in a run (preventing a null pointer error)
-			if(tempList.isEmpty())
-				break;
-			
-			//Checks to see if a tile can be added to the to the run meld here.
-			for(int j = 0; j < run.size(); j++) {	
-				if(run.get(0).getColour().equals(tempList.get(i).getColour())) {			
-					if(run.get(j).getRank() - 1 == tempList.get(i).getRank()) {
-						run.add(j, tempList.get(i));
-						tempList.remove(i);
-						i = 0;
-					}
-					else if(run.get(j).getRank() + 1 == tempList.get(i).getRank()) {
-						run.add(j + 1, tempList.get(i));
-						tempList.remove(i);	
-						i = 0;
-					}					
-				}				
-			}						
-		}
-		
-		//Returns the run meld if it meet the appropriate size retrictions.
-		if(run.size() < 3) {			
+			run.tiles.add(handList.get(0));
 			handList.remove(0);
-			return findRun(handList);
+			duplicateCounter = 0;
+			
+			for(int i = 0; i < handList.size(); i++) {
+				
+				//Breaks the loop when comparing two different coloured tiles
+				if(!run.tiles.get(0).getColour().equals(handList.get(i).getColour())) 
+					break;					
+				
+				//Counts every time a duplicate card is encountered
+				if(containsRank(run.tiles, handList.get(i).getRank()))
+					duplicateCounter++;
+				
+				//Checks to see if a tile can be added to the to the run meld here.
+				if(run.tiles.get(run.tiles.size() - 1).getRank() + 1 == handList.get(i).getRank())
+					run.tiles.add(handList.get(i));
+				
+			}	
+			
+			if(run.tiles.size() >= 3 && duplicateCounter > 0) {
+				for(int i = 0; i < Math.pow(2, duplicateCounter); i++) 
+					runList.add(run);
+				if(run.tiles.get(0).getRank() == handList.get(0).getRank()
+				&& run.tiles.get(0).getColour().equals(handList.get(0).getColour()))
+					handList.remove(0);
+			}
+			else if(run.tiles.size() >= 3)
+				runList.add(run);
+			
+			run = new Meld();
 		}
-		else
-			return run;
-
+		return runList;
 	}
 	
 	/*
@@ -88,23 +121,28 @@ public class Entity {
 	 */
 	public int maxCurrentPoints() {
 		
-		List<Meld> runs = new ArrayList<Meld>();
-		List<Tile> hand = new ArrayList<Tile>();
+		List<Meld> runList = findRuns(this.hand.tiles);
 		int answer = 0;
-		hand.addAll(this.hand.tiles);
 		
-		do {
-	        runs.add(new Meld());
-	        runs.get(runs.size() - 1).tiles = findRun(hand);
-	        if(runs.get(runs.size() - 1).tiles != null) {
-	        	hand.removeAll(runs.get(runs.size() - 1).tiles);
-	        	
-	        	for(int i = 0; i < runs.get(runs.size() - 1).tiles.size(); i++)
-	        		answer += runs.get(runs.size() - 1).tiles.get(i).getRank();
-	        }
+		for(int i = 0; i < runList.size(); i++) {
+			System.out.println("Run " + i + ": ");
+			for(int j = 0; j < runList.get(i).tiles.size(); j++) {
+				
+				System.out.println(runList.get(i).tiles.get(j).getRank());
+				
+			}
+			System.out.println();
 		}
-		while(runs.get(runs.size() - 1).tiles != null);		
 		
+		while(!runList.isEmpty()) {
+			
+			for(int i = 0; i < runList.get(0).tiles.size(); i++)
+				answer += runList.get(0).tiles.get(i).getRank(); 
+			
+			runList.remove(0);
+			
+		}
+		System.out.println(answer);
 		return answer;
 	}
 	
