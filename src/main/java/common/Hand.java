@@ -19,6 +19,11 @@ public class Hand {
 		this.tiles = new ArrayList<Tile>();
 	}
 	
+	public int getSize()
+	{
+		return tiles.size();
+	}
+	
 	public Tile getTile(int i)
 	{
 		if (i >= this.tiles.size())

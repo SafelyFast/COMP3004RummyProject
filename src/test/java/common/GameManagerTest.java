@@ -17,26 +17,24 @@ public class GameManagerTest extends TestCase {
 	public void testDetermineStartingPlayer() 
 	{
 		GameManager gm = new GameManager();
-		gm.gameInit();
-		
-		assertTrue(0 <= gm.determineStartingPlayer() <= 4);
+		int result = gm.determineStartingPlayer();
+		assertTrue(1 <= result && result <= 4);
 		
 	}
 	
 	public void testGameInit()
 	{
 		GameManager gm = new GameManager();
-		gm.gameInit();
+		int result = gm.gameInit();
 		
 		assertEquals(4,gm.players.size());
 		assertEquals(48,gm.TM.getDeckSize());
-		assertEquals(0,gm.TM.getboardMeldSize());
+		assertEquals(0,gm.TM.getBoardMeldSize());
 		
 		for (Entity e : gm.players) {
-			assertEquals(14, e.hand.tiles.size());
+			assertEquals(14, e.hand.getSize());
 		}
-		
-		assertTrue(0 <= gm.determineStartingPlayer() <= 4);
+		assertTrue(1 <= result && result <= 4);
 		
 	}
 }

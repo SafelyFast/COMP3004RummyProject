@@ -38,6 +38,7 @@ public class TileManager {
 	// getter/setters
 	public List<String> getDeck() { return deck; }
 	public List<Meld> getBoardMelds() { return boardMelds; }
+	public int getBoardMeldSize() { return boardMelds.size(); }
 	public int getDeckSize() { return deck.size(); }
 	
 	// Get the next card in the deck, and return it as a tile

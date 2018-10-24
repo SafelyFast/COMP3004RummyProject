@@ -10,6 +10,7 @@ import java.util.List;
 
 import common.Entity;
 import common.Meld;
+import java.util.Random;
 
 public class GameManager {
 	/** TODO
@@ -25,6 +26,7 @@ public class GameManager {
 		players = new ArrayList<Entity>();
 		melds = new ArrayList<Meld>();
 		
+		players.add(new Player());
 		players.add(new AI(new AIType_1()));
 		players.add(new AI(new AIType_2()));
 		players.add(new AI(new AIType_3()));
@@ -43,9 +45,12 @@ public class GameManager {
 		return m.getTileAt(i);
 	}
 	
-	// Initialize a new game
-	public void gameInit() {
+	// Initialize parameters and resources for a new game such player hands, tileManager melds 
+	//returns an int representing the entity that goes first
+	public int gameInit() {
+		dealAll(14);
 		
+		return determineStartingPlayer();
 	}
 	
 	// Deal a hand of tiles to each player
@@ -71,6 +76,15 @@ public class GameManager {
 	public void deal(Entity p) {
 		p.addTile(TM.getNext());
 	}
+	
+	//returns an int to represent starting player 
+	//1=player, 2 = AI1, 3= AI2, 4 = AI3
+	public int determineStartingPlayer()
+	{
+		Random rand = new Random();
+		return rand.nextInt(4) + 1;
+	}
+	
 }
 
 
