@@ -10,9 +10,11 @@ import java.util.Scanner;
 public class TileManager {
 	
 	private List<String> deck;
+	private List<Meld> boardMelds;
 	
 	public TileManager() {
 		deck = new ArrayList<String>();
+		boardMelds = new ArrayList<Meld>();
 		
 		// Read in the deck from file
 		Scanner input = null;
@@ -35,6 +37,8 @@ public class TileManager {
 	
 	// getter/setters
 	public List<String> getDeck() { return deck; }
+	public List<Meld> getBoardMelds() { return boardMelds; }
+	public int getDeckSize() { return deck.size(); }
 	
 	// Get the next card in the deck, and return it as a tile
 	public Tile getNext() {
