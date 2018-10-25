@@ -8,9 +8,7 @@
 
 package common;
 
-import java.util.ArrayList;
-
-public abstract class AI extends Entity{
+public class AI extends Entity{
 	
 	AIType behaviour;
 	
@@ -18,6 +16,5 @@ public abstract class AI extends Entity{
 		behaviour = t;
 	}
 	
-	abstract public ArrayList<Meld> performAction();
 	
 }
