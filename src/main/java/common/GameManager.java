@@ -53,6 +53,21 @@ public class GameManager {
 		return determineStartingPlayer();
 	}
 	
+	public ArrayList<Meld> playTurn(Entity e)
+	{
+		//if playTurn is a player then do nothing
+		if(e instanceof Player)
+		{
+			return new ArrayList<Meld>();
+		}
+		else
+		{
+			e.performAction();
+			return new ArrayList<Meld>();
+		}
+		
+	}
+	
 	// Deal a hand of tiles to each player
 	public void dealAll(int num) {
 		for (Entity e : players) {

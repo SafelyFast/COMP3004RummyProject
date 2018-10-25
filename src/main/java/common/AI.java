@@ -8,12 +8,16 @@
 
 package common;
 
-public class AI extends Entity{
+import java.util.ArrayList;
+
+public abstract class AI extends Entity{
 	
 	AIType behaviour;
 	
 	public AI(AIType t) {
 		behaviour = t;
 	}
+	
+	abstract public ArrayList<Meld> performAction();
 	
 }
