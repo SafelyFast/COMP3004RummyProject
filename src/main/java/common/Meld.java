@@ -85,6 +85,95 @@ public class Meld {
 		this.y = y;
 	}
 	
+	public ArrayList<Tile> getMeldExtensions()
+	{
+		if(this.isMeldValid())
+		{
+			ArrayList<Tile> result = new ArrayList<Tile>();
+			if(tiles.get(0).getRank() == tiles.get(1).getRank() && this.getSize() == 3)
+			{
+				String possibleColours = "RGBO";
+				
+				for(int i =0;i<3;i++)
+				{
+					if(tiles.get(i).getColour().equals("Red"))
+					{
+						possibleColours = possibleColours.replace("R","");
+					}
+					else if(tiles.get(i).getColour().equals("Green"))
+					{
+						possibleColours = possibleColours.replace("G","");
+					}
+					else if(tiles.get(i).getColour().equals("Blue"))
+					{
+						possibleColours = possibleColours.replace("B","");
+					}
+					else if(tiles.get(i).getColour().equals("Orange"))
+					{
+						possibleColours = possibleColours.replace("O","");
+					}
+					else
+					{
+						
+					}
+				}
+				Tile extensionTile = new Tile(possibleColours,tiles.get(0).getRank());
+				result.add(extensionTile);
+				return result;
+			}
+			else if(tiles.get(0).getColour() == tiles.get(1).getColour() && this.getSize() <  12)
+			{
+				int min = tiles.get(0).getRank();
+				int max = min;
+				
+				//determines the min and max values of our run
+				for(int i = 0; i < this.getSize();i++)
+				{
+					if(tiles.get(i).getRank() < min)
+					{
+						min = tiles.get(i).getRank();
+					}
+					if(tiles.get(i).getRank() > max)
+					{
+						max =  tiles.get(i).getRank();
+					}
+				}
+				
+				if(min <= 1)
+				{
+					
+				}
+				else
+				{
+					Tile minTile = new Tile(tiles.get(0).getColour(),min-1);
+					result.add(minTile);
+				}
+				
+				if(max >= 13)
+				{
+					
+				}
+				else
+				{
+					Tile maxTile = new Tile(tiles.get(0).getColour(),max+1);
+					result.add(maxTile);
+				}
+				
+				return result;
+			}
+			else
+			{
+				return result;
+			}
+			
+		}
+		else
+		{
+			return new ArrayList<Tile>();
+		}
+		
+	}
+	
 	public boolean isMeldValid()
 	{
 		if (this.tiles.size() < 3)

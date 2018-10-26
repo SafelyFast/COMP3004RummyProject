@@ -9,19 +9,19 @@ public class Tile {
 	
 	public Tile(String colour,int rank)
 	{
-		if(colour.equals("R") || colour.equals("r"))
+		if(colour.equals("R") || colour.equals("r") || colour.equals("Red"))
 		{
 			this.colour = "Red";
 		}
-		else if(colour.equals("G") || colour.equals("g"))
+		else if(colour.equals("G") || colour.equals("g")|| colour.equals("Green"))
 		{
 			this.colour = "Green";
 		}
-		else if(colour.equals("B") || colour.equals("b"))
+		else if(colour.equals("B") || colour.equals("b")|| colour.equals("Blue"))
 		{
 			this.colour = "Blue";
 		}
-		else if(colour.equals("O") || colour.equals("o"))
+		else if(colour.equals("O") || colour.equals("o")|| colour.equals("Orange"))
 		{
 			this.colour = "Orange";
 		}
@@ -36,19 +36,19 @@ public class Tile {
 	
 	public Tile(String colour,int rank,int xPos, int yPos)
 	{
-		if(colour.equals("R") || colour.equals("r"))
+		if(colour.equals("R") || colour.equals("r")|| colour.equals("Red"))
 		{
 			this.colour = "Red";
 		}
-		else if(colour.equals("G") || colour.equals("g"))
+		else if(colour.equals("G") || colour.equals("g")|| colour.equals("Green"))
 		{
 			this.colour = "Green";
 		}
-		else if(colour.equals("B") || colour.equals("b"))
+		else if(colour.equals("B") || colour.equals("b")|| colour.equals("Blue"))
 		{
 			this.colour = "Blue";
 		}
-		else if(colour.equals("O") || colour.equals("o"))
+		else if(colour.equals("O") || colour.equals("o") || colour.equals("Orange"))
 		{
 			this.colour = "Orange";
 		}

@@ -1,5 +1,6 @@
 package common;
 
+
 import junit.framework.TestCase;
 
 public class MeldTest extends TestCase{
@@ -14,7 +15,12 @@ public class MeldTest extends TestCase{
 		meld1.addMeldTile(tile1);
 		meld1.addMeldTile(tile2);
 		meld1.addMeldTile(tile3);
-		AssertEquals(new Tile("O",4),meld1.getMeldExtensions().get(0));
+		Tile expectedTile1 = new Tile("O",4);
+		Tile actualTile1 = meld1.getMeldExtensions().get(0);
+		
+		assertEquals(expectedTile1.getRank(),actualTile1.getRank());
+		assertEquals(expectedTile1.getColour(),actualTile1.getColour());
+		
 		
 		Meld meld2 = new Meld();
 		Tile tile4 = new Tile("R",5);
@@ -23,9 +29,26 @@ public class MeldTest extends TestCase{
 		meld2.addMeldTile(tile4);
 		meld2.addMeldTile(tile5);
 		meld2.addMeldTile(tile6);
-		AssertEquals(new Tile("R",4),meld2.getMeldExtensions().get(0));
-		AssertEquals(new Tile("R",8),meld2.getMeldExtensions().get(1));
+		Tile expectedTile2 = new Tile("R",4);
+		Tile expectedTile3 = new Tile("R",8);
+		Tile actualTile2 = meld2.getMeldExtensions().get(0);
+		Tile actualTile3 = meld2.getMeldExtensions().get(1);
 		
+		assertEquals(expectedTile2.getRank(),actualTile2.getRank());
+		assertEquals(expectedTile2.getColour(),actualTile2.getColour());
+		assertEquals(expectedTile3.getRank(),actualTile3.getRank());
+		assertEquals(expectedTile3.getColour(),actualTile3.getColour());
+		
+		Meld meld3 = new Meld();
+		Tile tile7 = new Tile("R",4);
+		Tile tile8 = new Tile("B",4);
+		Tile tile9 = new Tile("G",4);
+		Tile tile10 = new Tile("O",4);
+		meld3.addMeldTile(tile7);
+		meld3.addMeldTile(tile8);
+		meld3.addMeldTile(tile9);
+		meld3.addMeldTile(tile10);
+		assertEquals(true,meld3.getMeldExtensions().isEmpty());
 	}
 	
 	public void testAddMeldTile()
