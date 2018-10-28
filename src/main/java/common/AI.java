@@ -8,6 +8,8 @@
 
 package common;
 
+import java.util.List;
+
 public class AI extends Entity{
 	
 	AIType behaviour;

@@ -33,6 +33,18 @@ public class GameManager {
 
 	}
 	
+	public GameManager(String filename) {
+		TM = new TileManager(filename);
+		players = new ArrayList<Entity>();
+		melds = new ArrayList<Meld>();
+		
+		players.add(new Player());
+		players.add(new AI(new AIType_1()));
+		players.add(new AI(new AIType_2()));
+		players.add(new AI(new AIType_3()));
+
+	}
+	
 	/**TODO
 	 * Add additional constructors
 	 * **/
@@ -77,7 +89,7 @@ public class GameManager {
 	// Default Dealer
 	public void dealAll() {
 		for (Entity e : players) {
-			deal(e, 8);
+			deal(e, 14);
 		}
 	}
 	

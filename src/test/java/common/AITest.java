@@ -28,6 +28,16 @@ public class AITest extends TestCase {
 		AI ai = new AI(new AIType_1());
 		assertEquals(true, ai.behaviour instanceof AIType_1);
 	}
+	
+	public void testPerformActionType1()
+	{
+		GameManager GM = new GameManager("testDeck1");
+		GM.gameInit();
+		GM.players.get(1).performAction();
+		assertEquals(1,GM.TM.getBoardMelds().size());
+		assertEquals(1,GM.players.get(1).hand.getSize());
+		
+	}
 
 //---------------Tests for AIType_2 (i.e. Strategy 2) go here: ---------------------------------------------	
 	

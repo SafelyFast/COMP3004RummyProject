@@ -35,6 +35,28 @@ public class TileManager {
 		Collections.shuffle(deck);
 	}
 	
+	public TileManager(String filename) {
+		deck = new ArrayList<String>();
+		boardMelds = new ArrayList<Meld>();
+		
+		// Read in the deck from file
+		Scanner input = null;
+		try
+		{
+			input = new Scanner(new File("./src/main/resources/"  + filename ));
+		}
+		catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		
+		while(input.hasNextLine())
+		{
+			deck.add(input.nextLine());
+		}
+		input.close();
+	}
+	
 	// getter/setters
 	public List<String> getDeck() { return deck; }
 	public List<Meld> getBoardMelds() { return boardMelds; }

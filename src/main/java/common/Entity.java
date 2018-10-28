@@ -24,6 +24,11 @@ public class Entity {
 		hand.tiles.add(t);
 	}
 	
+	public void performAction()
+	{
+		
+	}
+	
 	public List<Tile> sort(List<Tile> handList){
 		
 		// Sorts handList into colour order then numerical order based on the rank and colour of the Tile object

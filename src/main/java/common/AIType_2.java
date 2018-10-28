@@ -8,13 +8,13 @@
 
 package common;
 
-import java.util.ArrayList;
+
 
 public class AIType_2 implements AIType{
 
-	public ArrayList<Meld> performAction()
+	public void performAction()
 	{
-		return new ArrayList<Meld>();
+		
 	}
 	
 }

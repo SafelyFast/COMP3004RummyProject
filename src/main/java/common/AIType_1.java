@@ -8,13 +8,24 @@
 
 package common;
 
-import java.util.ArrayList;
 
 public class AIType_1 implements AIType{
+	
+	boolean hasPlayedThirty = false;
 
-	public ArrayList<Meld> performAction()
+	public void performAction(TileManager tM)
 	{
-		return new ArrayList<Meld>();
+		if (hasPlayedThirty)
+		{
+			
+		}
+		else
+		{
+			if(maxCurrentPoints() == 30)
+			{
+				
+			}
+		}
 	}
 	
 }
