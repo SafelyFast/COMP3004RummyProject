@@ -32,4 +32,30 @@ public class Hand {
 		}
 		return this.tiles.get(i);
 	}
+
+	public Tile removeTile(int i) {
+		if (i >= this.tiles.size())
+		{
+			return null;
+		}
+		Tile t = this.tiles.remove(i);
+		this.alignTiles();
+		return t;
+	}
+	
+	public void addTileToHand(Tile t)
+	{
+		this.tiles.add(t);
+		this.alignTiles();
+	}
+	
+	public void alignTiles()
+	{
+		int baseX = this.getTile(0).getImage().getX();
+		int baseY = this.getTile(0).getImage().getY();
+		for(int j = 0; j < this.getSize(); j++)
+		{
+			this.getTile(j).getImage().setPosition(baseX + 26 * j, baseY);
+		}
+	}
 }

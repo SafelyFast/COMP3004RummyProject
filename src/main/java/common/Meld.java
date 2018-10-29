@@ -1,21 +1,23 @@
 package common;
 
 import common.Tile;
+import view.DisplayObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Meld {
-	int x, y;
+public class Meld extends DisplayObject {
 	List<Tile> tiles;
 	
 	public Meld()
 	{
+		super(0,0);
 		this.tiles = new ArrayList<Tile>();
 	}
 	
 	public Meld(Tile ... tiles)
 	{
+		super(0,0);
 		this.tiles = new ArrayList<Tile>();
 		for(int i = 0; i < tiles.length; i++)
 		{
@@ -25,20 +27,18 @@ public class Meld {
 	
 	public Meld(int x, int y)
 	{
+		super(x,y);
 		this.tiles = new ArrayList<Tile>();
-		this.x = x;
-		this.y = y;
 	}
 	
 	public Meld(int x, int y, Tile ... tiles)
 	{
+		super(x,y);
 		this.tiles = new ArrayList<Tile>();
 		for(int i = 0; i < tiles.length; i++)
 		{
 			this.tiles.add(tiles[i]);
 		}
-		this.x = x;
-		this.y = y;
 	}
 	
 	public Tile getTileAt(int i)
@@ -83,6 +83,10 @@ public class Meld {
 	{
 		this.x = x;
 		this.y = y;
+		for(int i = 0; i < this.tiles.size(); i++)
+		{
+			this.getTileAt(i).getImage().setPosition(this.x + i * 25, this.y);
+		}
 	}
 	
 	public ArrayList<Tile> getMeldExtensions()
@@ -229,6 +233,24 @@ public class Meld {
 				previousTileValue = this.tiles.get(i).getRank();
 			}
 			return true;
+		}
+	}
+
+	public void addMeld(Meld m) {
+		for(int i = 0; i < m.getSize(); i++)
+		{
+			this.addMeldTile(m.getTileAt(i));
+		}
+		this.alignTiles();
+	}
+	
+	public void alignTiles()
+	{
+		int baseX = this.getTileAt(0).getImage().getX();
+		int baseY = this.getTileAt(0).getImage().getY();
+		for(int i = 0; i < this.getSize(); i++)
+		{
+			this.getTileAt(i).getImage().setPosition(baseX + 25 * i, baseY);
 		}
 	}
 }

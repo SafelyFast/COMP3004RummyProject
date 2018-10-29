@@ -65,12 +65,16 @@ public class TileManager {
 	
 	// Get the next card in the deck, and return it as a tile
 	public Tile getNext() {
+		if (deck.size() == 0)
+		{
+			return null;
+		}
+		String cardToDraw = deck.remove(deck.size() - 1);
 		String colour;
 		int rank;
 		// Extract the colour and rank of the next card, then remove it from the list
-		colour = deck.get(0).substring(0, 1);
-		rank = Integer.parseInt(deck.get(0).substring(1));
-		deck.remove(0);
+		colour = cardToDraw.substring(0, 1);
+		rank = Integer.parseInt(cardToDraw.substring(1));
 		
 		return new Tile(colour, rank);
 	}

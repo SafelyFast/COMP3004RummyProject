@@ -1,11 +1,15 @@
 package common;
 
+import view.TileImage;
+
 public class Tile {
 
 	private String colour;
 	private int rank;
 	private int xPosition;
 	private int yPosition;
+	
+	private TileImage image;
 	
 	public Tile(String colour,int rank)
 	{
@@ -32,6 +36,8 @@ public class Tile {
 		this.rank = rank;
 		this.xPosition = 0;
 		this.yPosition = 0;
+		
+		this.image = new TileImage(String.valueOf(this.rank), this.colour, this.xPosition, this.yPosition);
 	}
 	
 	public Tile(String colour,int rank,int xPos, int yPos)
@@ -59,6 +65,8 @@ public class Tile {
 		this.rank = rank;
 		this.xPosition = xPos;
 		this.yPosition = yPos;
+		
+		this.image = new TileImage(String.valueOf(this.rank), this.colour, this.xPosition, this.yPosition);
 	}
 	
 	public int getRank()
@@ -77,5 +85,9 @@ public class Tile {
 	public int getYPosition()
 	{
 		return this.yPosition;
+	}
+
+	public TileImage getImage() {
+		return this.image;
 	}
 }
