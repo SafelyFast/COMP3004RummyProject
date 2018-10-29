@@ -111,9 +111,9 @@ public default boolean containsRank(List<Tile> l, int x) {
 	 * 
 	 * (NOT COMPLETE. FINISH THIS)
 	 */
-	public default int maxCurrentPoints() {
+	public default int maxCurrentPoints(Hand h) {
 		
-		List<Meld> runList = findRuns(this.hand.tiles);
+		List<Meld> runList = findRuns(h.tiles);
 		int answer = 0;
 		
 		for(int i = 0; i < runList.size(); i++) {

@@ -13,7 +13,7 @@ public class AIType_1 implements AIType{
 	
 	boolean hasPlayedThirty = false;
 
-	public void performAction(TileManager tM)
+	public void performAction(TileManager tM, Hand h)
 	{
 		if (hasPlayedThirty)
 		{
@@ -21,7 +21,7 @@ public class AIType_1 implements AIType{
 		}
 		else
 		{
-			if(maxCurrentPoints() == 30)
+			if(maxCurrentPoints(h) == 30)
 			{
 				
 			}

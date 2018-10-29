@@ -15,7 +15,7 @@ public class EntityTest extends TestCase {
 	//Tests to see if a initial meld(s) of 30 or more points can be played.
 	public void testCanPlayInitialMeld() {
 		
-		Entity ent = new Entity();		
+		AI ent = new AI(new AIType_1());
 		
 		//Manually adding Tiles to the Entity's hand
 		ent.hand.tiles.add(new Tile("O", 3));
@@ -33,7 +33,7 @@ public class EntityTest extends TestCase {
 		ent.hand.tiles.add(new Tile("G", 7));
 		ent.hand.tiles.add(new Tile("O", 12));
 		
-		assertTrue(ent.maxCurrentPoints() >= 30); //This should equal 39 exactly
+		assertTrue(ent.getMaxPoints() >= 30); //This should equal 39 exactly
 		
 	}
 	

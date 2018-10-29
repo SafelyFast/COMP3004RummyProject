@@ -13,11 +13,13 @@ import java.util.List;
 public class AI extends Entity{
 	
 	AIType behaviour;
-	int thingy;
 	
 	public AI(AIType t) {
 		behaviour = t;
-		thingy = this.maxCurrentPoints();
+	}
+	
+	public int getMaxPoints() {
+		return behaviour.maxCurrentPoints(hand);
 	}
 	
 	
