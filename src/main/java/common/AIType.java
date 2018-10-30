@@ -109,7 +109,7 @@ public default boolean containsRank(List<Tile> l, int x) {
 	 * 
 	 * Determines the maximum amount of points you currently have in your hand.
 	 * 
-	 * (NOT COMPLETE. FINISH THIS)
+	 * 
 	 */
 	public default int maxCurrentPoints(Hand h) {
 		
