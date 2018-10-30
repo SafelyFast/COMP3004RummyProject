@@ -51,7 +51,8 @@ public class Hand {
 	
 	public void alignTiles()
 	{
-		int baseX = this.getTile(0).getImage().getX();
+		System.out.println("Aligning tiles in hand!");
+		int baseX = 10;
 		int baseY = this.getTile(0).getImage().getY();
 		for(int j = 0; j < this.getSize(); j++)
 		{

@@ -3,6 +3,7 @@ package view;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -36,6 +37,16 @@ public class JImage extends DisplayObject {
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void rotate(double rotationAmount)
+	{
+		this.getView().setRotate(this.getView().getRotate() + rotationAmount);
+	}
+	
+	public void addToDrawingTable(Group g)
+	{
+		g.getChildren().addAll(this.getView());
 	}
 
 	/*Getters*/

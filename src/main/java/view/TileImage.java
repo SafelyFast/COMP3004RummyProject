@@ -2,7 +2,7 @@ package view;
 
 import view.JText;
 import view.JImage;
-
+import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
@@ -48,5 +48,10 @@ public class TileImage extends DisplayObject {
 		this.tile.setY(y);
 		this.faceValue.setY(y + 27);
 		super.setY(y);
+	}
+	
+	public void addToDrawingTable(Group g)
+	{
+		g.getChildren().addAll(this.getImageView(), this.getTextView());
 	}
 }

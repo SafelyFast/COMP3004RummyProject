@@ -1,9 +1,12 @@
 package common;
 
+import java.util.List;
+
 import common.GameManager;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.*;
+import view.TileImage;
 import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
@@ -14,6 +17,7 @@ import common.MathUtils;
 public class ViewManager extends Application{
 	private GameManager gm;
 	private Meld heldMeld;
+	private int initialX, initialY;
 	
 	public ViewManager()
 	{
@@ -33,6 +37,8 @@ public class ViewManager extends Application{
 			@Override
 			public void handle(MouseEvent e)
 			{
+				int mouseX = MathUtils.doubleToInt(e.getX());
+				int mouseY = MathUtils.doubleToInt(e.getY());
 				if (heldMeld != null)
 				{
 					if (heldMeld.getTileAt(0).getImage().getY() >= 525)
@@ -46,34 +52,40 @@ public class ViewManager extends Application{
 						else
 						{
 							System.out.println("Cant add a meld of size > 1 to the hand");
+							heldMeld.updateMeldPosition(initialX, initialY);
+							gm.TM.getBoardMelds().add(heldMeld);
 						}
 					}
 					else
 					{
 						boolean onMeld = false;
+						List<Meld> boardMelds = gm.TM.getBoardMelds();
 						for(int i = 0; i < gm.TM.getBoardMeldSize(); i++)
 						{
-							if (MathUtils.withinBounds(MathUtils.doubleToInt(e.getX()), MathUtils.doubleToInt(e.getY()), gm.TM.getBoardMelds().get(i).getX(), 25 * gm.TM.getBoardMelds().get(i).getSize(), gm.TM.getBoardMelds().get(i).getY(), 40))
+							Meld currentMeld = boardMelds.get(i);
+							if (MathUtils.withinBounds(mouseX, mouseY, currentMeld.getX(), 25 * currentMeld.getSize(), currentMeld.getY(), 40))
 							{
 								onMeld = true;
-								gm.TM.getBoardMelds().get(i).addMeld(heldMeld);
+								currentMeld.addMeld(heldMeld);
 								break;
 							}
 						}
 						if (onMeld == false)
 						{
-							gm.TM.getBoardMelds().add(heldMeld);
+							boardMelds.add(heldMeld);
 						}
 					}
 					heldMeld = null;
-					System.out.println("got here");
 				}
 				else
 				{
+					initialX = mouseX;
+					initialY = mouseY;
 					System.out.println("clicked the mouse. Hand size: " + gm.players.get(0).hand.getSize());
 					for(int i = 0; i < gm.players.get(0).hand.getSize(); i++)
 					{
-						if (MathUtils.withinBounds(MathUtils.doubleToInt(e.getX()), MathUtils.doubleToInt(e.getY()), gm.players.get(0).hand.getTile(i).getImage().getX(), 25, gm.players.get(0).hand.getTile(i).getImage().getY(), 40))
+						TileImage currentTile = gm.players.get(0).hand.getTile(i).getImage();
+						if (MathUtils.withinBounds(initialX, initialY, currentTile.getX(), 25, currentTile.getY(), 40))
 						{
 							Tile t = gm.players.get(0).hand.removeTile(i);
 							heldMeld = new Meld(t.getXPosition(), t.getYPosition(), t);
@@ -82,7 +94,8 @@ public class ViewManager extends Application{
 					}
 					for(int i = 0; i < gm.TM.getBoardMeldSize(); i++)
 					{
-						if (MathUtils.withinBounds(MathUtils.doubleToInt(e.getX()), MathUtils.doubleToInt(e.getY()), gm.TM.getBoardMelds().get(i).getX(), 25 * gm.TM.getBoardMeldSize(), gm.TM.getBoardMelds().get(i).getY(), 40))
+						Meld currentMeld = gm.TM.getBoardMelds().get(i);
+						if (MathUtils.withinBounds(initialX, initialY, currentMeld.getX(), 25 * currentMeld.getSize(), currentMeld.getY(), 40))
 						{
 							heldMeld = gm.TM.getBoardMelds().remove(i);
 							break;
@@ -99,7 +112,9 @@ public class ViewManager extends Application{
 			{
 				if (heldMeld != null)
 				{
-					heldMeld.updateMeldPosition(MathUtils.doubleToInt(e.getX()), MathUtils.doubleToInt(e.getY()));
+					int mouseX = MathUtils.doubleToInt(e.getX());
+					int mouseY = MathUtils.doubleToInt(e.getY());
+					heldMeld.updateMeldPosition(mouseX, mouseY);
 				}
 			}
 		};
@@ -116,12 +131,16 @@ public class ViewManager extends Application{
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
+			Entity human = gm.players.get(0);
+			
 			for(int drawnCards = 0; drawnCards < 14; drawnCards++)
 			{
-				gm.players.get(0).addTile(gm.TM.getNext());
-				gm.players.get(0).hand.getTile(drawnCards).getImage().setPosition(26 * drawnCards + 10, 550);
-				root.getChildren().add(gm.players.get(0).hand.getTile(drawnCards).getImage().getImageView());
-				root.getChildren().add(gm.players.get(0).hand.getTile(drawnCards).getImage().getTextView());
+				human.addTile(gm.TM.getNext());
+				
+				TileImage tileImage = human.hand.getTile(drawnCards).getImage();
+				
+				tileImage.setPosition(26 * drawnCards + 10, 550);
+				tileImage.addToDrawingTable(root);
 			}
 			
 			new AnimationTimer()

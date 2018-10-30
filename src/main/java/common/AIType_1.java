@@ -9,7 +9,7 @@
 package common;
 
 
-public class AIType_1 implements AIType{
+public class AIType_1 implements AIType {
 	
 	boolean hasPlayedThirty = false;
 

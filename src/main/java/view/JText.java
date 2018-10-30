@@ -1,5 +1,6 @@
 package view;
 
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -45,6 +46,11 @@ public class JText extends DisplayObject{
 	public Text getView()
 	{
 		return this.text;
+	}
+	
+	public void addToDrawingTable(Group g)
+	{
+		g.getChildren().addAll(this.getView());
 	}
 	
 	/*Setters*/

@@ -69,16 +69,6 @@ public class Meld extends DisplayObject {
 		return this.tiles.remove(i);
 	}
 	
-	public int getMeldXPosition()
-	{
-		return this.x;
-	}
-	
-	public int getMeldYPosition()
-	{
-		return this.y;
-	}
-	
 	public void updateMeldPosition(int x, int y)
 	{
 		this.x = x;
