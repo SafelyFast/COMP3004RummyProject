@@ -12,7 +12,7 @@ package common;
 
 public class AIType_2 implements AIType{
 
-	public void performAction()
+	public void performAction(TileManager tM, Hand h)
 	{
 		
 	}
