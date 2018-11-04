@@ -34,36 +34,30 @@ public class AIUtils {
 			}
 		}
 		
-		
 		for(int i =0;i < tm.getBoardMeldSize();i++)
 		{
 			if(i <= numSets)
 			{
-			int handSize = h.getSize();
-			int postHandSize = 0;
-			
-			//measures difference in hand size to see if it should continue to try to play tiles onto set
-			while (handSize != postHandSize)
-			{
-			
-			ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
-			
-			if(playableTiles.size() > 0)
-			{
+				int handSize = h.getSize();
+				int preHandSize = 0;
 				
+				//measures difference in hand size to see if it should continue to try to play tiles onto set
+				while (handSize != preHandSize)
+				{
+					preHandSize = handSize;
+					ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
 					
-					
-					
-					
+					if(playableTiles.size() > 0)
+					{
 						for(int n = playableTiles.size(); n > 0 ;n--)
 						{
 							if(h.tiles.contains(playableTiles.get(n-1)))
 							{
-								
 								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.remove(h.tiles.indexOf(playableTiles.get(n-1))));
 							}
 						}
 					}
+					handSize = h.getSize();
 				}
 			}
 			
