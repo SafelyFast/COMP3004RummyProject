@@ -298,7 +298,7 @@ public default List<Meld> findRuns(List<Tile> handList){
 	return runList;
 }
 
-	public default List<Meld> findSets(List<Tile> handList){
+public default List<Meld> findSets(List<Tile> handList){
 	
 		Meld set = new Meld();
 		List<Meld> setList = new ArrayList<Meld>();
