@@ -1,10 +1,7 @@
 package common;
-
-import junit.framework.TestCase;
-
-public class AIUtilsTest extends TestCase {
-
-	public void testAddPossibleMelds()
+ import junit.framework.TestCase;
+ public class AIUtilsTest extends TestCase {
+ 	public void testAddPossibleMelds()
 	{
 		GameManager GM = new GameManager();
 		GM.gameInit();
@@ -99,4 +96,4 @@ public class AIUtilsTest extends TestCase {
 	}
 	
 	
-}
+} 
