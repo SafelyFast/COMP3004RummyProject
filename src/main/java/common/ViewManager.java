@@ -47,7 +47,7 @@ public class ViewManager extends Application{
 						{
 							System.out.println("Adding tile to hand");
 							Tile t = heldMeld.getTileAt(0);
-							gm.players.get(0).hand.addTileToHand(new Tile(t.getColour(), t.getRank()));
+							gm.players.get(0).hand.addTileToHand(t);
 						}
 						else
 						{
