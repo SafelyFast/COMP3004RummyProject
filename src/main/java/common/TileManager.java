@@ -62,6 +62,9 @@ public class TileManager {
 	public List<Meld> getBoardMelds() { return boardMelds; }
 	public int getBoardMeldSize() { return boardMelds.size(); }
 	public int getDeckSize() { return deck.size(); }
+	public void addMeldToBoardMeld(Meld m) { boardMelds.add(m); }
+	public Meld getMeldFromBoardAt(int index) { return boardMelds.get(index) ; }
+	public void addTileToBoardMeldAt(Tile t,int index) { boardMelds.get(index).addMeldTile(t);}
 	
 	// Get the next card in the deck, and return it as a tile
 	public Tile getNext() {

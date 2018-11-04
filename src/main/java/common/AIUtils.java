@@ -6,7 +6,9 @@ public class AIUtils {
 		
 	}
 	// Adds all possible cards to board melds
-	public static void addMeld(Hand h) {
+	public static void addPossibleMelds(Hand h,TileManager tm) 
+	{
+	
 	}
 	// Use existing board melds to make new melds
 	public static void rearrangeMelds(Hand h) {
