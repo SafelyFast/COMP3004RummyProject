@@ -16,6 +16,8 @@ import java.util.List;
 
 public interface AIType {	
 	
+public void performAction(TileManager tm, Hand h, GameManager gm);
+
 public default List<Tile> sort(List<Tile> handList){
 		
 		// Sorts handList into colour order then numerical order based on the rank and colour of the Tile object

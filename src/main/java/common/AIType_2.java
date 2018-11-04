@@ -14,7 +14,9 @@ public class AIType_2 implements AIType{
 
 	boolean hasPlayedThirty = false;
 	boolean playedCard = false;
-	public void performAction(TileManager tM, Hand h)
+	
+	@Override
+	public void performAction(TileManager tM, Hand h, GameManager gm)
 	{
 		playedCard = false;
 		if (hasPlayedThirty) {

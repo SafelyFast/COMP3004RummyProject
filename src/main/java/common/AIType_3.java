@@ -17,6 +17,8 @@ public class AIType_3 implements AIType{
 	// In future, make performAction return an Integer
 	// Return a number if it needs to draw
 	// For now drawing cards will be done within AITypes
+	
+	@Override
 	public void performAction(TileManager tM, Hand h, GameManager gm)
 	{
 		playedCard = false;
