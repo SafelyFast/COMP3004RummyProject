@@ -310,4 +310,18 @@ public class Meld extends DisplayObject {
 	public int getMeldYPosition() {
 		return this.y;
 	}
+	
+	public int getMeldValue() {
+		
+		int answer = 0;
+		
+		if(this.tiles.isEmpty())
+			return answer;
+		else {
+			for(int i = 0; i < this.tiles.size(); i++) {
+				answer += this.tiles.get(i).getRank();
+			}
+			return answer;
+		}		
+	}
 }
