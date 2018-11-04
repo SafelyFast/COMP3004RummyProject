@@ -10,7 +10,6 @@ public class AIUtils {
 	// Adds all possible cards to board melds
 	public static void addPossibleMelds(Hand h,TileManager tm) 
 	{
-<<<<<<< HEAD
 		int[] orderedSets = new int[tm.getBoardMeldSize()];
 		int index = 0;
 		int numSets = 0;
@@ -82,9 +81,6 @@ public class AIUtils {
 				}
 			}
 		}
-=======
-	
->>>>>>> c7a0eab38396cbb83b0e0a142da1107f76cbfd56
 	}
 	// Use existing board melds to make new melds
 	public static void rearrangeMelds(Hand h) {
