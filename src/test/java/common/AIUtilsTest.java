@@ -8,7 +8,7 @@ package common;
 		//empty ai1s hand
 		for(int i = 0;i<14;i++)
 		{
-			GM.players.get(1).hand.removeTile(0);
+			GM.players.get(1).hand.tiles.remove(0);
 		}
 		
 		//set of 4s
