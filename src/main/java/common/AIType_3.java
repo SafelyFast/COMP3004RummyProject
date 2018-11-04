@@ -13,11 +13,13 @@ package common;
 public class AIType_3 implements AIType{
 	
 	boolean hasPlayedThirty = false;
+	boolean playedCard = false;
 	// In future, make performAction return an Integer
 	// Return a number if it needs to draw
 	// For now drawing cards will be done within AITypes
 	public void performAction(TileManager tM, Hand h, GameManager gm)
 	{
+		playedCard = false;
 		if (hasPlayedThirty) {
 			// Try playing on a copy of Hand and Board and see result
 			TileManager copyManager = tM;
@@ -33,17 +35,27 @@ public class AIType_3 implements AIType{
 			if (copyHand.tiles.size() == 0) {
 				
 			}
-			else if () {
-				
+			// If any other player has 3 fewer cards
+			else if (gm.players.get(0).hand.getSize() - h.getSize() >= 3
+					|| gm.players.get(1).hand.getSize() - h.getSize() >= 3
+					|| gm.players.get(2).hand.getSize() - h.getSize() >= 3) {
+				AIUtils.rearrangeMelds(h);
+				AIUtils.addPossibleMelds(h, tM);
+				playedCard = true;
 			}
 			else {
-				h.addTileToHand(tM.getNext());
+				AIUtils.makeMeldFromHand(h);
+				AIUtils.addPossibleMelds(h, tM);
+				AIUtils.rearrangeMelds(h);
+				AIUtils.addPossibleMelds(h, tM);
+				playedCard = true;
 			}
 		}
 		else if (maxCurrentPoints(h) >= 30) {
 			hasPlayedThirty = true;
+			// Play 30 cards
 		}
-		else {
+		if (!playedCard) {
 			h.addTileToHand(tM.getNext());
 		}
 		

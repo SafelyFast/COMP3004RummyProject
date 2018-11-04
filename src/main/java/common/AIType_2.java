@@ -13,9 +13,10 @@ package common;
 public class AIType_2 implements AIType{
 
 	boolean hasPlayedThirty = false;
-	
+	boolean playedCard = false;
 	public void performAction(TileManager tM, Hand h)
 	{
+		playedCard = false;
 		if (hasPlayedThirty) {
 			// Try playing on a copy of Hand and Board and see result
 			TileManager copyManager = tM;
@@ -39,6 +40,9 @@ public class AIType_2 implements AIType{
 		// If there are any melds on the board then play your 30
 		else if (tM.getBoardMelds().size() > 0) {
 			
+		}
+		if (!playedCard) {
+			h.addTileToHand(tM.getNext());
 		}
 		
 	}

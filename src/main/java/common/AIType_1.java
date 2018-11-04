@@ -12,9 +12,11 @@ package common;
 public class AIType_1 implements AIType {
 	
 	boolean hasPlayedThirty = false;
-
+	boolean playedCard = false;
+	
 	public void performAction(TileManager tM, Hand h)
 	{
+		playedCard = false;
 		if (hasPlayedThirty)
 		{
 			/* Play melds from hand
@@ -33,10 +35,9 @@ public class AIType_1 implements AIType {
 				// Play 30 points of cards
 				hasPlayedThirty = true;
 			}
-			else {
-				h.addTileToHand(tM.getNext());
-
-			}
+		}
+		if (!playedCard) {
+			h.addTileToHand(tM.getNext());
 		}
 	}
 	
