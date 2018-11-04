@@ -11,9 +11,53 @@ package common;
 
 
 public class AIType_3 implements AIType{
-
-	public void performAction(TileManager tM, Hand h)
+	
+	boolean hasPlayedThirty = false;
+	boolean playedCard = false;
+	// In future, make performAction return an Integer
+	// Return a number if it needs to draw
+	// For now drawing cards will be done within AITypes
+	public void performAction(TileManager tM, Hand h, GameManager gm)
 	{
+		playedCard = false;
+		if (hasPlayedThirty) {
+			// Try playing on a copy of Hand and Board and see result
+			TileManager copyManager = tM;
+			Hand copyHand = h;
+			/* Make meld from hand
+			 * Add cards from your hand
+			 * Rearrange to make new melds
+			 * Add cards from your hand
+			 * */
+			
+			// If the copied hand is empty, do the same on the real hand
+			// Otherwise just rearrange melds and add from your hand
+			if (copyHand.tiles.size() == 0) {
+				
+			}
+			// If any other player has 3 fewer cards
+			else if (gm.players.get(0).hand.getSize() - h.getSize() >= 3
+					|| gm.players.get(1).hand.getSize() - h.getSize() >= 3
+					|| gm.players.get(2).hand.getSize() - h.getSize() >= 3) {
+				AIUtils.rearrangeMelds(h);
+				AIUtils.addPossibleMelds(h, tM);
+				playedCard = true;
+			}
+			else {
+				AIUtils.makeMeldFromHand(h);
+				AIUtils.addPossibleMelds(h, tM);
+				AIUtils.rearrangeMelds(h);
+				AIUtils.addPossibleMelds(h, tM);
+				playedCard = true;
+			}
+		}
+		else if (maxCurrentPoints(h) >= 30) {
+			hasPlayedThirty = true;
+			// Play 30 cards
+		}
+		if (!playedCard) {
+			h.addTileToHand(tM.getNext());
+		}
 		
 	}
 	
