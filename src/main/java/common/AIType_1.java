@@ -17,13 +17,24 @@ public class AIType_1 implements AIType {
 	{
 		if (hasPlayedThirty)
 		{
+			/* Play melds from hand
+			 * Add cards from your hand to existing melds
+			 * Rearrange existing cards to make melds
+			 * Add cards from your hand to existing melds
+			 * */
+			
 			
 		}
 		else
 		{
-			if(maxCurrentPoints(h) == 30)
+			if(maxCurrentPoints(h) >= 30)
 			{
-				
+				// Play 30 points of cards
+				hasPlayedThirty = true;
+			}
+			else {
+				h.addTileToHand(tM.getNext());
+
 			}
 		}
 	}
