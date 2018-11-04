@@ -77,12 +77,12 @@ public class AIUtils {
 		}
 	}
 	// Use existing board melds to make new melds
-	public static void rearrangeMelds(Hand h) {
+	public static void rearrangeMelds(Hand h, TileManager tm) {
 		
 	}
 	// Create a new meld with only the hand
 	// [COMPLETED BY JAKE]
-	public static void makeMeldFromHand(Hand h) {
+	public static void makeMeldFromHand(Hand h, TileManager tm) {
 		
 	}
 }

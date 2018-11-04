@@ -39,14 +39,14 @@ public class AIType_3 implements AIType{
 			else if (gm.players.get(0).hand.getSize() - h.getSize() >= 3
 					|| gm.players.get(1).hand.getSize() - h.getSize() >= 3
 					|| gm.players.get(2).hand.getSize() - h.getSize() >= 3) {
-				AIUtils.rearrangeMelds(h);
+				AIUtils.rearrangeMelds(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
 				playedCard = true;
 			}
 			else {
-				AIUtils.makeMeldFromHand(h);
+				AIUtils.makeMeldFromHand(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
-				AIUtils.rearrangeMelds(h);
+				AIUtils.rearrangeMelds(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
 				playedCard = true;
 			}

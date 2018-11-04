@@ -24,8 +24,11 @@ public class AIType_1 implements AIType {
 			 * Rearrange existing cards to make melds
 			 * Add cards from your hand to existing melds
 			 * */
-			AIUtils.makeMeldFromHand(h);
+			AIUtils.makeMeldFromHand(h, tM);
 			AIUtils.addPossibleMelds(h, tM);
+			AIUtils.rearrangeMelds(h, tM);
+			AIUtils.addPossibleMelds(h, tM);
+			playedCard = true;
 			
 		}
 		else
