@@ -302,4 +302,12 @@ public class Meld extends DisplayObject {
 			this.getTileAt(i).getImage().setPosition(baseX + 25 * i, baseY);
 		}
 	}
+
+	public int getMeldXPosition() {
+		return this.x;
+	}
+	
+	public int getMeldYPosition() {
+		return this.y;
+	}
 }

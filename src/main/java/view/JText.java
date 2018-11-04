@@ -12,10 +12,17 @@ public class JText extends DisplayObject{
 	{
 		super(x, y);
 		this.text = new Text();
-		this.text.setFont(new Font(20));
-		this.text.setText(value);
-		this.text.setX(x);
-		this.text.setY(y);
+		try
+		{
+			this.text.setFont(new Font(20));
+			this.text.setText(value);
+			this.text.setX(x);
+			this.text.setY(y);
+		}
+		catch (RuntimeException e)
+		{
+			//Ignore this stuff
+		}
 		getColorByString(color);
 	}
 	
