@@ -74,7 +74,7 @@ public class GameManager {
 		}
 		else
 		{
-			e.performAction();
+			((AI)e).performAction(TM, e.hand, this);
 			return new ArrayList<Meld>();
 		}
 		
