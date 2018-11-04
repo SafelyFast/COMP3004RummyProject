@@ -225,6 +225,65 @@ public class Meld extends DisplayObject {
 			return true;
 		}
 	}
+	
+	//return 0 if run (3,3,3,3), 1 if set(1,2,3,4) or -1 if invalid
+	public int getMeldType()
+	{
+		if (this.tiles.size() < 3)
+		{
+			return -1;
+		}
+		boolean isRun = true;
+		int firstTileValue = this.tiles.get(0).getRank();
+		for(int i = 1; i < this.tiles.size(); i++)
+		{
+			if (firstTileValue != this.tiles.get(i).getRank())
+			{
+				isRun = false;
+			}
+		}
+		
+		//Is a run i.e 3, 3, 3, 3
+		//Colors must all be different
+		if (isRun == true)
+		{
+			//This trick works since there are only 4 colors
+			if (this.tiles.size() > 4)
+			{
+				return -1;
+			}
+			List<String> previousColors = new ArrayList<String>();
+			previousColors.add(this.tiles.get(0).getColour());
+			for(int i = 1; i < this.tiles.size(); i++) //this.tiles
+			{
+				for(int j = 0; j < previousColors.size(); j++) //previousColors
+				{
+					if (previousColors.get(j).equals(this.tiles.get(i).getColour()))
+					{
+						return -1;
+					}
+				}
+				previousColors.add(this.tiles.get(i).getColour());
+			}
+			return 0;
+		}
+		//Is a set (?) 1,2,3,4,5
+		//Colors must all be the same
+		else
+		{
+			String color = this.tiles.get(0).getColour();
+			int previousTileValue = this.tiles.get(0).getRank();
+			for(int i = 1; i < this.tiles.size(); i++)
+			{
+				if (!this.tiles.get(i).getColour().equals(color) || this.tiles.get(i).getRank() - 1 != previousTileValue)
+				{
+					return -1;
+				}
+				previousTileValue = this.tiles.get(i).getRank();
+			}
+			return 1;
+		}
+	}
 
 	public void addMeld(Meld m) {
 		for(int i = 0; i < m.getSize(); i++)
