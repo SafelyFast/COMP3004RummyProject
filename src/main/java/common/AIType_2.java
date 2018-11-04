@@ -27,13 +27,19 @@ public class AIType_2 implements AIType{
 			 * Add cards from your hand
 			 * */
 			
+			AIUtils.makeMeldFromHand(copyHand, copyManager);
+			AIUtils.addPossibleMelds(copyHand, copyManager);
+			AIUtils.rearrangeMelds(copyHand, copyManager);
+			AIUtils.addPossibleMelds(copyHand, copyManager);
+			
 			// If the copied hand is empty, do the same on the real hand
 			// Otherwise just rearrange melds and add from your hand
 			if (copyHand.tiles.size() == 0) {
-				
-			}
-			else {
-				h.addTileToHand(tM.getNext());
+				AIUtils.makeMeldFromHand(h, tM);
+				AIUtils.addPossibleMelds(h, tM);
+				AIUtils.rearrangeMelds(h, tM);
+				AIUtils.addPossibleMelds(h, tM);
+				playedCard = true;
 			}
 			
 		}
