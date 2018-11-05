@@ -81,4 +81,8 @@ public class TileManager {
 		
 		return new Tile(colour, rank);
 	}
+
+	public void refreshBoard() {
+		//TODO
+	}
 }
