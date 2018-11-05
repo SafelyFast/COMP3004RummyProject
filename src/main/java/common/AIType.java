@@ -19,16 +19,16 @@ public interface AIType {
 	public default void drawCard(Hand h, TileManager tM, int entityNumber, Group g)
 	{
 		boolean properlyAddedTile = h.addTileToHand(tM.getNext());
+		
 		if (properlyAddedTile == true)
 		{
 			TileImage tileImage = h.getTile(h.getSize() - 1).getImage();
-			h.alignTiles(entityNumber);
 			
 			if (entityNumber % 2 == 1)
 			{
 				tileImage.rotate(90);
 			}
-			
+			h.alignTiles(entityNumber);
 			tileImage.addToDrawingTable(g);
 		}
 	};

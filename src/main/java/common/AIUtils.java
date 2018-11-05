@@ -9,12 +9,16 @@ public class AIUtils {
 	// Plays 30 points
 	public static void playThirty(Hand h, TileManager tm) {
 				
+		String message = "";
+		
 		if(calculateMaxPoints(h) >= 30){
 			List<Meld> meldList = getMaximumScoringMeldsFromHand(h);
 			
+			message += "Played: ";
+			
 			for(int i = 0; i < meldList.size(); i++) {
 				meldList.get(i).setX(400);
-				meldList.get(i).setY(300);
+				meldList.get(i).setY(300);			
 				
 				for(int j = 0; j < meldList.get(i).getSize(); j++)
 				{
@@ -23,11 +27,15 @@ public class AIUtils {
 						meldList.get(i).getTileAt(j).getImage().rotate(90);
 					}
 				}
-				
-				System.out.println("An AI is playing!");
+					
+				for(int j = 0; j < meldList.get(i).getSize(); j++)
+					message += (meldList.get(i).getTileAt(j).getColour() + " " + meldList.get(i).getTileAt(j).getRank() + ", ");
 				tm.getBoardMelds().add(meldList.get(i));
 				h.tiles = removeFromHand(h.tiles, meldList.get(i));
+				
 			}
+			
+			System.out.println(message.substring(0, message.length() - 2));
 		}
 		else {
 			System.out.println("AI Unable to play 30 points worth of melds");
@@ -81,7 +89,7 @@ public class AIUtils {
 							if(h.tiles.get(n).getRank() == playableTiles.get(0).getRank() && h.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
 							{
 								tm.getBoardMelds().get(orderedSets[i]).addMeldTileToFront(h.tiles.get(n));
-								System.out.println("Played " + h.tiles.get(n).toString());
+								System.out.println("Played: " + h.tiles.get(n).toString());
 								h.tiles.remove(n);
 								if(playableTiles.size() == 2)
 								{
@@ -90,7 +98,7 @@ public class AIUtils {
 										if(h.tiles.get(m).getRank() == playableTiles.get(1).getRank() && h.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
 										{
 											tm.getBoardMelds().get(orderedSets[i]).addMeldTileToFront(h.tiles.get(m));
-											System.out.println("Played " + h.tiles.get(m).toString());
+											System.out.println("Played: " + h.tiles.get(m).toString());
 											h.tiles.remove(m);
 										}
 									}
@@ -112,7 +120,7 @@ public class AIUtils {
 						{
 							
 							tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(n));
-							System.out.println("Played " + h.tiles.get(n).toString());
+							System.out.println("Played: " + h.tiles.get(n).toString());
 							h.tiles.remove(n);
 						
 						}
@@ -123,9 +131,10 @@ public class AIUtils {
 		}
 	}
 	// Use existing board melds to make new melds
-	public static void rearrangeMelds(Hand h, TileManager tm) {
+	public static void rearrangeMelds(Hand h, TileManager tm) {		
 		
 	}
+	
 	// Create a new meld with only the hand
 	public static void makeMeldFromHand(Hand h, TileManager tm) {
 		List<Meld> meldList = getMaximumNumberOfMeldsFromHand(h);
@@ -245,6 +254,8 @@ public class AIUtils {
 			
 			for(int i = 0; i < tempHand.size(); i++) {
 				if(tempHand.get(i).getColour().equals(tempMeld.tiles.get(0).getColour()) && tempHand.get(i).getRank() == tempMeld.tiles.get(0).getRank()) {
+					tempHand.get(i).getImage().setX(10000000);
+					tempHand.get(i).getImage().setY(10000000);
 					tempHand.remove(i);
 					break;
 				}
@@ -629,6 +640,23 @@ public class AIUtils {
 			if(answer < tempAnswer)
 				answer = tempAnswer;			
 		}
+		return answer;
+		
+	}
+	
+	public static List<Tile> convertToList(List<Meld> meldList) {
+		
+		List<Tile> answer = new ArrayList<Tile>();
+		
+		if(meldList == null || meldList.isEmpty())
+			return answer;
+		
+		for(int i = 0; i < meldList.size(); i++) {			
+			for(int j = 0; j < meldList.get(i).getSize(); j++) {				
+				answer.add(meldList.get(i).getTileAt(j));				
+			}			
+		}
+		
 		return answer;
 		
 	}

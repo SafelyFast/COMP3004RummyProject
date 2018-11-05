@@ -42,6 +42,7 @@ public class AIType_3 implements AIType{
 			// If the copied hand is empty, do the same on the real hand
 			// Otherwise just rearrange melds and add from your hand
 			if (copyHand.tiles.size() == 0) {
+				System.out.println("AI 3 tries to play...");
 				AIUtils.makeMeldFromHand(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
 				AIUtils.rearrangeMelds(h, tM);
@@ -52,6 +53,7 @@ public class AIType_3 implements AIType{
 			else if (gm.players.get(0).hand.getSize() - h.getSize() >= 3
 					|| gm.players.get(1).hand.getSize() - h.getSize() >= 3
 					|| gm.players.get(2).hand.getSize() - h.getSize() >= 3) {
+				System.out.println("AI 3 tries to play...");
 				AIUtils.rearrangeMelds(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
 				handSize = h.getSize();
@@ -61,6 +63,7 @@ public class AIType_3 implements AIType{
 				}
 			}
 			else {
+				System.out.println("AI 3 tries to play...");
 				AIUtils.makeMeldFromHand(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
 				AIUtils.rearrangeMelds(h, tM);
@@ -73,6 +76,7 @@ public class AIType_3 implements AIType{
 			}
 		}
 		else if (AIUtils.calculateMaxPoints(h) >= 30) {
+			System.out.println("AI 3 is playing their opening meld...");
 			// Play 30 points of cards
 			AIUtils.playThirty(h, tM);
 			hasPlayedThirty = true;

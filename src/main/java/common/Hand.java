@@ -47,7 +47,7 @@ public class Hand {
 	{
 		if (t != null)
 		{
-			System.out.println("Can draw!");
+			System.out.println("Drawing Tile!");
 			tiles.add(t);
 			return true;
 		}
@@ -71,9 +71,9 @@ public class Hand {
 				baseX = 760;
 				baseY = 50;
 			}
-			
 			for(int j = 0; j < this.getSize(); j++)
 			{
+				
 				int finalX, finalY;
 				if (entityNumber % 2 == 0)
 				{

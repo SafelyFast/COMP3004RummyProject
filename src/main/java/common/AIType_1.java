@@ -28,6 +28,7 @@ public class AIType_1 implements AIType {
 			 * Rearrange existing cards to make melds
 			 * Add cards from your hand to existing melds
 			 * */
+			System.out.println("AI 1 tries to play...");
 			AIUtils.makeMeldFromHand(h, tM);
 			AIUtils.addPossibleMelds(h, tM);
 			AIUtils.rearrangeMelds(h, tM);
@@ -44,6 +45,7 @@ public class AIType_1 implements AIType {
 			if(AIUtils.calculateMaxPoints(h) >= 30)
 			{
 				// Play 30 points of cards
+				System.out.println("AI 1 is playing their opening meld...");
 				AIUtils.playThirty(h, tM);
 				hasPlayedThirty = true;
 				playedCard = true;

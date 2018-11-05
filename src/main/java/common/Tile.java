@@ -93,6 +93,7 @@ public class Tile {
 	
 	public String toString()
 	{
-		return this.colour + this.rank;
+		return this.colour + " " + this.rank;
 	}
+
 }

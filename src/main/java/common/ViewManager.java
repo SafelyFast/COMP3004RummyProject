@@ -60,6 +60,7 @@ public class ViewManager extends Application{
 							{
 								p.hand.alignTiles(0);
 								p.hand.getTile(p.hand.getSize() - 1).getImage().addToDrawingTable(root);
+								
 							}
 
 							playerTurn = false;
@@ -119,7 +120,7 @@ public class ViewManager extends Application{
 					{
 						initialX = mouseX;
 						initialY = mouseY;
-						System.out.println("clicked the mouse. Hand size: " + gm.players.get(0).hand.getSize());
+						System.out.println("clicked the mouse. Hand size: " + gm.players.get(0).hand.getSize() + " " + mouseX + " " + mouseY);
 						for(int i = 0; i < gm.players.get(0).hand.getSize(); i++)
 						{
 							TileImage currentTile = gm.players.get(0).hand.getTile(i).getImage();
@@ -172,7 +173,7 @@ public class ViewManager extends Application{
 			primaryStage.show();
 			
 			List<Entity> players = gm.players;
-			
+
 			for(int i = 0; i < 4; i++)
 			{
 				Entity p = players.get(i);
@@ -226,6 +227,8 @@ public class ViewManager extends Application{
 					{
 						if (whoIsPlaying == 0)
 						{
+							GameUtils.sortColourFirst(gm.players.get(0).hand.tiles);
+							gm.players.get(0).hand.alignTiles(0);
 							turnIndicator.setText("Player's turn");
 							playerTurn = true;							
 						}
@@ -233,6 +236,8 @@ public class ViewManager extends Application{
 						{
 							turnIndicator.setText("AI #" + whoIsPlaying + "'s turn");
 							gm.playTurn(gm.players.get(whoIsPlaying), root);
+							GameUtils.sortColourFirst(gm.players.get(whoIsPlaying).hand.tiles);
+							gm.players.get(whoIsPlaying).hand.alignTiles(whoIsPlaying);
 							gm.TM.refreshBoard(root);
 							gm.players.get(whoIsPlaying).playing = false;
 							gm.players.get((whoIsPlaying + 1) % 4).playing = true;
@@ -252,7 +257,7 @@ public class ViewManager extends Application{
 					
 					try
 					{
-						Thread.sleep(16);
+						Thread.sleep(100);
 					}
 					catch(InterruptedException e)
 					{
