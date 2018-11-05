@@ -436,13 +436,12 @@ public default List<Meld> findSets(List<Tile> handList){
 				}				
 			}
 		
-			System.out.println(tempAnswer + " " + i);
+			//System.out.println(tempAnswer + " " + i);
 			if(answer < tempAnswer)
 				answer = tempAnswer;
 		
 		}
-	
-		System.out.println(answer);
+
 		return answer;
 	}
 }
