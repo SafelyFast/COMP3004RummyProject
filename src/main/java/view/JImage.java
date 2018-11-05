@@ -46,7 +46,7 @@ public class JImage extends DisplayObject {
 	
 	public void addToDrawingTable(Group g)
 	{
-		g.getChildren().addAll(this.getView());
+		g.getChildren().add(this.getView());
 	}
 
 	/*Getters*/

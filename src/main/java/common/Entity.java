@@ -5,17 +5,17 @@
  * **/
 package common;
 
-import java.util.*;
-
 public class Entity {
 	/**	TODO
 	 * 	Add functionality
 	 * **/
 	 
 	Hand hand;
+	boolean playing;
 	
 	public Entity()
 	{
+		playing = false;
 		hand = new Hand();
 	}
 	
@@ -27,6 +27,10 @@ public class Entity {
 	public void performAction()
 	{
 		
+	}
+
+	public boolean isPlaying() {
+		return this.playing;
 	}
 
 	

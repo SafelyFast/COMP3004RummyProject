@@ -52,11 +52,14 @@ public class Hand {
 	public void alignTiles()
 	{
 		System.out.println("Aligning tiles in hand!");
-		int baseX = 10;
-		int baseY = this.getTile(0).getImage().getY();
-		for(int j = 0; j < this.getSize(); j++)
+		if (this.tiles.size() > 0)
 		{
-			this.getTile(j).getImage().setPosition(baseX + 26 * j, baseY);
+			int baseX = 10;
+			int baseY = this.getTile(0).getImage().getY();
+			for(int j = 0; j < this.getSize(); j++)
+			{
+				this.getTile(j).getImage().setPosition(baseX + 26 * j, baseY);
+			}
 		}
 	}
 }

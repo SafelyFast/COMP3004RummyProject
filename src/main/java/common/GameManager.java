@@ -65,19 +65,9 @@ public class GameManager {
 		return determineStartingPlayer();
 	}
 	
-	public ArrayList<Meld> playTurn(Entity e)
+	public void playTurn(Entity e)
 	{
-		//if playTurn is a player then do nothing
-		if(e instanceof Player)
-		{
-			return new ArrayList<Meld>();
-		}
-		else
-		{
-			((AI)e).performAction(TM, e.hand, this);
-			return new ArrayList<Meld>();
-		}
-		
+		((AI)e).performAction(TM, e.hand, this);
 	}
 	
 	// Deal a hand of tiles to each player
@@ -111,7 +101,33 @@ public class GameManager {
 		Random rand = new Random();
 		return rand.nextInt(4) + 1;
 	}
-	
+
+	public boolean isGameOver() {
+		for(int i = 0; i < players.size(); i++)
+		{
+			if (players.get(i).hand.getSize() == 0)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public int findWhoIsPlaying() {
+		for(int i = 0; i < players.size(); i++)
+		{
+			if (players.get(i).isPlaying() == true)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public void endHumanTurn() {
+		this.players.get(0).playing = false;
+		this.players.get(1).playing = true;
+	}
 }
 
 

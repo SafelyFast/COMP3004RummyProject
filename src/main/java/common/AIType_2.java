@@ -28,7 +28,6 @@ public class AIType_2 implements AIType{
 			 * Rearrange to make new melds
 			 * Add cards from your hand
 			 * */
-			
 			AIUtils.makeMeldFromHand(copyHand, copyManager);
 			AIUtils.addPossibleMelds(copyHand, copyManager);
 			AIUtils.rearrangeMelds(copyHand, copyManager);
@@ -56,5 +55,5 @@ public class AIType_2 implements AIType{
 		}
 		
 	}
-	
+
 }

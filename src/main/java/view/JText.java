@@ -7,10 +7,12 @@ import javafx.scene.text.Text;
 
 public class JText extends DisplayObject{
 	private Text text;
+	public boolean showingText;
 	
 	public JText(String value, String color, int x, int y)
 	{
 		super(x, y);
+		showingText = true;
 		this.text = new Text();
 		try
 		{
@@ -57,7 +59,12 @@ public class JText extends DisplayObject{
 	
 	public void addToDrawingTable(Group g)
 	{
-		g.getChildren().addAll(this.getView());
+		g.getChildren().add(this.getView());
+	}
+	
+	public void removeFromDrawingTable(Group g)
+	{
+		g.getChildren().remove(this.getView());
 	}
 	
 	/*Setters*/
@@ -71,5 +78,23 @@ public class JText extends DisplayObject{
 	public void setY(int y)
 	{
 		this.text.setY(y);
+	}
+	
+	public void setText(String text)
+	{
+		this.text.setText(text);
+	}
+	
+	public void toggleDisplayed(Group g)
+	{
+		this.showingText = !this.showingText;
+		if (this.showingText == true)
+		{
+			this.addToDrawingTable(g);
+		}
+		else
+		{
+			this.removeFromDrawingTable(g);
+		}
 	}
 }
