@@ -9,10 +9,11 @@ public class AIUtils {
 	// Plays 30 points
 	public static void playThirty(Hand h, TileManager tm) {
 				
-		if(calculateMaxPoints(h) >= 30){			
+		if(calculateMaxPoints(h) >= 30){
 			List<Meld> meldList = getMaximumScoringMeldsFromHand(h);			
 			
 			for(int i = 0; i < meldList.size(); i++) {
+				System.out.println("An AI is playing!");
 				tm.addMeldToBoardMeld(meldList.get(i));
 				h.tiles = removeFromHand(h.tiles, meldList.get(i));
 			}

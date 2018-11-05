@@ -8,13 +8,15 @@
 
 package common;
 
+import javafx.scene.Group;
+
 public class AIType_1 implements AIType {
 	
 	boolean hasPlayedThirty = false;
 	boolean playedCard = false;
 	
 	@Override
-	public void performAction(TileManager tM, Hand h, GameManager gm)
+	public void performAction(TileManager tM, Hand h, GameManager gm, Group g)
 	{
 		int handSize = h.getSize();
 		int preHandSize = handSize;
@@ -49,8 +51,8 @@ public class AIType_1 implements AIType {
 			}
 		}
 		if (!playedCard) {
-			h.addTileToHand(tM.getNext());
+			this.drawCard(h, tM, 1, g);
 		}
-	}
-	
+		h.alignTiles(1);
+	}	
 }

@@ -21,14 +21,7 @@ public class Entity {
 	
 	public boolean addTile(Tile t)
 	{
-		if (t != null)
-		{
-			System.out.println("Cannot draw!");
-			hand.tiles.add(t);
-			return true;
-		}
-		
-		return false;
+		return hand.addTileToHand(t);
 	}
 	
 	public void performAction()

@@ -8,7 +8,7 @@
 
 package common;
 
-
+import javafx.scene.Group;
 
 public class AIType_3 implements AIType{
 	
@@ -19,7 +19,7 @@ public class AIType_3 implements AIType{
 	// For now drawing cards will be done within AITypes
 	
 	@Override
-	public void performAction(TileManager tM, Hand h, GameManager gm)
+	public void performAction(TileManager tM, Hand h, GameManager gm, Group g)
 	{
 		int handSize = h.getSize();
 		int preHandSize = handSize;
@@ -73,6 +73,8 @@ public class AIType_3 implements AIType{
 			}
 		}
 		else if (AIUtils.calculateMaxPoints(h) >= 30) {
+			System.out.println("AI3 playing 30");
+			// Play 30 cards
 			System.out.println("AI3 can play 30");
 			// Play 30 points of cards
 			AIUtils.playThirty(h, tM);
@@ -80,9 +82,8 @@ public class AIType_3 implements AIType{
 			playedCard = true;
 		}
 		if (!playedCard) {
-			h.addTileToHand(tM.getNext());
+			this.drawCard(h, tM, 3, g);
 		}
-		
+		h.alignTiles(3);
 	}
-	
 }

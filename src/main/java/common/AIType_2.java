@@ -8,7 +8,7 @@
 
 package common;
 
-
+import javafx.scene.Group;
 
 public class AIType_2 implements AIType{
 
@@ -16,7 +16,7 @@ public class AIType_2 implements AIType{
 	boolean playedCard = false;
 	
 	@Override
-	public void performAction(TileManager tM, Hand h, GameManager gm)
+	public void performAction(TileManager tM, Hand h, GameManager gm, Group g)
 	{
 		int handSize = h.getSize();
 		int preHandSize = handSize;
@@ -53,10 +53,13 @@ public class AIType_2 implements AIType{
 				playedCard = true;
 				}
 			}
-			
 		}
 		// If there are any melds on the board then play your 30
 		else if (tM.getBoardMelds().size() > 0) {
+			System.out.println("AI2 can play 30");
+			AIUtils.playThirty(h, tM);
+			hasPlayedThirty = true;
+			playedCard = true;
 			if(AIUtils.calculateMaxPoints(h) >= 30)
 			{
 				System.out.println("AI2 can play 30");
@@ -64,12 +67,13 @@ public class AIType_2 implements AIType{
 				AIUtils.playThirty(h, tM);
 				hasPlayedThirty = true;
 				playedCard = true;
+				h.alignTiles(2);
 			}
 		}
 		if (!playedCard) {
-			h.addTileToHand(tM.getNext());
+			this.drawCard(h, tM, 2, g);
+			
 		}
-		
+		h.alignTiles(2);
 	}
-
 }

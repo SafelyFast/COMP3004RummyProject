@@ -58,7 +58,7 @@ public class ViewManager extends Application{
 							boolean properlyAddedTile = p.addTile(gm.TM.getNext());
 							if (properlyAddedTile == true)
 							{
-								p.hand.alignTiles();
+								p.hand.alignTiles(0);
 								p.hand.getTile(p.hand.getSize() - 1).getImage().addToDrawingTable(root);
 							}
 
@@ -174,41 +174,31 @@ public class ViewManager extends Application{
 			
 			for(int i = 0; i < 4; i++)
 			{
-				
+				Entity p = players.get(i);
 				for(int drawnCards = 0; drawnCards < 14; drawnCards++)
 				{
-					Entity p = players.get(i);
 					p.addTile(gm.TM.getNext());
 	
 					TileImage tileImage = p.hand.getTile(drawnCards).getImage();
 					
-					int xPos = 0, yPos = 0;
-					
-					//0 or 2 (player or AI 2)
-					if (i % 2 == 0)
-					{
-						xPos = (26 * drawnCards + 10);
-						yPos = 550 - 540 * (i / 2);
-					}
-					//1 or 3 (AI 1 or AI 3)
-					else
+					if (i % 2 == 1)
 					{
 						tileImage.rotate(90);
-						xPos = 760 + 750 * -((i - 1) / 2);
-						yPos = (26 * drawnCards + 50);
 					}
 					
-					tileImage.setPosition(xPos, yPos);
 					tileImage.addToDrawingTable(root);
+					
 					if (i != 0)
 					{
-						tileImage.getText().toggleDisplayed(root);
+						//tileImage.getText().toggleDisplayed(root);
 					}
 					else
 					{
 						p.playing = true;
 					}
 				}
+				p.hand.alignTiles(i);
+				GameUtils.sortColourFirst(p.hand.tiles);
 			}
 			
 			JImage endTurnButton = new JImage("EndTurn.png", 700, 581);
@@ -238,7 +228,7 @@ public class ViewManager extends Application{
 						}
 						else
 						{
-							gm.playTurn(gm.players.get(whoIsPlaying));
+							gm.playTurn(gm.players.get(whoIsPlaying), root);
 							gm.TM.refreshBoard();
 							gm.players.get(whoIsPlaying).playing = false;
 							gm.players.get((whoIsPlaying + 1) % 4).playing = true;

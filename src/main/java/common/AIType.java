@@ -9,14 +9,30 @@
 
 package common;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import javafx.scene.Group;
+import view.TileImage;
 
 public interface AIType {	
 	
-public void performAction(TileManager tm, Hand h, GameManager gm);
-
+	public void performAction(TileManager tm, Hand h, GameManager gm, Group g);
+	
+	public default void drawCard(Hand h, TileManager tM, int entityNumber, Group g)
+	{
+		boolean properlyAddedTile = h.addTileToHand(tM.getNext());
+		if (properlyAddedTile == true)
+		{
+			TileImage tileImage = h.getTile(h.getSize() - 1).getImage();
+			h.alignTiles(entityNumber);
+			
+			if (entityNumber % 2 == 1)
+			{
+				tileImage.rotate(90);
+			}
+			
+			tileImage.addToDrawingTable(g);
+			
+			System.out.println("AI will be drawing. Hand Size: " + h.getSize());
+		}
+	};
 
 }
