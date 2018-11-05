@@ -14,7 +14,7 @@ public class AIUtils {
 			
 			for(int i = 0; i < meldList.size(); i++) {
 				tm.addMeldToBoardMeld(meldList.get(i));
-				removeFromHand(h.tiles, meldList.get(i));
+				h.tiles = removeFromHand(h.tiles, meldList.get(i));
 			}
 		}
 		else {
