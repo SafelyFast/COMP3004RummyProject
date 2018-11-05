@@ -19,9 +19,16 @@ public class Entity {
 		hand = new Hand();
 	}
 	
-	public void addTile(Tile t)
+	public boolean addTile(Tile t)
 	{
-		hand.tiles.add(t);
+		if (t != null)
+		{
+			System.out.println("Cannot draw!");
+			hand.tiles.add(t);
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public void performAction()

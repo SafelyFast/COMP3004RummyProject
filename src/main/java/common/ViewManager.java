@@ -55,9 +55,14 @@ public class ViewManager extends Application{
 						if (hasPlayerPlayed == false)
 						{
 							Entity p = gm.players.get(0);
-							p.addTile(gm.TM.getNext());
-							p.hand.alignTiles();
-							p.hand.getTile(p.hand.getSize() - 1).getImage().addToDrawingTable(root);
+							boolean properlyAddedTile = p.addTile(gm.TM.getNext());
+							if (properlyAddedTile == true)
+							{
+								p.hand.alignTiles();
+								p.hand.getTile(p.hand.getSize() - 1).getImage().addToDrawingTable(root);
+							}
+
+							playerTurn = false;
 						}
 						
 						hasPlayerPlayed = false;
@@ -232,7 +237,6 @@ public class ViewManager extends Application{
 						}
 						else
 						{
-							System.out.println("got here: " + whoIsPlaying);
 							gm.playTurn(gm.players.get(whoIsPlaying));
 							gm.TM.refreshBoard();
 							gm.players.get(whoIsPlaying).playing = false;
@@ -248,7 +252,7 @@ public class ViewManager extends Application{
 					}
 					else
 					{
-						//Panic!
+						System.out.println("Panic!");
 					}
 					
 					try
