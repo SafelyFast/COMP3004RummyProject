@@ -47,10 +47,7 @@ public class AIType_2 implements AIType{
 		}
 		// If there are any melds on the board then play your 30
 		else if (tM.getBoardMelds().size() > 0) {
-			AIUtils.makeMeldFromHand(h, tM);
-			AIUtils.addPossibleMelds(h, tM);
-			AIUtils.rearrangeMelds(h, tM);
-			AIUtils.addPossibleMelds(h, tM);
+			AIUtils.playThirty(h, tM);
 			hasPlayedThirty = true;
 			playedCard = true;
 		}

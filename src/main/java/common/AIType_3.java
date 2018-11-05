@@ -65,10 +65,7 @@ public class AIType_3 implements AIType{
 		else if (AIUtils.calculateMaxPoints(h) >= 30) {
 			hasPlayedThirty = true;
 			// Play 30 cards
-			AIUtils.makeMeldFromHand(h, tM);
-			AIUtils.addPossibleMelds(h, tM);
-			AIUtils.rearrangeMelds(h, tM);
-			AIUtils.addPossibleMelds(h, tM);
+			AIUtils.playThirty(h, tM);
 			hasPlayedThirty = true;
 			playedCard = true;
 		}

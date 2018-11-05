@@ -37,10 +37,7 @@ public class AIType_1 implements AIType {
 			{
 				
 				// Play 30 points of cards
-				AIUtils.makeMeldFromHand(h, tM);
-				AIUtils.addPossibleMelds(h, tM);
-				AIUtils.rearrangeMelds(h, tM);
-				AIUtils.addPossibleMelds(h, tM);
+				AIUtils.playThirty(h, tM);
 				hasPlayedThirty = true;
 				playedCard = true;
 			}
