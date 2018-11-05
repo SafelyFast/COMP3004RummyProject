@@ -50,44 +50,65 @@ public class AIUtils {
 		
 		for(int i =0;i < tm.getBoardMeldSize();i++)
 		{
-			if(i <= numSets)
+			if(i < numSets)
 			{
 				int handSize = h.getSize();
 				int preHandSize = 0;
+				ArrayList<Tile> playableTiles = new ArrayList<Tile>();
 				
 				//measures difference in hand size to see if it should continue to try to play tiles onto set
 				while (handSize != preHandSize)
 				{
 					preHandSize = handSize;
-					ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
+					playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
 					
 					if(playableTiles.size() > 0)
 					{
-						for(int n = playableTiles.size(); n > 0 ;n--)
+						for (int n = 0;n< h.tiles.size();n++)
 						{
-							if(h.tiles.contains(playableTiles.get(n-1)))
+							if(h.tiles.get(n).getRank() == playableTiles.get(0).getRank() && h.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
 							{
-								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.remove(h.tiles.indexOf(playableTiles.get(n-1))));
+								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(n));
+								System.out.println("Played " + h.tiles.get(n).toString());
+								h.tiles.remove(n);
+								if(playableTiles.size() == 2)
+								{
+									for (int m = 0;m< h.tiles.size();m++)
+									{
+										if(h.tiles.get(m).getRank() == playableTiles.get(1).getRank() && h.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
+										{
+											tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(m));
+											System.out.println("Played " + h.tiles.get(m).toString());
+											h.tiles.remove(m);
+										}
+									}
+								}
 							}
 						}
+						
 					}
 					handSize = h.getSize();
 				}
+				System.out.println("Exited with pre: " +  preHandSize + " and handSize: " + handSize);
 			}
-			
+			//section for checking for runs
 			ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
-			
 			if(playableTiles.size() > 0)
 			{
-				for(int n = playableTiles.size(); n > 0 ;n--)
-				{
-					if(h.tiles.contains(playableTiles.get(n-1)))
+					for(int n = 0;n< h.tiles.size();n++)
 					{
+						if(h.tiles.get(n).getRank() == playableTiles.get(0).getRank() && h.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+						{
+							
+							tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(n));
+							System.out.println("Played " + h.tiles.get(n).toString());
+							h.tiles.remove(n);
 						
-						tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.remove(h.tiles.indexOf(playableTiles.get(n-1))));
+						}
 					}
+							
 				}
-			}
+			
 		}
 	}
 	// Use existing board melds to make new melds
