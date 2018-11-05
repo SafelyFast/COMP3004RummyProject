@@ -7,10 +7,19 @@ import java.util.List;
 
 public class AIUtils {
 	// Plays 30 points
-	public static void playThirty(Hand h) {
+	public static void playThirty(Hand h, TileManager tm) {
 				
-		
-		
+		if(calculateMaxPoints(h) >= 30){			
+			List<Meld> meldList = getMaximumScoringMeldsFromHand(h);			
+			
+			for(int i = 0; i < meldList.size(); i++) {
+				tm.addMeldToBoardMeld(meldList.get(i));
+				removeFromHand(h.tiles, meldList.get(i));
+			}
+		}
+		else {
+			System.out.println("AI Unable to play 30 points worth of melds");
+		}		
 	}
 	// Adds all possible cards to board melds
 	public static void addPossibleMelds(Hand h,TileManager tm) 
@@ -89,8 +98,10 @@ public class AIUtils {
 	public static void makeMeldFromHand(Hand h, TileManager tm) {
 		List<Meld> meldList = getMaximumNumberOfMeldsFromHand(h);
 		
-		for(int i = 0; i < meldList.size(); i++)
-			tm.addMeldToBoardMeld(meldList.get(i));	
+		for(int i = 0; i < meldList.size(); i++) {
+			tm.addMeldToBoardMeld(meldList.get(i));
+			removeFromHand(h.tiles, meldList.get(i));
+		}
 	}
 	
 	// Sorts the tiles in the hand of the AI into colour order then numerical order based on the rank and colour of the Tile object.
@@ -482,10 +493,12 @@ public class AIUtils {
 	}
 
 	/*
-	 * Method: maxCurrentPoints() 
+	 * Method: getPossibleMeldsFromHand(Hand h) 
 	 * 
-	 * Determines the maximum amount of points an AI currently has in their hand.
+	 * returns a List<Meld> object containing all the possible
+	 * combinations of melds from a given hand. 
 	 * 
+	 * Note: the List<Meld> object is sorted my point value.
 	 */
 	public static List<Meld> getPossibleMeldsFromHand(Hand h) {
 		
@@ -498,6 +511,12 @@ public class AIUtils {
 		return meldList;
 	}
 	
+	/*
+	 * Method: getMaximumNumberOfMeldsFromHand(Hand h)
+	 *  
+	 * returns a List<Meld> object containing set of melds 
+	 * prioritizing the most amount of tiles able to be played.
+	 */
 	public static List<Meld> getMaximumNumberOfMeldsFromHand(Hand h) {
 		
 		List<Meld> meldList = getPossibleMeldsFromHand(h);
@@ -512,8 +531,11 @@ public class AIUtils {
 			tempMeldList = new ArrayList<Meld>();
 			tempList = new ArrayList<Tile>();
 			tempAnswer = new ArrayList<Meld>();
+			answerCounter = 0;
+			
 			tempMeldList.addAll(meldList);
 			tempList.addAll(h.tiles);
+			
 			tempAnswer.add(tempMeldList.get(i));
 			answerCounter += tempMeldList.get(i).getSize();
 			tempList = removeFromHand(tempList, tempMeldList.get(i));
@@ -537,6 +559,62 @@ public class AIUtils {
 		return answer;
 	}
 	
+	/*
+	 * Method: getMaximumScoringMeldsFromHand(Hand h)
+	 *  
+	 * returns a List<Meld> object containing set of melds 
+	 * prioritizing the most score able to be received in a turn.
+	 */
+	public static List<Meld> getMaximumScoringMeldsFromHand(Hand h) {
+		
+		List<Meld> meldList = getPossibleMeldsFromHand(h);
+		List<Meld> tempMeldList;		
+		List<Tile> tempList;	
+		List<Meld> answerList = new ArrayList<Meld>();
+		List<Meld> tempAnswer;
+		int answer = 0;
+		int answerCounter = 0;		
+		
+		for(int i = 0; i < meldList.size(); i++) {
+			
+			tempMeldList = new ArrayList<Meld>();
+			tempList = new ArrayList<Tile>();
+			tempAnswer = new ArrayList<Meld>();
+			answerCounter = 0;
+			
+			tempMeldList.addAll(meldList);
+			tempList.addAll(h.tiles);
+			
+			tempAnswer.add(tempMeldList.get(i));
+			answerCounter += tempMeldList.get(i).getMeldValue();
+			tempList = removeFromHand(tempList, tempMeldList.get(i));
+			tempMeldList.remove(i);
+
+			for(int j = 0; j < tempMeldList.size(); j++) {
+				
+				if(containsSublist(tempList, tempMeldList.get(j).tiles)) {
+					tempAnswer.add(tempMeldList.get(i));
+					tempMeldList.get(i).getMeldValue();
+					tempList = removeFromHand(tempList, tempMeldList.get(j));
+					tempMeldList.remove(j);
+					j--;				
+				}				
+			}			
+			if(answerCounter > answer) {
+				answer = answerCounter;
+				answerList = new ArrayList<Meld>();
+				answerList.addAll(tempAnswer);
+			}
+		}
+		return answerList;
+	}
+	
+	/*
+	 * Method: calculateMaxPoints(Hand h)
+	 * 
+	 * calculates the maximum number of points you can 
+	 * get from a given hand. Returns an integer value.
+	 */
 	public static int calculateMaxPoints(Hand h) {
 		
 		List<Meld> meldList = getPossibleMeldsFromHand(h);
@@ -551,8 +629,10 @@ public class AIUtils {
 			tempMeldList = new ArrayList<Meld>();
 			tempList = new ArrayList<Tile>();
 			tempAnswer = 0;
+			
 			tempMeldList.addAll(meldList);
 			tempList.addAll(h.tiles);
+			
 			tempAnswer += tempMeldList.get(i).getMeldValue();
 			tempList = removeFromHand(tempList, tempMeldList.get(i));
 			tempMeldList.remove(i);
