@@ -31,11 +31,13 @@ public class AITest extends TestCase {
 	
 	public void testPerformActionType1()
 	{
-		GameManager GM = new GameManager("testDeck1");
+		GameManager GM = new GameManager("testDeck2");
 		GM.gameInit();
+		
+		((AI)GM.players.get(1)).performAction(GM.TM, GM.players.get(1).hand, this,);
 		GM.players.get(1).performAction();
-		assertEquals(1,GM.TM.getBoardMelds().size());
-		assertEquals(1,GM.players.get(1).hand.getSize());
+		assertEquals(0,GM.TM.getBoardMelds().size());
+		assertEquals(14,GM.players.get(1).hand.getSize());
 		
 	}
 
