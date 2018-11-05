@@ -29,10 +29,7 @@ public interface AIType {
 				tileImage.rotate(90);
 			}
 			
-			tileImage.rotate(90);
-			
 			tileImage.addToDrawingTable(g);
-			tileImage.getText().toggleDisplayed(g);
 			
 			System.out.println("AI will be drawing. Hand Size: " + h.getSize());
 		}
