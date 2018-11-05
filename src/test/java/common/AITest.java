@@ -33,6 +33,8 @@ public class AITest extends TestCase {
 	{
 		GameManager GM = new GameManager("testDeck2");
 		GM.gameInit();
+		
+		((AI)GM.players.get(1)).performAction(GM.TM, GM.players.get(1).hand, this,);
 		GM.players.get(1).performAction();
 		assertEquals(0,GM.TM.getBoardMelds().size());
 		assertEquals(14,GM.players.get(1).hand.getSize());
