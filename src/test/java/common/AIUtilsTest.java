@@ -112,13 +112,16 @@ import junit.framework.TestCase;
 		
 		//add tile that should goes into third meld
 		GM.players.get(1).hand.addTileToHand(new Tile("B",4));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",5));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",6));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",7));
 		
 		//in this case adds B4 to meld3
 		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
 		
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
-		assertEquals(4,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(7,GM.TM.getMeldFromBoardAt(2).getSize());
 		assertEquals(4,GM.players.get(1).hand.getSize());
 		
 		

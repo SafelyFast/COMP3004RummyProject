@@ -89,7 +89,6 @@ public class AIUtils {
 					}
 					handSize = h.getSize();
 				}
-				System.out.println("Exited with pre: " +  preHandSize + " and handSize: " + handSize);
 			}
 			//section for checking for runs
 			ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
@@ -119,12 +118,9 @@ public class AIUtils {
 	public static void makeMeldFromHand(Hand h, TileManager tm) {
 		List<Meld> meldList = getMaximumNumberOfMeldsFromHand(h);
 		
-		if(meldList.size() == 0) {
-		
-			for(int i = 0; i < meldList.size(); i++) {
-				tm.addMeldToBoardMeld(meldList.get(i));
-				removeFromHand(h.tiles, meldList.get(i));
-			}
+		for(int i = 0; i < meldList.size(); i++) {
+			tm.addMeldToBoardMeld(meldList.get(i));
+			removeFromHand(h.tiles, meldList.get(i));
 		}
 	}
 	
@@ -568,7 +564,7 @@ public class AIUtils {
 			for(int j = 0; j < tempMeldList.size(); j++) {
 				
 				if(containsSublist(tempList, tempMeldList.get(j).tiles)) {
-					tempAnswer.add(tempMeldList.get(j));
+					tempAnswer.add(tempMeldList.get(i));
 					answerCounter += tempMeldList.get(j).getSize();
 					tempList = removeFromHand(tempList, tempMeldList.get(j));
 					tempMeldList.remove(j);
@@ -617,8 +613,8 @@ public class AIUtils {
 			for(int j = 0; j < tempMeldList.size(); j++) {
 				
 				if(containsSublist(tempList, tempMeldList.get(j).tiles)) {
-					tempAnswer.add(tempMeldList.get(j));
-					tempMeldList.get(j).getMeldValue();
+					tempAnswer.add(tempMeldList.get(i));
+					tempMeldList.get(i).getMeldValue();
 					tempList = removeFromHand(tempList, tempMeldList.get(j));
 					tempMeldList.remove(j);
 					j--;				
@@ -677,22 +673,5 @@ public class AIUtils {
 		return answer;
 		
 	}
-	
-	public static Hand convertToHand(List<Meld> meldList) {
-		
-		Hand answer = new Hand();
-		
-		if(meldList == null || meldList.isEmpty())
-			return answer;
-		else {
-			
-			for(int i = 0; i < meldList.size(); i++) {
-				
-			}
-			
-		}
-		
-		return answer;		
-	}	
 	
 }
