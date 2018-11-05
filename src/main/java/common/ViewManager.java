@@ -198,8 +198,8 @@ public class ViewManager extends Application{
 						p.playing = true;
 					}
 				}
-				p.hand.alignTiles(i);
 				GameUtils.sortColourFirst(p.hand.tiles);
+				p.hand.alignTiles(i);
 			}
 			
 			JImage endTurnButton = new JImage("EndTurn.png", 700, 581);
@@ -226,10 +226,12 @@ public class ViewManager extends Application{
 					{
 						if (whoIsPlaying == 0)
 						{
+							turnIndicator.setText("Player's turn");
 							playerTurn = true;							
 						}
 						else
 						{
+							turnIndicator.setText("AI #" + whoIsPlaying + "'s turn");
 							gm.playTurn(gm.players.get(whoIsPlaying), root);
 							gm.TM.refreshBoard(root);
 							gm.players.get(whoIsPlaying).playing = false;

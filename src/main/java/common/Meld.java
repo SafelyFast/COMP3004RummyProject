@@ -55,6 +55,11 @@ public class Meld extends DisplayObject {
 		return this.tiles.size();
 	}
 	
+	public void addMeldTileToFront(Tile tile)
+	{
+		this.tiles.add(0, tile);
+	}
+	
 	public void addMeldTile(Tile tile)
 	{
 		this.tiles.add(tile);

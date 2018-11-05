@@ -80,7 +80,7 @@ public class AIUtils {
 						{
 							if(h.tiles.get(n).getRank() == playableTiles.get(0).getRank() && h.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
 							{
-								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(n));
+								tm.getBoardMelds().get(orderedSets[i]).addMeldTileToFront(h.tiles.get(n));
 								System.out.println("Played " + h.tiles.get(n).toString());
 								h.tiles.remove(n);
 								if(playableTiles.size() == 2)
@@ -89,7 +89,7 @@ public class AIUtils {
 									{
 										if(h.tiles.get(m).getRank() == playableTiles.get(1).getRank() && h.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
 										{
-											tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(m));
+											tm.getBoardMelds().get(orderedSets[i]).addMeldTileToFront(h.tiles.get(m));
 											System.out.println("Played " + h.tiles.get(m).toString());
 											h.tiles.remove(m);
 										}
