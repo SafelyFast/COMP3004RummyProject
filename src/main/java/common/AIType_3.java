@@ -32,10 +32,19 @@ public class AIType_3 implements AIType{
 			 * Add cards from your hand
 			 * */
 			
+			AIUtils.makeMeldFromHand(copyHand, copyManager);
+			AIUtils.addPossibleMelds(copyHand, copyManager);
+			AIUtils.rearrangeMelds(copyHand, copyManager);
+			AIUtils.addPossibleMelds(copyHand, copyManager);
+			
 			// If the copied hand is empty, do the same on the real hand
 			// Otherwise just rearrange melds and add from your hand
 			if (copyHand.tiles.size() == 0) {
-				
+				AIUtils.makeMeldFromHand(h, tM);
+				AIUtils.addPossibleMelds(h, tM);
+				AIUtils.rearrangeMelds(h, tM);
+				AIUtils.addPossibleMelds(h, tM);
+				playedCard = true;
 			}
 			// If any other player has 3 fewer cards
 			else if (gm.players.get(0).hand.getSize() - h.getSize() >= 3
@@ -56,6 +65,12 @@ public class AIType_3 implements AIType{
 		else if (maxCurrentPoints(h) >= 30) {
 			hasPlayedThirty = true;
 			// Play 30 cards
+			AIUtils.makeMeldFromHand(h, tM);
+			AIUtils.addPossibleMelds(h, tM);
+			AIUtils.rearrangeMelds(h, tM);
+			AIUtils.addPossibleMelds(h, tM);
+			hasPlayedThirty = true;
+			playedCard = true;
 		}
 		if (!playedCard) {
 			h.addTileToHand(tM.getNext());
