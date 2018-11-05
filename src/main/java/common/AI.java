@@ -8,6 +8,8 @@
 
 package common;
 
+import javafx.scene.Group;
+
 public class AI extends Entity{
 	
 	AIType behaviour;
@@ -16,8 +18,8 @@ public class AI extends Entity{
 		behaviour = t;
 	}
 	
-	public void performAction(TileManager tm, Hand h, GameManager gm) {
-		behaviour.performAction(tm, h, gm);
+	public void performAction(TileManager tm, Hand h, GameManager gm, Group g) {
+		behaviour.performAction(tm, h, gm, g);
 	}
 	
 	public int getMaxPoints() {
