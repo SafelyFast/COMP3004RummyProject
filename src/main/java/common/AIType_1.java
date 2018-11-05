@@ -53,5 +53,6 @@ public class AIType_1 implements AIType {
 		if (!playedCard) {
 			this.drawCard(h, tM, 1, g);
 		}
+		h.alignTiles(1);
 	}	
 }

@@ -53,7 +53,6 @@ public class AIType_2 implements AIType{
 				playedCard = true;
 				}
 			}
-			
 		}
 		// If there are any melds on the board then play your 30
 		else if (tM.getBoardMelds().size() > 0) {
@@ -68,12 +67,13 @@ public class AIType_2 implements AIType{
 				AIUtils.playThirty(h, tM);
 				hasPlayedThirty = true;
 				playedCard = true;
+				h.alignTiles(2);
 			}
 		}
 		if (!playedCard) {
 			this.drawCard(h, tM, 2, g);
+			
 		}
-		
+		h.alignTiles(2);
 	}
-
 }

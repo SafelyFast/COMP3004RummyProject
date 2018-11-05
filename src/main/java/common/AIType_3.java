@@ -84,7 +84,6 @@ public class AIType_3 implements AIType{
 		if (!playedCard) {
 			this.drawCard(h, tM, 3, g);
 		}
-		
+		h.alignTiles(3);
 	}
-	
 }
