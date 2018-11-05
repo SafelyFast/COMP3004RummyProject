@@ -8,12 +8,6 @@ import java.util.List;
 public class AIUtils {
 	// Plays 30 points
 	public static void playThirty(Hand h) {
-		
-		List<Meld> meldList = AIUtils.getPossibleMeldsFromHand(h);
-		int currentPoints = AIUtils.calculateMaxPoints(meldList, h);
-		
-		if (currentPoints >= 30)
-			
 				
 		
 		
@@ -92,9 +86,11 @@ public class AIUtils {
 		
 	}
 	// Create a new meld with only the hand
-	// [COMPLETED BY JAKE]
 	public static void makeMeldFromHand(Hand h, TileManager tm) {
+		List<Meld> meldList = getMaximumNumberOfMeldsFromHand(h);
 		
+		for(int i = 0; i < meldList.size(); i++)
+			tm.addMeldToBoardMeld(meldList.get(i));	
 	}
 	
 	// Sorts the tiles in the hand of the AI into colour order then numerical order based on the rank and colour of the Tile object.
@@ -502,8 +498,48 @@ public class AIUtils {
 		return meldList;
 	}
 	
-	public static int calculateMaxPoints(List<Meld> meldList, Hand h) {
+	public static List<Meld> getMaximumNumberOfMeldsFromHand(Hand h) {
 		
+		List<Meld> meldList = getPossibleMeldsFromHand(h);
+		List<Meld> tempMeldList;		
+		List<Tile> tempList;	
+		List<Meld> answer = new ArrayList<Meld>();	
+		List<Meld> tempAnswer;
+		int answerCounter = 0;		
+		
+		for(int i = 0; i < meldList.size(); i++) {
+			
+			tempMeldList = new ArrayList<Meld>();
+			tempList = new ArrayList<Tile>();
+			tempAnswer = new ArrayList<Meld>();
+			tempMeldList.addAll(meldList);
+			tempList.addAll(h.tiles);
+			tempAnswer.add(tempMeldList.get(i));
+			answerCounter += tempMeldList.get(i).getSize();
+			tempList = removeFromHand(tempList, tempMeldList.get(i));
+			tempMeldList.remove(i);
+
+			for(int j = 0; j < tempMeldList.size(); j++) {
+				
+				if(containsSublist(tempList, tempMeldList.get(j).tiles)) {
+					tempAnswer.add(tempMeldList.get(i));
+					answerCounter += tempMeldList.get(j).getSize();
+					tempList = removeFromHand(tempList, tempMeldList.get(j));
+					tempMeldList.remove(j);
+					j--;				
+				}				
+			}			
+			if(answerCounter > tempAnswer.size()) {
+				answer = new ArrayList<Meld>();
+				answer.addAll(tempAnswer);
+			}
+		}
+		return answer;
+	}
+	
+	public static int calculateMaxPoints(Hand h) {
+		
+		List<Meld> meldList = getPossibleMeldsFromHand(h);
 		List<Meld> tempMeldList;		
 		List<Tile> tempList;
 	

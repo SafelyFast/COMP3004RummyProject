@@ -33,8 +33,9 @@ public class AIType_1 implements AIType {
 		}
 		else
 		{
-			if(AIUtils.calculateMaxPoints(AIUtils.getPossibleMeldsFromHand(h), h) >= 30)
+			if(AIUtils.calculateMaxPoints(h) >= 30)
 			{
+				
 				// Play 30 points of cards
 				AIUtils.makeMeldFromHand(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
