@@ -18,6 +18,8 @@ public class AIType_2 implements AIType{
 	@Override
 	public void performAction(TileManager tM, Hand h, GameManager gm)
 	{
+		int handSize = h.getSize();
+		int preHandSize = handSize;
 		playedCard = false;
 		if (hasPlayedThirty) {
 			// Try playing on a copy of Hand and Board and see result
@@ -41,6 +43,15 @@ public class AIType_2 implements AIType{
 				AIUtils.rearrangeMelds(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
 				playedCard = true;
+			}
+			else
+			{
+				AIUtils.addPossibleMelds(h,tM);
+				handSize = h.getSize();
+				if(handSize < preHandSize)
+				{
+				playedCard = true;
+				}
 			}
 			
 		}
