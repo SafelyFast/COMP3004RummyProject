@@ -10,6 +10,8 @@ import java.util.List;
 
 import common.Entity;
 import common.Meld;
+import javafx.scene.Group;
+
 import java.util.Random;
 
 public class GameManager {
@@ -65,9 +67,9 @@ public class GameManager {
 		return determineStartingPlayer();
 	}
 	
-	public void playTurn(Entity e)
+	public void playTurn(Entity e, Group g)
 	{
-		((AI)e).performAction(TM, e.hand, this);
+		((AI)e).performAction(TM, e.hand, this, g);
 	}
 	
 	// Deal a hand of tiles to each player
