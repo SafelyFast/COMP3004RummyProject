@@ -57,7 +57,6 @@ public class Hand {
 	
 	public void alignTiles(int entityNumber)
 	{
-		System.out.println("Aligning tiles in hand!");
 		if (this.tiles.size() > 0)
 		{
 			int baseX, baseY;

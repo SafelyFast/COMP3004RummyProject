@@ -126,6 +126,7 @@ public class ViewManager extends Application{
 							if (MathUtils.withinBounds(initialX, initialY, currentTile.getX(), 25, currentTile.getY(), 40))
 							{
 								Tile t = gm.players.get(0).hand.removeTile(i);
+								gm.players.get(0).hand.alignTiles(0);
 								heldMeld = new Meld(t.getXPosition(), t.getYPosition(), t);
 								break;
 							}
@@ -206,6 +207,7 @@ public class ViewManager extends Application{
 			
 			JText turnIndicator = new JText("Player's Turn", "black", 400, 300);
 			turnIndicator.addToDrawingTable(root);
+			//turnIndicator.toggleDisplayed(root);
 			
 			new AnimationTimer()
 			{
@@ -229,7 +231,7 @@ public class ViewManager extends Application{
 						else
 						{
 							gm.playTurn(gm.players.get(whoIsPlaying), root);
-							gm.TM.refreshBoard();
+							gm.TM.refreshBoard(root);
 							gm.players.get(whoIsPlaying).playing = false;
 							gm.players.get((whoIsPlaying + 1) % 4).playing = true;
 							

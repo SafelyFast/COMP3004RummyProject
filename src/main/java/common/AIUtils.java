@@ -10,11 +10,22 @@ public class AIUtils {
 	public static void playThirty(Hand h, TileManager tm) {
 				
 		if(calculateMaxPoints(h) >= 30){
-			List<Meld> meldList = getMaximumScoringMeldsFromHand(h);			
+			List<Meld> meldList = getMaximumScoringMeldsFromHand(h);
 			
 			for(int i = 0; i < meldList.size(); i++) {
+				meldList.get(i).setX(400);
+				meldList.get(i).setY(300);
+				
+				for(int j = 0; j < meldList.get(i).getSize(); j++)
+				{
+					if (meldList.get(i).getTileAt(j).getImage().isRotated() == true)
+					{
+						meldList.get(i).getTileAt(j).getImage().rotate(90);
+					}
+				}
+				
 				System.out.println("An AI is playing!");
-				tm.addMeldToBoardMeld(meldList.get(i));
+				tm.getBoardMelds().add(meldList.get(i));
 				h.tiles = removeFromHand(h.tiles, meldList.get(i));
 			}
 		}
@@ -538,7 +549,7 @@ public class AIUtils {
 		List<Meld> answerList = new ArrayList<Meld>();
 		List<Meld> tempAnswer;
 		int answer = 0;
-		int answerCounter = 0;		
+		int answerCounter = 0;
 		
 		for(int i = 0; i < meldList.size(); i++) {
 			
