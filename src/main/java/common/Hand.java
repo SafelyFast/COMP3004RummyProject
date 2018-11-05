@@ -43,22 +43,50 @@ public class Hand {
 		return t;
 	}
 	
-	public void addTileToHand(Tile t)
+	public boolean addTileToHand(Tile t)
 	{
-		this.tiles.add(t);
-		//this.alignTiles();
+		if (t != null)
+		{
+			System.out.println("Can draw!");
+			tiles.add(t);
+			return true;
+		}
+		
+		return false;
 	}
 	
-	public void alignTiles()
+	public void alignTiles(int entityNumber)
 	{
 		System.out.println("Aligning tiles in hand!");
 		if (this.tiles.size() > 0)
 		{
-			int baseX = 10;
-			int baseY = this.getTile(0).getImage().getY();
+			int baseX, baseY;
+			
+			if (entityNumber % 2 == 0)
+			{
+				baseX = 10;
+				baseY = 550;
+			}
+			else
+			{
+				baseX = 760;
+				baseY = 50;
+			}
+			
 			for(int j = 0; j < this.getSize(); j++)
 			{
-				this.getTile(j).getImage().setPosition(baseX + 26 * j, baseY);
+				int finalX, finalY;
+				if (entityNumber % 2 == 0)
+				{
+					finalX = baseX + 26 * j;
+					finalY = baseY - 540 * (entityNumber / 2);
+				}
+				else
+				{
+					finalX = baseX + 750 * -((entityNumber - 1) / 2);
+					finalY = baseY + 26 * j;
+				}
+				this.getTile(j).getImage().setPosition(finalX, finalY);
 			}
 		}
 	}
