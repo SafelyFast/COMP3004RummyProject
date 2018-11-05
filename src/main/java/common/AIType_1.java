@@ -35,7 +35,7 @@ public class AIType_1 implements AIType {
 			handSize = h.getSize();
 			if(handSize < preHandSize)
 			{
-			playedCard = true;
+				playedCard = true;
 			}
 			
 		}
@@ -43,7 +43,6 @@ public class AIType_1 implements AIType {
 		{
 			if(AIUtils.calculateMaxPoints(h) >= 30)
 			{
-				System.out.println("AI1 can play 30");
 				// Play 30 points of cards
 				AIUtils.playThirty(h, tM);
 				hasPlayedThirty = true;

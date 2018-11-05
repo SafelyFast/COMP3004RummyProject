@@ -30,8 +30,6 @@ public interface AIType {
 			}
 			
 			tileImage.addToDrawingTable(g);
-			
-			System.out.println("AI will be drawing. Hand Size: " + h.getSize());
 		}
 	};
 

@@ -56,13 +56,11 @@ public class AIType_2 implements AIType{
 		}
 		// If there are any melds on the board then play your 30
 		else if (tM.getBoardMelds().size() > 0) {
-			System.out.println("AI2 can play 30");
 			AIUtils.playThirty(h, tM);
 			hasPlayedThirty = true;
 			playedCard = true;
 			if(AIUtils.calculateMaxPoints(h) >= 30)
 			{
-				System.out.println("AI2 can play 30");
 				// Play 30 points of cards
 				AIUtils.playThirty(h, tM);
 				hasPlayedThirty = true;
