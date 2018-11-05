@@ -8,7 +8,6 @@
 
 package common;
 
-
 public class AIType_1 implements AIType {
 	
 	boolean hasPlayedThirty = false;
@@ -34,7 +33,7 @@ public class AIType_1 implements AIType {
 		}
 		else
 		{
-			if(maxCurrentPoints(h) >= 30)
+			if(AIUtils.maxCurrentPoints(h) >= 30)
 			{
 				// Play 30 points of cards
 				AIUtils.makeMeldFromHand(h, tM);
