@@ -35,7 +35,6 @@ public class AIType_1 implements AIType {
 		{
 			if(AIUtils.calculateMaxPoints(h) >= 30)
 			{
-				
 				// Play 30 points of cards
 				AIUtils.playThirty(h, tM);
 				hasPlayedThirty = true;
