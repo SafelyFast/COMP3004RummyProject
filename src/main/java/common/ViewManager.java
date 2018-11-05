@@ -174,11 +174,12 @@ public class ViewManager extends Application{
 			
 			for(int i = 0; i < 4; i++)
 			{
+				
 				for(int drawnCards = 0; drawnCards < 14; drawnCards++)
 				{
 					Entity p = players.get(i);
 					p.addTile(gm.TM.getNext());
-					
+	
 					TileImage tileImage = p.hand.getTile(drawnCards).getImage();
 					
 					int xPos = 0, yPos = 0;
@@ -233,7 +234,7 @@ public class ViewManager extends Application{
 					{
 						if (whoIsPlaying == 0)
 						{
-							playerTurn = true;
+							playerTurn = true;							
 						}
 						else
 						{
