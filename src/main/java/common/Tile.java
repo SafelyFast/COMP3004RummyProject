@@ -90,4 +90,9 @@ public class Tile {
 	public TileImage getImage() {
 		return this.image;
 	}
+	
+	public String toString()
+	{
+		return this.colour + this.rank;
+	}
 }

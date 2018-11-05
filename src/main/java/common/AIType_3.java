@@ -21,6 +21,8 @@ public class AIType_3 implements AIType{
 	@Override
 	public void performAction(TileManager tM, Hand h, GameManager gm, Group g)
 	{
+		int handSize = h.getSize();
+		int preHandSize = handSize;
 		playedCard = false;
 		if (hasPlayedThirty) {
 			// Try playing on a copy of Hand and Board and see result
@@ -52,19 +54,32 @@ public class AIType_3 implements AIType{
 					|| gm.players.get(2).hand.getSize() - h.getSize() >= 3) {
 				AIUtils.rearrangeMelds(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
+				handSize = h.getSize();
+				if(handSize < preHandSize)
+				{
 				playedCard = true;
+				}
 			}
 			else {
 				AIUtils.makeMeldFromHand(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
 				AIUtils.rearrangeMelds(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
+				handSize = h.getSize();
+				if(handSize < preHandSize)
+				{
 				playedCard = true;
+				}
 			}
 		}
 		else if (AIUtils.calculateMaxPoints(h) >= 30) {
+<<<<<<< HEAD
 			System.out.println("AI3 playing 30");
 			// Play 30 cards
+=======
+			System.out.println("AI3 can play 30");
+			// Play 30 points of cards
+>>>>>>> 2a68516f69589b30349fdd89c2a8acd0497d5df6
 			AIUtils.playThirty(h, tM);
 			hasPlayedThirty = true;
 			playedCard = true;

@@ -15,7 +15,7 @@ public class AIUtils {
 			for(int i = 0; i < meldList.size(); i++) {
 				System.out.println("An AI is playing!");
 				tm.addMeldToBoardMeld(meldList.get(i));
-				removeFromHand(h.tiles, meldList.get(i));
+				h.tiles = removeFromHand(h.tiles, meldList.get(i));
 			}
 		}
 		else {
@@ -51,44 +51,64 @@ public class AIUtils {
 		
 		for(int i =0;i < tm.getBoardMeldSize();i++)
 		{
-			if(i <= numSets)
+			if(i < numSets)
 			{
 				int handSize = h.getSize();
 				int preHandSize = 0;
+				ArrayList<Tile> playableTiles = new ArrayList<Tile>();
 				
 				//measures difference in hand size to see if it should continue to try to play tiles onto set
 				while (handSize != preHandSize)
 				{
 					preHandSize = handSize;
-					ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
+					playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
 					
 					if(playableTiles.size() > 0)
 					{
-						for(int n = playableTiles.size(); n > 0 ;n--)
+						for (int n = 0;n< h.tiles.size();n++)
 						{
-							if(h.tiles.contains(playableTiles.get(n-1)))
+							if(h.tiles.get(n).getRank() == playableTiles.get(0).getRank() && h.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
 							{
-								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.remove(h.tiles.indexOf(playableTiles.get(n-1))));
+								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(n));
+								System.out.println("Played " + h.tiles.get(n).toString());
+								h.tiles.remove(n);
+								if(playableTiles.size() == 2)
+								{
+									for (int m = 0;m< h.tiles.size();m++)
+									{
+										if(h.tiles.get(m).getRank() == playableTiles.get(1).getRank() && h.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
+										{
+											tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(m));
+											System.out.println("Played " + h.tiles.get(m).toString());
+											h.tiles.remove(m);
+										}
+									}
+								}
 							}
 						}
+						
 					}
 					handSize = h.getSize();
 				}
 			}
-			
+			//section for checking for runs
 			ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
-			
 			if(playableTiles.size() > 0)
 			{
-				for(int n = playableTiles.size(); n > 0 ;n--)
-				{
-					if(h.tiles.contains(playableTiles.get(n-1)))
+					for(int n = 0;n< h.tiles.size();n++)
 					{
+						if(h.tiles.get(n).getRank() == playableTiles.get(0).getRank() && h.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+						{
+							
+							tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(n));
+							System.out.println("Played " + h.tiles.get(n).toString());
+							h.tiles.remove(n);
 						
-						tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.remove(h.tiles.indexOf(playableTiles.get(n-1))));
+						}
 					}
+							
 				}
-			}
+			
 		}
 	}
 	// Use existing board melds to make new melds
@@ -99,75 +119,13 @@ public class AIUtils {
 	public static void makeMeldFromHand(Hand h, TileManager tm) {
 		List<Meld> meldList = getMaximumNumberOfMeldsFromHand(h);
 		
-		if(meldList.size() == 0) {
-		
-			for(int i = 0; i < meldList.size(); i++) {
-				tm.addMeldToBoardMeld(meldList.get(i));
-				removeFromHand(h.tiles, meldList.get(i));
-			}
+		for(int i = 0; i < meldList.size(); i++) {
+			tm.addMeldToBoardMeld(meldList.get(i));
+			removeFromHand(h.tiles, meldList.get(i));
 		}
 	}
 	
-	// Sorts the tiles in the hand of the AI into colour order then numerical order based on the rank and colour of the Tile object.
-	public static List<Tile> sortColourFirst(List<Tile> handList){
-		
-		if(handList.size() > 1) {
-			Collections.sort(handList, new Comparator<Tile>() {
-				public int compare(Tile c1, Tile c2) {
-					
-		            if (c1.getColour().compareTo(c2.getColour()) != 0) {
-		               return c1.getColour().compareTo(c2.getColour());
-		            } 
-		            if (c1.getRank() < c2.getRank())
-		            	return -1;
-		            else if(c1.getRank() > c2.getRank())
-		            	return 1;
-		            else 
-		            	return 0;
-			  }});
-		}
-		return handList;		
-	}
-	
-	// Sorts the tiles in the hand of the AI into colour order then numerical order based on the rank and colour of the Tile object.
-	public static List<Tile> sortRankFirst(List<Tile> handList){
-		
-		if(handList.size() > 1) {
-			Collections.sort(handList, new Comparator<Tile>() {
-				public int compare(Tile c1, Tile c2) {
-					
-		            if (c1.getRank() != c2.getRank()) 
-		            	if (c1.getRank() < c2.getRank())
-			            	return -1;
-			            else if(c1.getRank() > c2.getRank())
-			            	return 1;
-		           
-		            return c1.getColour().compareTo(c2.getColour());
-			  }});
-		}
-		return handList;		
-	}
-	
-	//Sorts a list of melds into order based on the total point value of each meld.
-	public static List<Meld> sortByPointValue(List<Meld> meldList){
-		
-		if(meldList.size() > 1) {
-			Collections.sort(meldList, new Comparator<Meld>() {
-				public int compare(Meld c1, Meld c2) {
-					
-					int c1Value = c1.getMeldValue();
-					int c2Value = c2.getMeldValue();
-					
-		            if (c1Value < c2Value)
-		            	return 1;
-		            else if (c1Value > c2Value)
-		            	return -1;
-		            else
-		            	return 0;		            	
-			  }});
-		}
-		return meldList;		
-	}
+
 	
 	//Returns true if there exists a tile in a List<Tile> object with a particular rank
 	public static boolean containsRank(List<Tile> l, int x) {
@@ -305,7 +263,7 @@ public class AIUtils {
 		int duplicateCounter;
 		
 		tempList.addAll(handList);
-		handList = sortColourFirst(handList);		
+		handList = GameUtils.sortColourFirst(handList);		
 		
 		while(handList.size() >= 2) {
 
@@ -409,7 +367,7 @@ public class AIUtils {
 		int duplicateCounter;
 	
 		tempList.addAll(handList);
-		handList = sortRankFirst(handList);
+		handList = GameUtils.sortRankFirst(handList);
 	
 		while(handList.size() >= 2) {
 
@@ -510,7 +468,7 @@ public class AIUtils {
 			
 		meldList.addAll(findRuns(h.tiles));
 		meldList.addAll(findSets(h.tiles));	
-		meldList = sortByPointValue(meldList);		
+		meldList = GameUtils.sortByPointValue(meldList);		
 			
 		return meldList;
 	}
@@ -546,6 +504,9 @@ public class AIUtils {
 			tempMeldList.remove(i);
 
 			for(int j = 0; j < tempMeldList.size(); j++) {
+				
+				if(j == tempMeldList.size())
+					break;
 				
 				if(containsSublist(tempList, tempMeldList.get(j).tiles)) {
 					tempAnswer.add(tempMeldList.get(j));
@@ -595,6 +556,9 @@ public class AIUtils {
 			tempMeldList.remove(i);
 
 			for(int j = 0; j < tempMeldList.size(); j++) {
+				
+				if(j == tempMeldList.size())
+					break;
 				
 				if(containsSublist(tempList, tempMeldList.get(j).tiles)) {
 					tempAnswer.add(tempMeldList.get(j));
@@ -657,22 +621,5 @@ public class AIUtils {
 		return answer;
 		
 	}
-	
-	public static Hand convertToHand(List<Meld> meldList) {
-		
-		Hand answer = new Hand();
-		
-		if(meldList == null || meldList.isEmpty())
-			return answer;
-		else {
-			
-			for(int i = 0; i < meldList.size(); i++) {
-				
-			}
-			
-		}
-		
-		return answer;		
-	}	
 	
 }
