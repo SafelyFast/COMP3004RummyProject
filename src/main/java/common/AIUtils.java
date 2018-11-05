@@ -563,8 +563,11 @@ public class AIUtils {
 
 			for(int j = 0; j < tempMeldList.size(); j++) {
 				
+				if(j == tempMeldList.size())
+					break;
+				
 				if(containsSublist(tempList, tempMeldList.get(j).tiles)) {
-					tempAnswer.add(tempMeldList.get(i));
+					tempAnswer.add(tempMeldList.get(j));
 					answerCounter += tempMeldList.get(j).getSize();
 					tempList = removeFromHand(tempList, tempMeldList.get(j));
 					tempMeldList.remove(j);
@@ -612,9 +615,12 @@ public class AIUtils {
 
 			for(int j = 0; j < tempMeldList.size(); j++) {
 				
+				if(j == tempMeldList.size())
+					break;
+				
 				if(containsSublist(tempList, tempMeldList.get(j).tiles)) {
-					tempAnswer.add(tempMeldList.get(i));
-					tempMeldList.get(i).getMeldValue();
+					tempAnswer.add(tempMeldList.get(j));
+					tempMeldList.get(j).getMeldValue();
 					tempList = removeFromHand(tempList, tempMeldList.get(j));
 					tempMeldList.remove(j);
 					j--;				
