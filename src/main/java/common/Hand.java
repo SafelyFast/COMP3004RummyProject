@@ -39,14 +39,14 @@ public class Hand {
 			return null;
 		}
 		Tile t = this.tiles.remove(i);
-		this.alignTiles();
+		//this.alignTiles();
 		return t;
 	}
 	
 	public void addTileToHand(Tile t)
 	{
 		this.tiles.add(t);
-		this.alignTiles();
+		//this.alignTiles();
 	}
 	
 	public void alignTiles()
