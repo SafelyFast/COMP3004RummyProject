@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import javafx.scene.Group;
+
 public class TileManager {
 	
 	private List<String> deck;
@@ -82,7 +84,16 @@ public class TileManager {
 		return new Tile(colour, rank);
 	}
 
-	public void refreshBoard() {
-		//TODO
+	public void refreshBoard(Group g) {
+		for (int i = 0; i < this.getBoardMelds().size(); i++)
+		{
+			for(int j = 0; j < this.getMeldFromBoardAt(i).getSize(); j++)
+			{
+				if (this.getMeldFromBoardAt(i).getTileAt(j).getImage().hasBeenDrawn() == false)
+				{
+					this.getMeldFromBoardAt(i).getTileAt(j).getImage().addToDrawingTable(g);
+				}
+			}
+		}
 	}
 }
