@@ -34,7 +34,7 @@ public class EntityTest extends TestCase {
 		ent.hand.tiles.add(new Tile("O", 12));
 		
 		assertTrue(ent.getMaxPoints() > 30); 
-		assertTrue(ent.getMaxPoints() == 39); //This hand should equal 72 exactly
+		assertTrue(ent.getMaxPoints() == 39); //This hand should equal 39 exactly
 		
 		//Manually adding Tiles to the Entity's hand
 		ent = new AI(new AIType_1());
