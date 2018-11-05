@@ -23,6 +23,6 @@ public class AI extends Entity{
 	}
 	
 	public int getMaxPoints() {
-		return AIUtils.maxCurrentPoints(hand);
+		return AIUtils.calculateMaxPoints(AIUtils.getPossibleMeldsFromHand(hand), hand);
 	}
 }

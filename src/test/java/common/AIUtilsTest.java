@@ -94,6 +94,89 @@ package common;
 		
 		
 	}
-	
+ 	/*
+ 	public void testPlayThirty()
+	{
+		GameManager GM = new GameManager();
+		GM.gameInit();
+		//empty ai1s hand
+		for(int i = 0;i<14;i++)
+		{
+			GM.players.get(1).hand.tiles.remove(0);
+		}
+		
+		Meld meld1 = new Meld();
+		Tile tile1 = new Tile("O",3);
+		Tile tile2 = new Tile("R",4);
+		Tile tile3 = new Tile("R",6);
+		Tile tile4 = new Tile("G",10);
+		Tile tile5 = new Tile("R",7);
+		Tile tile6 = new Tile("B",11);
+		Tile tile7 = new Tile("R",5);
+		Tile tile8 = new Tile("O",13);
+		Tile tile9 = new Tile("O",1);
+		Tile tile10 = new Tile("R",3);
+		Tile tile11 = new Tile("R",8);
+		Tile tile12 = new Tile("O",2);
+		Tile tile13 = new Tile("G",7);
+		Tile tile14 = new Tile("O",12);
+		meld1.addMeldTile(tile1);
+		
+		GM.TM.addMeldToBoardMeld(meld1);
+		GM.TM.addMeldToBoardMeld(meld2);
+		GM.TM.addMeldToBoardMeld(meld3);
+		
+		//added values that are close to values that could go into these melds
+		GM.players.get(1).hand.addTileToHand(new Tile("R",4));
+		GM.players.get(1).hand.addTileToHand(new Tile("O",3));
+		GM.players.get(1).hand.addTileToHand(new Tile("G",6));
+		GM.players.get(1).hand.addTileToHand(new Tile("G",2));
+		
+		//in this case does nothing
+		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
+		
+		assertEquals(3,GM.TM.getMeldFromBoardAt(0).getSize());
+		assertEquals(3,GM.TM.getMeldFromBoardAt(1).getSize());
+		assertEquals(3,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(4,GM.players.get(1).hand.getSize());
+		
+		//add tile that should goes into first meld
+		GM.players.get(1).hand.addTileToHand(new Tile("O",4));
+		
+		//in this case adds O4 to meld1
+		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
+		
+		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
+		assertEquals(3,GM.TM.getMeldFromBoardAt(1).getSize());
+		assertEquals(3,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(4,GM.players.get(1).hand.getSize());
+		
+		//add two tiles that should go into second meld
+		GM.players.get(1).hand.addTileToHand(new Tile("O",2));
+		GM.players.get(1).hand.addTileToHand(new Tile("O",6));
+		
+		//in this case adds O2 to meld2 as well as O6
+		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
+		
+		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
+		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
+		assertEquals(3,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(4,GM.players.get(1).hand.getSize());
+		
+		
+		//add tile that should goes into third meld
+		GM.players.get(1).hand.addTileToHand(new Tile("B",4));
+		
+		//in this case adds B4 to meld3
+		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
+		
+		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
+		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
+		assertEquals(4,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(4,GM.players.get(1).hand.getSize());
+		
+		
+	}
+	*/
 	
 } 

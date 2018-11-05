@@ -9,6 +9,14 @@ public class AIUtils {
 	// Plays 30 points
 	public static void playThirty(Hand h) {
 		
+		List<Meld> meldList = AIUtils.getPossibleMeldsFromHand(h);
+		int currentPoints = AIUtils.calculateMaxPoints(meldList, h);
+		
+		if (currentPoints >= 30)
+			
+				
+		
+		
 	}
 	// Adds all possible cards to board melds
 	public static void addPossibleMelds(Hand h,TileManager tm) 
@@ -483,20 +491,25 @@ public class AIUtils {
 	 * Determines the maximum amount of points an AI currently has in their hand.
 	 * 
 	 */
-	public static int maxCurrentPoints(Hand h) {
+	public static List<Meld> getPossibleMeldsFromHand(Hand h) {
 		
 		List<Meld> meldList = new ArrayList<Meld>();
-		List<Meld> tempMeldList;
-		
-		List<Tile> tempList;
-	
-		int answer = 0;
-		int tempAnswer;
 			
 		meldList.addAll(findRuns(h.tiles));
 		meldList.addAll(findSets(h.tiles));	
 		meldList = sortByPointValue(meldList);		
 			
+		return meldList;
+	}
+	
+	public static int calculateMaxPoints(List<Meld> meldList, Hand h) {
+		
+		List<Meld> tempMeldList;		
+		List<Tile> tempList;
+	
+		int answer = 0;
+		int tempAnswer;
+		
 		for(int i = 0; i < meldList.size(); i++) {
 			
 			tempMeldList = new ArrayList<Meld>();
@@ -522,6 +535,7 @@ public class AIUtils {
 				answer = tempAnswer;			
 		}
 		return answer;
+		
 	}
 	
 }
