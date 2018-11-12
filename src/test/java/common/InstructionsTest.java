@@ -22,4 +22,13 @@ public class InstructionsTest extends TestCase {
 		assertEquals(2, inst.numTilesPlayed);
 		assertEquals(t1, inst.meldsChanged.get(0).getTileAt(4));
 	}
+	
+	public void testCreateNewMeld() {
+		Instructions inst = new Instructions();
+		Meld m1 = new Meld(new Tile("R", 11), new Tile("G", 11), new Tile("O", 11));
+		Meld m2 = new Meld(new Tile("R", 4), new Tile("R", 5), new Tile("R", 6));
+		inst.createNewMeld(m1);
+		inst.createNewMeld(m2);
+		assertEquals(2, inst.newMelds.size());
+	}
 }
