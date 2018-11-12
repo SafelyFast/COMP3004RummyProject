@@ -56,4 +56,8 @@ public class AIType_1 implements AIType {
 		}
 		h.alignTiles(1);
 	}	
+	
+	public String toString() {
+		return "AI1";
+	}
 }

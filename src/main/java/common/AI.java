@@ -25,4 +25,8 @@ public class AI extends Entity{
 	public int getMaxPoints() {
 		return AIUtils.calculateMaxPoints(hand);
 	}
+	
+	public String toString() {
+		return behaviour.toString();
+	}
 }

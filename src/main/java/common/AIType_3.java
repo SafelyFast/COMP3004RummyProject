@@ -87,4 +87,8 @@ public class AIType_3 implements AIType{
 		}
 		h.alignTiles(3);
 	}
+	
+	public String toString() {
+		return "AI3";
+	}
 }

@@ -77,4 +77,8 @@ public class AIType_2 implements AIType{
 		}
 		h.alignTiles(2);
 	}
+	
+	public String toString() {
+		return "AI2";
+	}
 }
