@@ -59,34 +59,20 @@ public class Hand {
 	{
 		if (this.tiles.size() > 0)
 		{
-			int baseX, baseY;
-			
-			if (entityNumber % 2 == 0)
+			for(int i = 0; i < this.getSize(); i++)
 			{
-				baseX = 10;
-				baseY = 550;
-			}
-			else
-			{
-				baseX = 760;
-				baseY = 50;
-			}
-			for(int j = 0; j < this.getSize(); j++)
-			{
-				
-				int finalX, finalY;
-				if (entityNumber % 2 == 0)
-				{
-					finalX = baseX + 26 * j;
-					finalY = baseY - 540 * (entityNumber / 2);
-				}
-				else
-				{
-					finalX = baseX + 750 * -((entityNumber - 1) / 2);
-					finalY = baseY + 26 * j;
-				}
-				this.getTile(j).getImage().setPosition(finalX, finalY);
+				this.getTile(i).getImage().setPosition((entityNumber % 2) * 675 + (i % 5) * 25, (entityNumber / 2) * 300 + (i/5) * 40 + 50);
 			}
 		}
+	}
+	
+	public String toString()
+	{
+		String cardsInHand = "";
+		for(int i = 0; i < this.getSize(); i++)
+		{
+			cardsInHand += this.tiles.get(i) + ": ";
+		}
+		return cardsInHand;
 	}
 }
