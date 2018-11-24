@@ -24,12 +24,25 @@ public class ViewManager extends Application{
 	private boolean gameOver;
 	private boolean hasPlayerPlayed;
 	private Group root;
+	private int state, numHumans;
+	
+	private boolean initialized = false;
+	
+	private static final int STARTGAME = 1;
+	private static final int GAMESETUP = 2;
+	private static final int PLAYGAME = 3;
+	
+	private static final String typesOfPlayers[] = {"human", "type1", "type2", "type3", "type4"};
+	
+	private JImage playerType[];
+	private int playerTypeInteger[];
 	
 	public ViewManager()
 	{
 		gm = new GameManager();
 		root = null;
 		hasPlayerPlayed = false;
+		state = STARTGAME;
 	}
 	
 	public void mainLoop(String[] args)
@@ -48,9 +61,68 @@ public class ViewManager extends Application{
 				int mouseX = MathUtils.doubleToInt(e.getX());
 				int mouseY = MathUtils.doubleToInt(e.getY());
 				
+				if (state == STARTGAME)
+				{
+					for(int i = 0; i < 2; i++) //i is y
+					{
+						for (int j = 0; j < 2; j++) //j is x
+						{
+							if (MathUtils.withinBounds(mouseX, mouseY, 250 + 200 * j, 100, 200 + 100 * i, 19) == true)
+							{
+								System.out.println("i: " + i + ", j: " + j + ", total: " + (i * 2 + j));
+								numHumans = (i * 2 + j) + 1;
+								state++;
+							}
+						}
+					}
+				}
+				if (state == GAMESETUP)
+				{
+					for(int i = 0; i < 2; i++) //i is y
+					{
+						for (int j = 0; j < 2; j++) //j is x
+						{
+							if (MathUtils.withinBounds(mouseX, mouseY, 675 * j, 100, 40 + 300 * i, 19) == true)
+							{
+								int index = (i * 2 + j);
+								System.out.println("i: " + i + ", j: " + j + ", total: " + index);
+								playerTypeInteger[index] = playerTypeInteger[index] + 1;
+								if (playerTypeInteger[index] > 4)
+								{
+									playerTypeInteger[index] = 0;
+								}
+								playerType[index].removeFromDrawingTable(root);
+								playerType[index] = new JImage(typesOfPlayers[playerTypeInteger[index]] + ".png", 675 * j, 40 + 300 * i);
+								playerType[index].addToDrawingTable(root);
+							}
+						}
+					}
+					
+					if (MathUtils.withinBounds(mouseX, mouseY, 290, 100, 581, 19) == true)
+					{
+						int numAI = 0;
+						for (int i = 0; i < 4; i++)
+						{
+							if (playerTypeInteger[i] > 0)
+							{
+								numAI++;
+							}
+						}
+						
+						System.out.println("AI's: " + numAI + ", humans: " + numHumans);
+						
+						if (numAI == 4 - numHumans)
+						{
+							gm.setupPlayers(playerTypeInteger);
+							gm.gameInit();
+							state++;
+						}
+					}
+				}
+				
 				if (playerTurn == true)
 				{
-					if (mouseX > 700 && mouseY > 581)
+					if (mouseX > 290 && mouseY > 580)
 					{
 						if (hasPlayerPlayed == false)
 						{
@@ -79,7 +151,8 @@ public class ViewManager extends Application{
 					
 					if (heldMeld != null)
 					{
-						if (heldMeld.getTileAt(0).getImage().getY() >= 525)
+						Hand humanHand = gm.players.get(0).hand;
+						if (heldMeld.getTileAt(0).getImage().getY() <= ((humanHand.getSize() / 5) + 1) * 40 && heldMeld.getTileAt(0).getImage().getX() <= 125)
 						{
 							if (heldMeld.getSize() == 1)
 							{
@@ -174,27 +247,17 @@ public class ViewManager extends Application{
 			
 			List<Entity> players = gm.players;
 
+			players.get(0).playing = true;
+			
+			/*
 			for(int i = 0; i < 4; i++)
 			{
 				Entity p = players.get(i);
 				for(int drawnCards = 0; drawnCards < 14; drawnCards++)
 				{
 					p.addTile(gm.TM.getNext());
-	
-					TileImage tileImage = p.hand.getTile(drawnCards).getImage();
 					
-					if (i % 2 == 1)
-					{
-						tileImage.rotate(90);
-					}
-					
-					tileImage.addToDrawingTable(root);
-					
-					if (i != 0)
-					{
-						//tileImage.getText().toggleDisplayed(root);
-					}
-					else
+					if (i == 0)
 					{
 						p.playing = true;
 					}
@@ -202,57 +265,117 @@ public class ViewManager extends Application{
 				GameUtils.sortColourFirst(p.hand.tiles);
 				p.hand.alignTiles(i);
 			}
+			*/
 			
-			JImage endTurnButton = new JImage("EndTurn.png", 700, 581);
-			endTurnButton.addToDrawingTable(root);
+			System.out.println("Done setup");
 			
-			JText turnIndicator = new JText("Player's Turn", "black", 400, 300);
-			turnIndicator.addToDrawingTable(root);
-			//turnIndicator.toggleDisplayed(root);
+			JImage endTurnButton = new JImage("EndTurn.png", 290, 581);
+			//endTurnButton.addToDrawingTable(root);
+			
+			JText turnIndicator = new JText("Player's Turn", "black", 400, 595);
+			//turnIndicator.addToDrawingTable(root);
+			
+			JImage playerNumbers[] = new JImage[4];
+			for(int i = 0; i < 4; i++)
+			{
+				int xOffset = 0;
+				int yOffset = 0;
+				if (i == 1 || i == 3)
+				{
+					xOffset = 200;
+				}
+				if (i == 2 || i == 3)
+				{
+					yOffset = 100;
+				}
+				playerNumbers[i] = new JImage((i + 1) + "p.png", 250 + xOffset, 200 + yOffset);
+				playerNumbers[i].addToDrawingTable(root);
+			}
+			
+			JText playerLabels[] = new JText[4];
+			for(int i = 0; i < 4; i++)
+			{
+				playerLabels[i] = new JText("Player " + (i + 1), "black", (i % 2) * 675, (i / 2) * 300 + 30);
+				//playerLabels[i].addToDrawingTable(root);
+			}
+			
+			playerType = new JImage[4];
+			playerTypeInteger = new int[4];
+			for(int i = 0; i < 2; i++)
+			{
+				for(int j = 0; j < 2; j++)
+				{
+					playerType[(i * 2) + j] = new JImage("human.png", 675 * j, i * 300 + 40);
+					playerTypeInteger[i] = 0;
+				}
+			}
+			
+			JImage finishButton = new JImage("finish.png", 290, 581);
 			
 			new AnimationTimer()
 			{
 				@Override
 				public void handle(long currentNanoTime)
 				{
-					//gm.players.get(0).hand.alignTiles();
-					
-					if (gameOver == true)
+					if (state == STARTGAME)
 					{
-						this.stop();
+						//Do nothing
 					}
-					
-					int whoIsPlaying = gm.findWhoIsPlaying();
-					if (whoIsPlaying != -1)
+					else if (state == GAMESETUP)
 					{
-						if (whoIsPlaying == 0)
+						if (initialized == false)
 						{
-							GameUtils.sortColourFirst(gm.players.get(0).hand.tiles);
-							gm.players.get(0).hand.alignTiles(0);
-							turnIndicator.setText("Player's turn");
-							playerTurn = true;							
-						}
-						else
-						{
-							turnIndicator.setText("AI #" + whoIsPlaying + "'s turn");
-							gm.playTurn(gm.players.get(whoIsPlaying), root);
-							GameUtils.sortColourFirst(gm.players.get(whoIsPlaying).hand.tiles);
-							gm.players.get(whoIsPlaying).hand.alignTiles(whoIsPlaying);
-							gm.TM.refreshBoard(root);
-							gm.players.get(whoIsPlaying).playing = false;
-							gm.players.get((whoIsPlaying + 1) % 4).playing = true;
-							
-							if (gm.isGameOver() == true)
+							for (int i = 0; i < 4; i++)
 							{
-								turnIndicator.setText("Game Over!");
-								//turnIndicator.addToDrawingTable(root);
-								this.stop();
+								playerNumbers[i].removeFromDrawingTable(root);
+								playerLabels[i].addToDrawingTable(root);
+								playerType[i].addToDrawingTable(root);
 							}
+							finishButton.addToDrawingTable(root);
+							initialized = true;
 						}
 					}
 					else
 					{
-						System.out.println("Panic!");
+						gm.updateTable(root);
+						
+						if (gameOver == true)
+						{
+							this.stop();
+						}
+						
+						int whoIsPlaying = gm.findWhoIsPlaying();
+						if (whoIsPlaying != -1)
+						{
+							if (whoIsPlaying == 0)
+							{
+								GameUtils.sortColourFirst(gm.players.get(0).hand.tiles);
+								gm.players.get(0).hand.alignTiles(0);
+								turnIndicator.setText("Player's turn");
+								playerTurn = true;							
+							}
+							else
+							{
+								turnIndicator.setText("AI #" + whoIsPlaying + "'s turn");
+								gm.playTurn(gm.players.get(whoIsPlaying), root);
+								GameUtils.sortColourFirst(gm.players.get(whoIsPlaying).hand.tiles);
+								gm.players.get(whoIsPlaying).hand.alignTiles(whoIsPlaying);
+								gm.TM.refreshBoard(root);
+								gm.players.get(whoIsPlaying).playing = false;
+								gm.players.get((whoIsPlaying + 1) % 4).playing = true;
+								
+								if (gm.isGameOver() == true)
+								{
+									turnIndicator.setText("Game Over!");
+									//turnIndicator.addToDrawingTable(root);
+									this.stop();
+								}
+							}
+						}
+						else
+						{
+							System.out.println("Panic!");
+						}
 					}
 					
 					try
