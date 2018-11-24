@@ -7,9 +7,9 @@ import java.util.List;
 public class Instructions {
 	Entity subject;
 	int numTilesPlayed;
-	HashMap<Meld, ArrayList<Tile>> meldsTilesAdded;
-	HashMap<Meld, ArrayList<Tile>> meldsTilesRemoved;
-	List<Meld> newMelds;
+	private HashMap<Meld, ArrayList<Tile>> meldsTilesAdded;
+	private HashMap<Meld, ArrayList<Tile>> meldsTilesRemoved;
+	private List<Meld> newMelds;
 	
 	public Instructions() {
 		subject = null;
