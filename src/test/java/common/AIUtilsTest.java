@@ -206,14 +206,14 @@ import junit.framework.TestCase;
 		GM.players.get(1).hand.addTileToHand(new Tile("G",3));
 		GM.players.get(1).hand.addTileToHand(new Tile("G",8));
 		
-		//in this case adds G3,G4 and G8 to meld4
+		//in this case adds G3,G4,G8 (and G2 originally from hand) to meld4
 		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
 		
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(7,GM.TM.getMeldFromBoardAt(2).getSize());
-		assertEquals(6,GM.TM.getMeldFromBoardAt(3).getSize());
-		assertEquals(4,GM.players.get(1).hand.getSize());	
+		assertEquals(7,GM.TM.getMeldFromBoardAt(3).getSize());
+		assertEquals(3,GM.players.get(1).hand.getSize());	
 		
 		
 		

@@ -175,6 +175,7 @@ public class AIUtils {
 					while (handSize != preHandSize)
 					{
 						preHandSize = handSize;
+						tm.getBoardMelds().get(orderedSets[i]).sortByRank();
 						playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
 						
 						if(playableTiles.size() > 0)
@@ -204,6 +205,14 @@ public class AIUtils {
 						}
 						handSize = h.getSize();
 					}
+					
+					//goes through all melds on board and orders them
+					
+					for(int p = 0;p<tm.getBoardMeldSize();p++)
+					{
+						tm.getBoardMelds().get(p).sortByRank();
+					}
+					
 				}
 				//section for checking for runs
 				ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();

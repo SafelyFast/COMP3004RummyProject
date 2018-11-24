@@ -5,6 +5,7 @@ import view.DisplayObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import common.GameUtils;
 
 public class Meld extends DisplayObject {
 	List<Tile> tiles;
@@ -82,6 +83,11 @@ public class Meld extends DisplayObject {
 		{
 			this.getTileAt(i).getImage().setPosition(this.x + i * 25, this.y);
 		}
+	}
+	
+	public void sortByRank()
+	{
+		this.tiles = GameUtils.sortRankFirst(this.tiles);
 	}
 	
 	public ArrayList<Tile> getMeldExtensions()
