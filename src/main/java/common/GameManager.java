@@ -11,6 +11,7 @@ import java.util.List;
 import common.Entity;
 import common.Meld;
 import javafx.scene.Group;
+import view.TileImage;
 
 import java.util.Random;
 
@@ -32,7 +33,6 @@ public class GameManager {
 		players.add(new AI(new AIType_1()));
 		players.add(new AI(new AIType_2()));
 		players.add(new AI(new AIType_3()));
-
 	}
 	
 	public GameManager(String filename) {
@@ -44,7 +44,6 @@ public class GameManager {
 		players.add(new AI(new AIType_1()));
 		players.add(new AI(new AIType_2()));
 		players.add(new AI(new AIType_3()));
-
 	}
 	
 	/**TODO
@@ -69,7 +68,10 @@ public class GameManager {
 	
 	public void playTurn(Entity e, Group g)
 	{
-		((AI)e).performAction(TM, e.hand, this, g);
+		if (e instanceof Player == false)
+		{
+			((AI)e).performAction(TM, e.hand, this);
+		}
 	}
 	
 	// Deal a hand of tiles to each player
@@ -80,8 +82,12 @@ public class GameManager {
 	}
 	// Default Dealer
 	public void dealAll() {
+		int i = 0;
 		for (Entity e : players) {
 			deal(e, 14);
+			GameUtils.sortColourFirst(e.hand.tiles);
+			e.hand.alignTiles(i);
+			i++;
 		}
 	}
 	
@@ -100,8 +106,37 @@ public class GameManager {
 	//1=player, 2 = AI1, 3= AI2, 4 = AI3
 	public int determineStartingPlayer()
 	{
-		Random rand = new Random();
-		return rand.nextInt(4) + 1;
+		int playerFound = -1;
+		while (playerFound == -1)
+		{
+			for(int i = 0; i < 4; i++)
+			{
+				this.deal(players.get(i));
+			}
+			playerFound = whoHasHighestCard(players.get(0).hand.tiles.get(players.get(0).hand.tiles.size() - 1),
+											players.get(1).hand.tiles.get(players.get(1).hand.tiles.size() - 1),
+											players.get(2).hand.tiles.get(players.get(2).hand.tiles.size() - 1),
+											players.get(3).hand.tiles.get(players.get(3).hand.tiles.size() - 1));
+		}
+		//TODO Change this so it determines the starting player properly
+		players.get(playerFound).playing = true;
+		return playerFound;
+	}
+	
+	public int whoHasHighestCard(Tile ... tiles)
+	{
+		int highestCard = -1;
+		int player = -1;
+		for(int i = 0; i < tiles.length; i++)
+		{
+			if (tiles[i].getRank() > highestCard)
+			{
+				highestCard = tiles[i].getRank();
+				player = i;
+			}
+		}
+		
+		return player;
 	}
 
 	public boolean isGameOver() {
@@ -129,6 +164,55 @@ public class GameManager {
 	public void endHumanTurn() {
 		this.players.get(0).playing = false;
 		this.players.get(1).playing = true;
+	}
+	
+	public void updateTable(Group g)
+	{
+		for(int i = 0; i < 4; i++)
+		{
+			Entity currentPlayer = this.players.get(i);
+			//System.out.println(currentPlayer.hand + "i is : " + (i + 1));
+			for(int j = 0; j < currentPlayer.hand.getSize(); j++)
+			{
+				TileImage tileImage = currentPlayer.hand.getTile(j).getImage();
+				if (tileImage.hasBeenDrawn() == false)
+				{
+					System.out.println("Have to draw a tile! Player #" + (i + 1));
+					tileImage.addToDrawingTable(g);
+				}
+			}
+		}
+	}
+
+	public void setupPlayers(int[] playerType)
+	{
+		for(int i = 0; i < 4; i++)
+		{
+			switch (playerType[i])
+			{
+				case 0:
+				{
+					players.set(i, new Player());
+				}
+				case 1:
+				{
+					players.set(i, new AI(new AIType_1()));
+				}
+				case 2:
+				{
+					players.set(i, new AI(new AIType_2()));
+				}
+				case 3:
+				{
+					players.set(i, new AI(new AIType_3()));
+				}
+				case 4:
+				{
+					//TODO add AIType_4
+					//players.set(i, new AI(new AIType_4()));
+				}
+			}
+		}
 	}
 }
 
