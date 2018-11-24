@@ -19,7 +19,7 @@ public class AIType_3 implements AIType{
 	// For now drawing cards will be done within AITypes
 	
 	@Override
-	public void performAction(TileManager tM, Hand h, GameManager gm, Group g)
+	public void performAction(TileManager tM, Hand h, GameManager gm)
 	{
 		int handSize = h.getSize();
 		int preHandSize = handSize;
@@ -83,7 +83,7 @@ public class AIType_3 implements AIType{
 			playedCard = true;
 		}
 		if (!playedCard) {
-			this.drawCard(h, tM, 3, g);
+			this.drawCard(h, tM);
 		}
 		h.alignTiles(3);
 	}

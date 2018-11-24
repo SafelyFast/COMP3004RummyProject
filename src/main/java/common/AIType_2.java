@@ -16,7 +16,7 @@ public class AIType_2 implements AIType{
 	boolean playedCard = false;
 	
 	@Override
-	public void performAction(TileManager tM, Hand h, GameManager gm, Group g)
+	public void performAction(TileManager tM, Hand h, GameManager gm)
 	{
 		int handSize = h.getSize();
 		int preHandSize = handSize;
@@ -72,7 +72,7 @@ public class AIType_2 implements AIType{
 			}
 		}
 		if (!playedCard) {
-			this.drawCard(h, tM, 2, g);
+			this.drawCard(h, tM);
 			
 		}
 		h.alignTiles(2);

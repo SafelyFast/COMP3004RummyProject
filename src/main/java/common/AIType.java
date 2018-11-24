@@ -14,23 +14,11 @@ import view.TileImage;
 
 public interface AIType {	
 	
-	public void performAction(TileManager tm, Hand h, GameManager gm, Group g);
+	public void performAction(TileManager tm, Hand h, GameManager gm);
 	
-	public default void drawCard(Hand h, TileManager tM, int entityNumber, Group g)
+	public default void drawCard(Hand h, TileManager tM)
 	{
-		boolean properlyAddedTile = h.addTileToHand(tM.getNext());
-		
-		if (properlyAddedTile == true)
-		{
-			TileImage tileImage = h.getTile(h.getSize() - 1).getImage();
-			
-			if (entityNumber % 2 == 1)
-			{
-				tileImage.rotate(90);
-			}
-			h.alignTiles(entityNumber);
-			tileImage.addToDrawingTable(g);
-		}
+		h.addTileToHand(tM.getNext());
+		System.out.println("AI Drawing a card! Has it been drawn? " + h.getTile(h.getSize() - 1).getImage().hasBeenDrawn());
 	};
-
 }

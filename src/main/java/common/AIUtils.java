@@ -340,6 +340,8 @@ public class AIUtils {
 	}
 
 	//Removes a Meld (i.e. a set of Tile objects) from the hand of an AI.
+	
+	//TODO Should not be applying stuff to temporary things!
 	public static List<Tile> removeFromHand(List<Tile> hand, Meld meld) {
 
 		List<Tile> tempHand = new ArrayList<Tile>(); 

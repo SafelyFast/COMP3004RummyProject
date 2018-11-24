@@ -18,8 +18,8 @@ public class AI extends Entity{
 		behaviour = t;
 	}
 	
-	public void performAction(TileManager tm, Hand h, GameManager gm, Group g) {
-		behaviour.performAction(tm, h, gm, g);
+	public void performAction(TileManager tm, Hand h, GameManager gm) {
+		behaviour.performAction(tm, h, gm);
 	}
 	
 	public int getMaxPoints() {
