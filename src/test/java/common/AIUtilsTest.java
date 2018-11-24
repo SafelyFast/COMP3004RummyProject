@@ -130,9 +130,20 @@ import junit.framework.TestCase;
 		Tile tile9 = new Tile("B",3);
 		meld3.addMeldTile(tile9);
 		
+		Meld meld4 = new Meld();
+		Tile tile10 = new Tile("G",5);
+		meld4.addMeldTile(tile10);
+		Tile tile11 = new Tile("G",6);
+		meld4.addMeldTile(tile11);
+		Tile tile12 = new Tile("G",7);
+		meld4.addMeldTile(tile12);
+		
+		
+		
 		GM.TM.addMeldToBoardMeld(meld1);
 		GM.TM.addMeldToBoardMeld(meld2);
 		GM.TM.addMeldToBoardMeld(meld3);
+		GM.TM.addMeldToBoardMeld(meld4);
 		
 		//added values that are close to values that could go into these melds
 		GM.players.get(1).hand.addTileToHand(new Tile("R",4));
@@ -146,6 +157,7 @@ import junit.framework.TestCase;
 		assertEquals(3,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(3,GM.TM.getMeldFromBoardAt(3).getSize());
 		assertEquals(4,GM.players.get(1).hand.getSize());
 		
 		//add tile that should goes into first meld
@@ -157,6 +169,7 @@ import junit.framework.TestCase;
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(3,GM.TM.getMeldFromBoardAt(3).getSize());
 		assertEquals(4,GM.players.get(1).hand.getSize());
 		
 		//add two tiles that should go into second meld
@@ -169,6 +182,7 @@ import junit.framework.TestCase;
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(3,GM.TM.getMeldFromBoardAt(3).getSize());
 		assertEquals(4,GM.players.get(1).hand.getSize());
 		
 		
@@ -178,13 +192,31 @@ import junit.framework.TestCase;
 		GM.players.get(1).hand.addTileToHand(new Tile("B",6));
 		GM.players.get(1).hand.addTileToHand(new Tile("B",7));
 		
-		//in this case adds B4 to meld3
+		//in this case adds B4,B5,B6,B7 to meld3
 		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
 		
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(7,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(3,GM.TM.getMeldFromBoardAt(3).getSize());
 		assertEquals(4,GM.players.get(1).hand.getSize());		
+		
+		//add sequence of tiles that should goes into fourth meld at head and tail
+		GM.players.get(1).hand.addTileToHand(new Tile("G",4));
+		GM.players.get(1).hand.addTileToHand(new Tile("G",3));
+		GM.players.get(1).hand.addTileToHand(new Tile("G",8));
+		
+		//in this case adds G3,G4 and G8 to meld4
+		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
+		
+		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
+		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
+		assertEquals(7,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(6,GM.TM.getMeldFromBoardAt(3).getSize());
+		assertEquals(4,GM.players.get(1).hand.getSize());	
+		
+		
+		
 		
 	}
  	
