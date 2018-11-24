@@ -33,5 +33,13 @@ public class Entity {
 		return this.playing;
 	}
 
-	
+	public String toString()
+	{
+		//Doesn't really work
+		if (this instanceof AI)
+		{
+			return "AI";
+		}
+		return "Player";
+	}
 }
