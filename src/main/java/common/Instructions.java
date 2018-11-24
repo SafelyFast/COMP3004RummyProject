@@ -1,37 +1,37 @@
 package common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Instructions {
 	Entity subject;
 	int numTilesPlayed;
-	List<Tile> tilesPlayed;
-	List<Meld> meldsChanged;
+	HashMap<Meld, ArrayList<Tile>> meldsTilesAdded;
+	HashMap<Meld, ArrayList<Tile>> meldsTilesRemoved;
 	List<Meld> newMelds;
 	
 	public Instructions() {
 		subject = null;
 		numTilesPlayed = 0;
-		tilesPlayed = new ArrayList<Tile>();
-		meldsChanged = new ArrayList<Meld>();
+		meldsTilesAdded = new HashMap<Meld, ArrayList<Tile>>();
+		meldsTilesRemoved = new HashMap<Meld, ArrayList<Tile>>();
 		newMelds = new ArrayList<Meld>();
 	}
 	
 	public Instructions(Entity sub) {
 		subject = sub;
 		numTilesPlayed = 0;
-		tilesPlayed = new ArrayList<Tile>();
-		meldsChanged = new ArrayList<Meld>();
+		meldsTilesAdded = new HashMap<Meld, ArrayList<Tile>>();
+		meldsTilesRemoved = new HashMap<Meld, ArrayList<Tile>>();
 		newMelds = new ArrayList<Meld>();
 	}
 	
-	public void addTiles(Meld m, Tile ... tiles) {
-		for (Tile t : tiles) {
-			m.addMeldTile(t);
-			tilesPlayed.add(t);
-		}
-		meldsChanged.add(m);
+	// addTiles takes in a meld, and a single tile to be added to that meld
+	public void addTiles(Meld m, Tile t) {
+		meldsTilesAdded.putIfAbsent(m, new ArrayList<Tile>());
+		meldsTilesAdded.get(m).add(t);
+		numTilesPlayed++;
 	}
 	
 	public void createNewMeld(Meld m) {
