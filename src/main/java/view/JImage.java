@@ -48,6 +48,11 @@ public class JImage extends DisplayObject {
 	{
 		g.getChildren().add(this.getView());
 	}
+	
+	public void removeFromDrawingTable(Group g)
+	{
+		g.getChildren().remove(this.getView());
+	}
 
 	/*Getters*/
 	public ImageView getView()
