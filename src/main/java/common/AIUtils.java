@@ -41,6 +41,7 @@ public class AIUtils {
 			System.out.println("AI Unable to play 30 points worth of melds");
 		}		
 	}
+	/*
 	// Adds all possible cards to board melds
 	public static void addPossibleMelds(Hand h,TileManager tm) 
 	{
@@ -48,6 +49,7 @@ public class AIUtils {
 		int index = 0;
 		int numSets = 0;
 		//get a list of indices to check against all sets and then all runs
+		//this loop first fills the orderedSets array with locations of sets
 		for(int i = 0;i<tm.getBoardMeldSize();i++)
 		{
 			if(tm.getBoardMelds().get(i).getMeldType() == 1)
@@ -56,9 +58,9 @@ public class AIUtils {
 				index++;
 			}
 		}
-		//determines number of sets
 		numSets = index;
 		
+		//this loop fills the orderedSets array with locations of runs
 		for(int i = 0;i<tm.getBoardMeldSize();i++)
 		{
 			if(tm.getBoardMelds().get(i).getMeldType() == 0)
@@ -68,6 +70,7 @@ public class AIUtils {
 			}
 		}
 		
+		//main loop iterating over all melds on board
 		for(int i =0;i < tm.getBoardMeldSize();i++)
 		{
 			if(i < numSets)
@@ -84,6 +87,7 @@ public class AIUtils {
 					
 					if(playableTiles.size() > 0)
 					{
+						//for each tile in hand
 						for (int n = 0;n< h.tiles.size();n++)
 						{
 							if(h.tiles.get(n).getRank() == playableTiles.get(0).getRank() && h.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
@@ -130,6 +134,97 @@ public class AIUtils {
 			
 		}
 	}
+	*/
+	
+	// Adds all possible cards to board melds
+		public static void addPossibleMelds(Hand h,TileManager tm) 
+		{
+			int[] orderedSets = new int[tm.getBoardMeldSize()];
+			int index = 0;
+			int numSets = 0;
+			//get a list of indices to check against all sets and then all runs
+			for(int i = 0;i<tm.getBoardMeldSize();i++)
+			{
+				if(tm.getBoardMelds().get(i).getMeldType() == 1)
+				{
+					orderedSets[index] = i;
+					index++;
+				}
+			}
+			//determines number of sets
+			numSets = index;
+			
+			for(int i = 0;i<tm.getBoardMeldSize();i++)
+			{
+				if(tm.getBoardMelds().get(i).getMeldType() == 0)
+				{
+					orderedSets[index] = i;
+					index++;
+				}
+			}
+			
+			for(int i =0;i < tm.getBoardMeldSize();i++)
+			{
+				if(i < numSets)
+				{
+					int handSize = h.getSize();
+					int preHandSize = 0;
+					ArrayList<Tile> playableTiles = new ArrayList<Tile>();
+					
+					//measures difference in hand size to see if it should continue to try to play tiles onto set
+					while (handSize != preHandSize)
+					{
+						preHandSize = handSize;
+						playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
+						
+						if(playableTiles.size() > 0)
+						{
+							for (int n = 0;n< h.tiles.size();n++)
+							{
+								if(h.tiles.get(n).getRank() == playableTiles.get(0).getRank() && h.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+								{
+									tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(n));
+									System.out.println("Played " + h.tiles.get(n).toString());
+									h.tiles.remove(n);
+									if(playableTiles.size() == 2)
+									{
+										for (int m = 0;m< h.tiles.size();m++)
+										{
+											if(h.tiles.get(m).getRank() == playableTiles.get(1).getRank() && h.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
+											{
+												tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(m));
+												System.out.println("Played " + h.tiles.get(m).toString());
+												h.tiles.remove(m);
+											}
+										}
+									}
+								}
+							}
+							
+						}
+						handSize = h.getSize();
+					}
+				}
+				//section for checking for runs
+				ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
+				if(playableTiles.size() > 0)
+				{
+						for(int n = 0;n< h.tiles.size();n++)
+						{
+							if(h.tiles.get(n).getRank() == playableTiles.get(0).getRank() && h.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+							{
+								
+								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(h.tiles.get(n));
+								System.out.println("Played " + h.tiles.get(n).toString());
+								h.tiles.remove(n);
+							
+							}
+						}
+								
+					}
+				
+			}
+		}
 	// Use existing board melds to make new melds
 	public static void rearrangeMelds(Hand h, TileManager tm) {		
 		

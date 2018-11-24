@@ -29,10 +29,12 @@ public class Tile {
 		{
 			this.colour = "Orange";
 		}
+		
 		else
 		{
 			this.colour = "NULL";
 		}
+		
 		this.rank = rank;
 		this.xPosition = 0;
 		this.yPosition = 0;
