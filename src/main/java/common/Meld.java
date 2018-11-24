@@ -64,6 +64,7 @@ public class Meld extends DisplayObject {
 	public void addMeldTile(Tile tile)
 	{
 		this.tiles.add(tile);
+		this.updateMeldPosition(this.getX(), this.getY());
 	}
 	
 	public Tile removeMeldTile(int i)
