@@ -245,7 +245,7 @@ public class AIUtils {
 		
 		for(int i = 0; i < meldList.size(); i++) {
 			tm.addMeldToBoardMeld(meldList.get(i));
-			removeFromHand(h.tiles, meldList.get(i));
+			h.tiles = removeFromHand(h.tiles, meldList.get(i));
 		}
 	}
 	
@@ -360,8 +360,8 @@ public class AIUtils {
 			
 			for(int i = 0; i < tempHand.size(); i++) {
 				if(tempHand.get(i).getColour().equals(tempMeld.tiles.get(0).getColour()) && tempHand.get(i).getRank() == tempMeld.tiles.get(0).getRank()) {
-					tempHand.get(i).getImage().setX(10000000);
-					tempHand.get(i).getImage().setY(10000000);
+					//tempHand.get(i).getImage().setX(100);
+					//tempHand.get(i).getImage().setY(10000000);
 					tempHand.remove(i);
 					break;
 				}
