@@ -305,6 +305,13 @@ public class Meld extends DisplayObject {
 		this.alignTiles();
 	}
 	
+	public void addMeldFront(Meld m) {
+		for (int i = 0; i < m.getSize(); i++) {
+			this.addMeldTileToFront(m.getTileAt(i));
+		}
+		this.alignTiles();
+	}
+	
 	public void alignTiles()
 	{
 		int baseX = this.getTileAt(0).getImage().getX();
