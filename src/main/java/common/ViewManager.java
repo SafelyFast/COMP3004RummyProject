@@ -174,7 +174,13 @@ public class ViewManager extends Application{
 							for(int i = 0; i < gm.TM.getBoardMeldSize(); i++)
 							{
 								Meld currentMeld = boardMelds.get(i);
-								if (MathUtils.withinBounds(mouseX, mouseY, currentMeld.getX(), 25 * currentMeld.getSize(), currentMeld.getY(), 40))
+								if (MathUtils.withinBounds(mouseX, mouseY, currentMeld.getX(), (int) (25 * 0.5 * currentMeld.getSize()), currentMeld.getY(), 40))
+								{
+									onMeld = true;
+									currentMeld.addMeldFront(heldMeld);
+									break;
+								}
+								else if (MathUtils.withinBounds(mouseX, mouseY, (int) (currentMeld.getX() + 25 * 0.5 * currentMeld.getSize()), (int) (25 * 0.5 * currentMeld.getSize()), currentMeld.getY(), 40))
 								{
 									onMeld = true;
 									currentMeld.addMeld(heldMeld);
