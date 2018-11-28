@@ -18,7 +18,7 @@ public interface AIType {
 	
 	public default void drawCard(Hand h, TileManager tM)
 	{
-		h.addTileToHand(tM.getNext());
-		System.out.println("AI Drawing a card! Has it been drawn? " + h.getTile(h.getSize() - 1).getImage().hasBeenDrawn());
+		boolean succDraw = h.addTileToHand(tM.getNext());
+		System.out.println("AI Drawing a card! Has it been drawn? " + succDraw);
 	};
 }
