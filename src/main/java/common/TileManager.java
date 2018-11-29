@@ -63,8 +63,10 @@ public class TileManager {
 	// getter/setters
 	public List<String> getDeck() { return deck; }
 	public List<Meld> getBoardMelds() { return boardMelds; }
+	public void setBoardMelds(List<Meld> m) { this.boardMelds = m; }
 	public int getBoardMeldSize() { return boardMelds.size(); }
 	public int getDeckSize() { return deck.size(); }
+	public void setDeck(List<String> d) { this.deck = d; }
 	
 	// Adding a meld to the board
 	// NOTE: This should only be used for AI, as it will automatically find a
