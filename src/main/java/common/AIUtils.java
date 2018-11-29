@@ -16,9 +16,7 @@ public class AIUtils {
 			
 			message += "Played: ";
 			
-			for(int i = 0; i < meldList.size(); i++) {
-				meldList.get(i).setX(400);
-				meldList.get(i).setY(300);			
+			for(int i = 0; i < meldList.size(); i++) {		
 				
 				for(int j = 0; j < meldList.get(i).getSize(); j++)
 				{
@@ -30,7 +28,8 @@ public class AIUtils {
 					
 				for(int j = 0; j < meldList.get(i).getSize(); j++)
 					message += (meldList.get(i).getTileAt(j).getColour() + " " + meldList.get(i).getTileAt(j).getRank() + ", ");
-				tm.getBoardMelds().add(meldList.get(i));
+				tm.addMeldToBoardMeld(meldList.get(i));
+				
 				h.tiles = removeFromHand(h.tiles, meldList.get(i));
 				
 			}
@@ -360,8 +359,6 @@ public class AIUtils {
 			
 			for(int i = 0; i < tempHand.size(); i++) {
 				if(tempHand.get(i).getColour().equals(tempMeld.tiles.get(0).getColour()) && tempHand.get(i).getRank() == tempMeld.tiles.get(0).getRank()) {
-					//tempHand.get(i).getImage().setX(100);
-					//tempHand.get(i).getImage().setY(10000000);
 					tempHand.remove(i);
 					break;
 				}
