@@ -60,7 +60,7 @@ public class GameManager {
 	}
 	
 	//Take a snapshot of the current state of the board and players in order to be able to revert to it later
-	public void takeSnapShot(GameManager GM)
+	public void takeSnapShot()
 	{
 		instance = new SnapShot();
 		instance.setPlayers(this.players);
