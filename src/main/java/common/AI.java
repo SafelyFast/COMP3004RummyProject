@@ -156,7 +156,7 @@ public abstract class AI extends Entity implements AIType {
 
 	// Use existing board melds to make new melds
 	public void rearrangeMelds(TileManager tm) {
-		
+		/*
 		List<Tile> tempHand = this.hand.tiles;	
 		List<Tile> board = convertMeldListToTileList(tm.getBoardMelds());
 		List<Tile> allTiles = combineBoardAndHand(tm);
@@ -176,6 +176,7 @@ public abstract class AI extends Entity implements AIType {
 			this.hand.tiles = tempHand;
 			
 		}
+		*/
 		
 	}
 
@@ -739,7 +740,7 @@ public abstract class AI extends Entity implements AIType {
 				
 				if(!meldList.get(i).getTileAt(j).getColour().equals(tm.getMeldFromBoardAt(iterator).getTileAt(j).getColour())
 				&& meldList.get(i).getTileAt(j).getRank() != tm.getMeldFromBoardAt(iterator).getTileAt(j).getRank()) {
-					tm.
+					
 				}
 				
 			}			
