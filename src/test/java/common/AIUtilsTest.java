@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 			//empty hand for all AIs
 			for(int i = 1; i < 4; i++)
 			{
-				for(int j = 0; j < 14; j++)
+				for(int j = 0; j < 15; j++)
 				{
 				GM.players.get(i).hand.tiles.remove(0);
 				}
@@ -21,19 +21,19 @@ import junit.framework.TestCase;
 			
 			
 			//The following AI uses AI 1's hand.			
-			assertTrue(GM.players.get(1) instanceof AI);
+			assertTrue(GM.players.get(1) instanceof AI);			
 			
 			GM.players.get(1).hand.addTileToHand(new Tile("R",10));
 			GM.players.get(1).hand.addTileToHand(new Tile("G",10));
 			
-			assertEquals(0, AIUtils.calculateMaxPoints(GM.players.get(1).hand)); //Should "Fail" - There are no melds.
-			AIUtils.playThirty(GM.players.get(1).hand, TM);						
+			assertEquals(0, ((AI) GM.players.get(1)).calculateMaxPoints()); //Should "Fail" - There are no melds.
+			((AI) GM.players.get(1)).playThirty(TM);						
 			assertEquals(2, GM.players.get(1).hand.getSize()); //Should "Fail" - No melds were played.
 			
 			GM.players.get(1).hand.addTileToHand(new Tile("O",10));
 			
-			assertEquals(30, AIUtils.calculateMaxPoints(GM.players.get(1).hand)); //4a1 <-- Should "Pass" - There is one set meld of 30 points exactly. 
-			AIUtils.playThirty(GM.players.get(1).hand, TM);			
+			assertEquals(30, ((AI) GM.players.get(1)).calculateMaxPoints()); //4a1 <-- Should "Pass" - There is one set meld of 30 points exactly. 
+			((AI) GM.players.get(1)).playThirty(TM);			
 			assertEquals(0, GM.players.get(1).hand.getSize()); //Should "Pass" - The only meld in it's hand has been played.
 			
 			
@@ -49,8 +49,8 @@ import junit.framework.TestCase;
 			GM.players.get(2).hand.addTileToHand(new Tile("R",10));
 			GM.players.get(2).hand.addTileToHand(new Tile("R",3));
 			
-			assertEquals(45, AIUtils.calculateMaxPoints(GM.players.get(2).hand)); //4a2 <-- Should "Pass" - There is one run meld of over 30 points.
-			AIUtils.playThirty(GM.players.get(2).hand, TM);			
+			assertEquals(45, ((AI) GM.players.get(2)).calculateMaxPoints()); //4a2 <-- Should "Pass" - There is one run meld of over 30 points.
+			((AI) GM.players.get(2)).playThirty(TM);			
 			assertEquals(3, GM.players.get(2).hand.getTile(0).getRank()); //Should "Pass" - Only the Red 3 Tile remains.
 			
 			//The following AI uses AI 3's hand.			
@@ -63,8 +63,8 @@ import junit.framework.TestCase;
 			GM.players.get(3).hand.addTileToHand(new Tile("R",5));
 			GM.players.get(3).hand.addTileToHand(new Tile("R",6));
 			
-			assertEquals(30, AIUtils.calculateMaxPoints(GM.players.get(3).hand)); //4b1 <-- Should "Pass" - There are two melds equaling 30 points exactly. 
-			AIUtils.playThirty(GM.players.get(3).hand, TM);			
+			assertEquals(30, ((AI) GM.players.get(3)).calculateMaxPoints()); //4b1 <-- Should "Pass" - There are two melds equaling 30 points exactly. 
+			((AI) GM.players.get(3)).playThirty(TM);			
 			assertEquals(0, GM.players.get(3).hand.getSize()); //Should "Pass" - The only melds in it's hand have been played.
 			
 			GM.players.get(3).hand.addTileToHand(new Tile("B",4));
@@ -75,8 +75,8 @@ import junit.framework.TestCase;
 			GM.players.get(3).hand.addTileToHand(new Tile("G",5));
 			GM.players.get(3).hand.addTileToHand(new Tile("O",5));
 			
-			assertEquals(35, AIUtils.calculateMaxPoints(GM.players.get(3).hand)); //4b2 <-- Should "Pass" - There are two melds equaling more than 30 points. 
-			AIUtils.playThirty(GM.players.get(3).hand, TM);			
+			assertEquals(35, ((AI) GM.players.get(3)).calculateMaxPoints()); //4b2 <-- Should "Pass" - There are two melds equaling more than 30 points. 
+			((AI) GM.players.get(3)).playThirty(TM);			
 			assertEquals(0, GM.players.get(3).hand.getSize()); //Should "Pass" - The only melds in it's hand have been played.
 			
 			GM.players.get(3).hand.addTileToHand(new Tile("O",5));
@@ -152,7 +152,7 @@ import junit.framework.TestCase;
 		GM.players.get(1).hand.addTileToHand(new Tile("G",2));
 		
 		//in this case does nothing
-		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
+		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
 		
 		assertEquals(3,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(1).getSize());
@@ -164,7 +164,7 @@ import junit.framework.TestCase;
 		GM.players.get(1).hand.addTileToHand(new Tile("O",4));
 		
 		//in this case adds O4 to meld1
-		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
+		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
 		
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(1).getSize());
@@ -177,7 +177,7 @@ import junit.framework.TestCase;
 		GM.players.get(1).hand.addTileToHand(new Tile("O",6));
 		
 		//in this case adds O2 to meld2 as well as O6
-		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
+		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
 		
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
@@ -193,7 +193,7 @@ import junit.framework.TestCase;
 		GM.players.get(1).hand.addTileToHand(new Tile("B",7));
 		
 		//in this case adds B4,B5,B6,B7 to meld3
-		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
+		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
 		
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
@@ -207,7 +207,7 @@ import junit.framework.TestCase;
 		GM.players.get(1).hand.addTileToHand(new Tile("G",8));
 		
 		//in this case adds G3,G4,G8 (and G2 originally from hand) to meld4
-		AIUtils.addPossibleMelds(GM.players.get(1).hand,GM.TM);
+		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
 		
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
@@ -219,6 +219,45 @@ import junit.framework.TestCase;
 		
 		
 	}
+ 	
+ 	public void testRearrangeMelds() {
+ 		
+ 		GameManager GM = new GameManager();
+		TileManager TM = new TileManager();
+		GM.gameInit();
+		
+		//empty hand for all AIs
+		for(int i = 1; i < 4; i++)
+		{
+			for(int j = 0; j < 15; j++)
+			{
+			GM.players.get(i).hand.tiles.remove(0);
+			}
+		}
+ 		
+ 		//The following AI uses AI 1's hand.			
+		assertTrue(GM.players.get(1) instanceof AI);
+		
+		GM.players.get(1).hand.addTileToHand(new Tile("R",2));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",3));		
+		GM.players.get(1).hand.addTileToHand(new Tile("R",4));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",5));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",6));		
+		GM.players.get(1).hand.addTileToHand(new Tile("R",7));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",8));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",9));		
+		
+		GM.players.get(2).hand.addTileToHand(new Tile("B",10));
+		GM.players.get(2).hand.addTileToHand(new Tile("G",10));		
+		GM.players.get(2).hand.addTileToHand(new Tile("O",10));
+		GM.players.get(2).hand.addTileToHand(new Tile("R",5));
+		
+		((AI) GM.players.get(1)).playThirty(TM);	
+		((AI) GM.players.get(2)).playThirty(TM);	
+		assertEquals(1, GM.players.get(2).hand.getSize()); //Should "Pass" - The only meld in it's hand has been played.
+ 		
+ 	}
+ 	
  	
 	
 } 

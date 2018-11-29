@@ -6,7 +6,7 @@ public class InstructionsTest extends TestCase {
 	
 	public void testToString() {
 		Instructions inst = new Instructions();
-		inst.subject = new AI(new AIType_1());
+		inst.subject = new AIType_1();
 		inst.numTilesPlayed = 5;
 		assertEquals("Player: AI1\n Played 5 tiles\n", inst.toString());
 	}
@@ -34,7 +34,7 @@ public class InstructionsTest extends TestCase {
 	
 	public void testMultipleInstructions() {
 		Instructions inst = new Instructions();
-		inst.subject = new AI(new AIType_2());
+		inst.subject = new AIType_2();
 		Meld m1 = new Meld(new Tile("R", 11), new Tile("G", 11), new Tile("O", 11));
 		Meld m2 = new Meld(new Tile("R", 4), new Tile("R", 5), new Tile("R", 6));
 		Tile t1 = new Tile("R", 7);

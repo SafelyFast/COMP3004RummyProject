@@ -30,9 +30,9 @@ public class GameManager {
 		melds = new ArrayList<Meld>();
 		
 		players.add(new Player());
-		players.add(new AI(new AIType_1()));
-		players.add(new AI(new AIType_2()));
-		players.add(new AI(new AIType_3()));
+		players.add(new AIType_1());
+		players.add(new AIType_2());
+		players.add(new AIType_3());
 	}
 	
 	public GameManager(String filename) {
@@ -41,9 +41,9 @@ public class GameManager {
 		melds = new ArrayList<Meld>();
 		
 		players.add(new Player());
-		players.add(new AI(new AIType_1()));
-		players.add(new AI(new AIType_2()));
-		players.add(new AI(new AIType_3()));
+		players.add(new AIType_1());
+		players.add(new AIType_2());
+		players.add(new AIType_3());
 	}
 	
 	/**TODO
@@ -70,7 +70,7 @@ public class GameManager {
 	{
 		if (e instanceof Player == false)
 		{
-			((AI)e).performAction(TM, e.hand, this);
+			((AI)e).performAction(TM, this);
 		}
 	}
 	
@@ -196,15 +196,15 @@ public class GameManager {
 				}
 				case 1:
 				{
-					players.set(i, new AI(new AIType_1()));
+					players.set(i, new AIType_1());
 				}
 				case 2:
 				{
-					players.set(i, new AI(new AIType_2()));
+					players.set(i, new AIType_2());
 				}
 				case 3:
 				{
-					players.set(i, new AI(new AIType_3()));
+					players.set(i, new AIType_3());
 				}
 				case 4:
 				{

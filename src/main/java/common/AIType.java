@@ -9,16 +9,8 @@
 
 package common;
 
-import javafx.scene.Group;
-import view.TileImage;
-
 public interface AIType {	
 	
-	public void performAction(TileManager tm, Hand h, GameManager gm);
+	public void performAction(TileManager tm, GameManager gm);
 	
-	public default void drawCard(Hand h, TileManager tM)
-	{
-		boolean succDraw = h.addTileToHand(tM.getNext());
-		System.out.println("AI Drawing a card! Has it been drawn? " + succDraw);
-	};
 }

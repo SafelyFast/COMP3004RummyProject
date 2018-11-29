@@ -18,7 +18,7 @@ public class AITest extends TestCase {
 	
 	//Tests for polymorphism of the Entity and AI class (AI inherits Entity).
 	public void testIsAI() {
-		Entity ai = new AI(new AIType_1());
+		Entity ai = new AIType_1();
 		assertEquals(true, ai instanceof AI); 		
 	}
 	
@@ -26,8 +26,8 @@ public class AITest extends TestCase {
 	
 	//Tests to confirm if the AI has the right behaviour (AIType_1) initialized.
 	public void testIsType_1() {
-		AI ai = new AI(new AIType_1());
-		assertEquals(true, ai.behaviour instanceof AIType_1);
+		AI ai = new AIType_1();
+		assertEquals(true, ai instanceof AIType_1);
 	}
 	
 	public void testPerformActionType1()
@@ -35,7 +35,7 @@ public class AITest extends TestCase {
 		GameManager GM = new GameManager("testDeck2");
 		GM.gameInit();
 		
-		((AI)GM.players.get(1)).performAction(GM.TM, GM.players.get(1).hand, GM);
+		((AI)GM.players.get(1)).performAction(GM.TM, GM);
 		GM.players.get(1).performAction();
 		assertEquals(0,GM.TM.getBoardMelds().size());
 		assertEquals(14,GM.players.get(1).hand.getSize());
@@ -46,16 +46,16 @@ public class AITest extends TestCase {
 	
 	//Tests to confirm if the AI has the right behaviour (AIType_2) initialized.
 	public void testIsType_2() {
-		AI ai = new AI(new AIType_2());
-		assertEquals(true, ai.behaviour instanceof AIType_2);
+		AI ai = new AIType_2();
+		assertEquals(true, ai instanceof AIType_2);
 	}
 	
 //---------------Tests for AIType_3 (i.e. Strategy 3) go here: ---------------------------------------------	
 	
 	//Tests to confirm if the AI has the right behaviour (AIType_3) initialized.
 	public void testIsType_3() {
-		AI ai = new AI(new AIType_3());
-		assertEquals(true, ai.behaviour instanceof AIType_3);
+		AI ai = new AIType_3();
+		assertEquals(true, ai instanceof AIType_3);
 	}
 	
 }

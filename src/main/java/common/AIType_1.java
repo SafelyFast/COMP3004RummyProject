@@ -1,24 +1,17 @@
-/**
- * AIType_1 Class
- * 
- * Purpose: Outlines one of the AI's strategies and behaviours
- * 
- * Originally created by: Jake Kendrick (Jake K) 
- **/
-
 package common;
 
-import javafx.scene.Group;
+public class AIType_1 extends AI{
 
-public class AIType_1 implements AIType {
+
+	public AIType_1 () {
+		
+		super();
+		
+	}
 	
-	boolean hasPlayedThirty = false;
-	boolean playedCard = false;
-	
-	@Override
-	public void performAction(TileManager tM, Hand h, GameManager gm)
-	{
-		int handSize = h.getSize();
+	public void performAction(TileManager tm, GameManager gm) {
+		
+		int handSize = this.hand.getSize();
 		int preHandSize = handSize;
 		playedCard = false;
 		if (hasPlayedThirty)
@@ -29,11 +22,11 @@ public class AIType_1 implements AIType {
 			 * Add cards from your hand to existing melds
 			 * */
 			System.out.println("AI 1 tries to play...");
-			AIUtils.makeMeldFromHand(h, tM);
-			AIUtils.addPossibleMelds(h, tM);
-			AIUtils.rearrangeMelds(h, tM);
-			AIUtils.addPossibleMelds(h, tM);
-			handSize = h.getSize();
+			this.makeMeldFromHand(tm);
+			this.addPossibleMelds(tm);
+			this.rearrangeMelds(tm);
+			this.addPossibleMelds(tm);
+			handSize = this.hand.getSize();
 			if(handSize < preHandSize)
 			{
 				playedCard = true;
@@ -42,23 +35,24 @@ public class AIType_1 implements AIType {
 		}
 		else
 		{
-			if(AIUtils.calculateMaxPoints(h) >= 30)
+			if(this.calculateMaxPoints() >= 30)
 			{
 				// Play 30 points of cards
 				System.out.println("AI 1 is playing their opening meld...");
-				AIUtils.playThirty(h, tM);
+				this.playThirty(tm);
 				hasPlayedThirty = true;
 				playedCard = true;
 			}
 		}
 		if (!playedCard) {
 			
-			this.drawCard(h, tM);
+			this.drawCard(tm);
 		}
-		h.alignTiles(1);
+		this.hand.alignTiles(1);
 	}	
 	
 	public String toString() {
 		return "AI1";
 	}
+
 }
