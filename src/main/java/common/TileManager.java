@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Random;
 
 import javafx.scene.Group;
 
@@ -64,7 +65,14 @@ public class TileManager {
 	public List<Meld> getBoardMelds() { return boardMelds; }
 	public int getBoardMeldSize() { return boardMelds.size(); }
 	public int getDeckSize() { return deck.size(); }
-	public void addMeldToBoardMeld(Meld m) { boardMelds.add(m); }
+	
+	// Adding a meld to the board
+	// NOTE: This should only be used for AI, as it will automatically find a
+	// location for the meld
+	public void addMeldToBoardMeld(Meld m) {
+		relocateMeld(m);
+		boardMelds.add(m);
+	}
 	public Meld getMeldFromBoardAt(int index) { return boardMelds.get(index) ; }
 	public void addTileToBoardMeldAt(Tile t,int index) { boardMelds.get(index).addMeldTile(t);}
 	
@@ -82,6 +90,37 @@ public class TileManager {
 		rank = Integer.parseInt(cardToDraw.substring(1));
 		
 		return new Tile(colour, rank);
+	}
+	
+	// Takes in a meld and finds an appropriate location for it
+	public boolean relocateMeld(Meld m) {
+		int randomX, randomY;
+		int attempts = 0;
+		
+		Random rand = new Random();
+		
+		// Check if there are no existing melds placed
+		// If there are not, place anywhere
+		if (boardMelds.size() == 0) {
+			randomX = rand.nextInt(500) + 125;
+			randomY = rand.nextInt(530) + 10;
+			m.updateMeldPosition(randomX, randomY);
+			return true;
+		}
+		
+		while (attempts < 1000) {
+			randomX = rand.nextInt(500) + 125;
+			randomY = rand.nextInt(530) + 10;
+			for (Meld n : boardMelds) {
+				if (!MathUtils.meldOverlaps(randomX, randomY, m.getSize(), n)) {
+					m.updateMeldPosition(randomX, randomY);
+					System.out.println("Meld: " + m + " was played at x: " + randomX + " y: " + randomY);
+					return true;
+				}
+			}
+			attempts++;
+		}
+		return false;
 	}
 
 	public void refreshBoard(Group g) {
