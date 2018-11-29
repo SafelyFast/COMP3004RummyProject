@@ -223,7 +223,7 @@ import junit.framework.TestCase;
  	public void testRearrangeMelds() {
  		
  		GameManager GM = new GameManager();
-		TileManager TM = new TileManager();
+		TileManager TM = GM.TM;
 		GM.gameInit();
 		
 		//empty hand for all AIs
@@ -255,6 +255,10 @@ import junit.framework.TestCase;
 		((AI) GM.players.get(1)).playThirty(TM);	
 		((AI) GM.players.get(2)).playThirty(TM);	
 		assertEquals(1, GM.players.get(2).hand.getSize()); //Should "Pass" - The only meld in it's hand has been played.
+		assertEquals(2, TM.getBoardMeldSize()); //Should "Pass" - The only meld in it's hand has been played.
+		
+		((AI) GM.players.get(2)).rearrangeMelds(TM);
+		assertEquals(0, GM.players.get(2).hand.getSize()); //Should "Pass" - Added the tile to the board, spitting a large meld into two.
  		
  	}
  	
