@@ -16,8 +16,14 @@ public class MathUtils {
 	}
 	
 	public static boolean meldOverlaps (int x, int y, int size, Meld m) {
-		return x < m.getMeldXPosition() + m.getSize() * 25 && x + size * 25
+		/*
+		return (x < m.getMeldXPosition() + m.getSize() * 25 && x + size * 25
 				> m.getMeldXPosition() && y < m.getMeldYPosition() + 40
-				&& y + 40 > m.getMeldYPosition();
+				&& y + 40 > m.getMeldYPosition());
+		*/
+		return !(m.getMeldXPosition() > x + size * 25
+				|| m.getMeldYPosition() > y + 40
+				|| x > m.getMeldXPosition() + m.getSize() * 25
+				|| y > m.getMeldYPosition() + 40);
 	}
 }
