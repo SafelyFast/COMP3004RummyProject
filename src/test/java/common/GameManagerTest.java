@@ -37,5 +37,25 @@ public class GameManagerTest extends TestCase {
 		assertTrue(1 <= result && result <= 4);
 		
 	}
+	
+	public void testTakeSnapShot()
+	{
+		GameManager gm = new GameManager("testDeck1");
+		gm.dealAll();
+		gm.takeSnapShot();
+		System.out.println("--------------------------------------------------------------------------------------");
+		System.out.println( gm.players.get(0).hand.tiles.get(0).toString());
+		System.out.println( gm.instance .getPlayers().get(0).hand.tiles.get(0).toString());
+		gm.players.get(0).hand.tiles.remove(0);
+		System.out.println("--------------------------------------------------------------------------------------");
+		System.out.println( gm.players.get(0).hand.tiles.get(0).toString());
+		System.out.println( gm.instance .getPlayers().get(0).hand.tiles.get(0).toString());
+		gm.revertSnapShot();
+		System.out.println("--------------------------------------------------------------------------------------");
+		System.out.println( gm.players.get(0).hand.tiles.get(0).toString());
+		System.out.println( gm.instance .getPlayers().get(0).hand.tiles.get(0).toString());
+		
+	}
+	
 }
 
