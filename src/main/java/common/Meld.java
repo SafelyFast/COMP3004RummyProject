@@ -9,17 +9,21 @@ import common.GameUtils;
 
 public class Meld extends DisplayObject {
 	List<Tile> tiles;
+	static int lastUsedID = 0;
+	int ID;
 	
 	public Meld()
 	{
 		super(0,0);
 		this.tiles = new ArrayList<Tile>();
+		ID = lastUsedID++;
 	}
 	
 	public Meld(Tile ... tiles)
 	{
 		super(0,0);
 		this.tiles = new ArrayList<Tile>();
+		ID = lastUsedID++;
 		for(int i = 0; i < tiles.length; i++)
 		{
 			this.tiles.add(tiles[i]);
@@ -30,12 +34,14 @@ public class Meld extends DisplayObject {
 	{
 		super(x,y);
 		this.tiles = new ArrayList<Tile>();
+		ID = lastUsedID++;
 	}
 	
 	public Meld(int x, int y, Tile ... tiles)
 	{
 		super(x,y);
 		this.tiles = new ArrayList<Tile>();
+		ID = lastUsedID++;
 		for(int i = 0; i < tiles.length; i++)
 		{
 			this.tiles.add(tiles[i]);
@@ -54,6 +60,10 @@ public class Meld extends DisplayObject {
 	public int getSize()
 	{
 		return this.tiles.size();
+	}
+	
+	public int getID() {
+		return this.ID;
 	}
 	
 	public void addMeldTileToFront(Tile tile)

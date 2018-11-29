@@ -156,7 +156,27 @@ public abstract class AI extends Entity implements AIType {
 
 	// Use existing board melds to make new melds
 	public void rearrangeMelds(TileManager tm) {
-
+		
+		List<Tile> tempHand = this.hand.tiles;	
+		List<Tile> board = convertMeldListToTileList(tm.getBoardMelds());
+		List<Tile> allTiles = combineBoardAndHand(tm);
+		
+		this.hand.tiles = allTiles;
+		
+		List<Meld> answer = getMaximumNumberOfMeldsFromHand();
+		List<Tile> newBoard = convertMeldListToTileList(answer);
+		
+		if(containsSublist(newBoard, board)) {
+			
+			addNewTiles(answer, tm);
+			
+		}	
+		else {
+			
+			this.hand.tiles = tempHand;
+			
+		}
+		
 	}
 
 	// Create a new meld with only the hand
@@ -669,7 +689,7 @@ public abstract class AI extends Entity implements AIType {
 
 	}
 
-	public List<Tile> convertToList(List<Meld> meldList) {
+	public List<Tile> convertMeldListToTileList(List<Meld> meldList) {
 
 		List<Tile> answer = new ArrayList<Tile>();
 
@@ -685,5 +705,44 @@ public abstract class AI extends Entity implements AIType {
 		return answer;
 
 	}
+	
+	/*
+	 * Method: combineBoardAndHand(TileManager tm)
+	 * 
+	 * Combines all the tiles on the board and all the tiles in the AI's hand 
+	 * into one big List of Tiles.
+	 */
+	public List<Tile> combineBoardAndHand(TileManager tm){
+		
+		List<Tile> answer = convertMeldListToTileList(tm.getBoardMelds());
+		
+		for(int i = 0; i < this.hand.getSize(); i++) {
+			answer.add(this.hand.getTile(i));
+		}		
+		
+		return answer;
+	}
+	
+	//Temporary Solution: CHANGE ONCE THE MELD ID AND BOARDSTATE IS ADDED.
+	public void addNewTiles(List<Meld> meldList, TileManager tm) {
 
+		int iterator;
+		
+		for (int i = 0; i < meldList.size(); i++) {
+			
+			iterator = 0;
+			
+			while(!containsSublist(meldList.get(i).tiles, tm.getMeldFromBoardAt(iterator).tiles))
+					iterator++;
+			
+			for(int j = 0; j < meldList.get(i).getSize(); j++) {
+				
+				if(!meldList.get(i).getTileAt(j).getColour().equals(tm.getMeldFromBoardAt(iterator).getTileAt(j).getColour())
+				&& meldList.get(i).getTileAt(j).getRank() != tm.getMeldFromBoardAt(iterator).getTileAt(j).getRank()) {
+					tm.
+				}
+				
+			}			
+		}		
+	}
 }

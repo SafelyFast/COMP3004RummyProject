@@ -1,10 +1,29 @@
 package common;
 
-
 import junit.framework.TestCase;
 
 public class MeldTest extends TestCase{
 
+	public void testMeldID() {
+		
+		int lastID = Meld.lastUsedID;
+		
+		System.out.println(lastID);
+		
+		Tile t = new Tile("R", 5);
+		
+		Meld meld1 = new Meld();
+		Meld meld2 = new Meld(20, 20);
+		Meld meld3 = new Meld(t);
+		Meld meld4 = new Meld(20, 20, t);
+		
+		assertEquals(lastID + 0, meld1.getID());
+		assertEquals(lastID + 1, meld2.getID());
+		assertEquals(lastID + 2, meld3.getID());
+		assertEquals(lastID + 3, meld4.getID());
+		
+	}
+	
 	public void testGetMeldExtensions()
 	{
 		
@@ -188,4 +207,5 @@ public class MeldTest extends TestCase{
 		assertEquals(624,meld1.getMeldXPosition());
 		assertEquals(345,meld1.getMeldYPosition());
 	}
+	
 }
