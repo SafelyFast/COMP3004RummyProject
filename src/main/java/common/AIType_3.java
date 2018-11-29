@@ -50,10 +50,12 @@ public class AIType_3 implements AIType{
 				playedCard = true;
 			}
 			// If any other player has 3 fewer cards
+			// TODO: When boardstate is implemented, immediately change this!!!
+			// As of now, only works if AI3 is the last player
 			else if (gm.players.get(0).hand.getSize() - h.getSize() >= 3
 					|| gm.players.get(1).hand.getSize() - h.getSize() >= 3
 					|| gm.players.get(2).hand.getSize() - h.getSize() >= 3) {
-				System.out.println("AI 3 tries to play...");
+				System.out.println("AI 3 tries to play because another player has 3 fewer cards...");
 				AIUtils.rearrangeMelds(h, tM);
 				AIUtils.addPossibleMelds(h, tM);
 				handSize = h.getSize();
