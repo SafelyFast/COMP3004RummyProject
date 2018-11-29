@@ -115,11 +115,13 @@ public class TileManager {
 				if (!MathUtils.meldOverlaps(randomX, randomY, m.getSize(), n)) {
 					m.updateMeldPosition(randomX, randomY);
 					System.out.println("Meld: " + m + " was played at x: " + randomX + " y: " + randomY);
+					System.out.println("After " + attempts + " attempts");
 					return true;
 				}
 			}
 			attempts++;
 		}
+		System.out.println("NO VALID SPACE FOUND");
 		return false;
 	}
 
