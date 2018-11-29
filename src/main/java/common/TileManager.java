@@ -97,6 +97,7 @@ public class TileManager {
 	public boolean relocateMeld(Meld m) {
 		int randomX, randomY;
 		int attempts = 0;
+		boolean success = true;
 		
 		Random rand = new Random();
 		
@@ -110,15 +111,17 @@ public class TileManager {
 		}
 		
 		while (attempts < 1000) {
+			success = true;
 			randomX = rand.nextInt(500) + 125;
 			randomY = rand.nextInt(530) + 10;
 			for (Meld n : boardMelds) {
-				if (!MathUtils.meldOverlaps(randomX, randomY, m.getSize(), n)) {
-					m.updateMeldPosition(randomX, randomY);
-					System.out.println("Meld: " + m + " was played at x: " + randomX + " y: " + randomY);
-					System.out.println("After " + attempts + " attempts");
-					return true;
-				}
+				success = success && (!MathUtils.meldOverlaps(randomX, randomY, m.getSize(), n));
+			}
+			if (success) {
+				m.updateMeldPosition(randomX, randomY);
+				System.out.println("Meld: " + m + " was played at x: " + randomX + " y: " + randomY);
+				System.out.println("After " + attempts + " attempts");
+				return true;
 			}
 			attempts++;
 		}
