@@ -8,8 +8,6 @@ public class MeldTest extends TestCase{
 		
 		int lastID = Meld.lastUsedID;
 		
-		System.out.println(lastID);
-		
 		Tile t = new Tile("R", 5);
 		
 		Meld meld1 = new Meld();
@@ -17,10 +15,20 @@ public class MeldTest extends TestCase{
 		Meld meld3 = new Meld(t);
 		Meld meld4 = new Meld(20, 20, t);
 		
-		assertEquals(lastID + 0, meld1.getID());
-		assertEquals(lastID + 1, meld2.getID());
-		assertEquals(lastID + 2, meld3.getID());
-		assertEquals(lastID + 3, meld4.getID());
+		assertEquals(0, meld1.getID());
+		assertEquals(0, meld2.getID());
+		assertEquals(0, meld3.getID());
+		assertEquals(0, meld4.getID());
+		
+		meld1.setID();
+		meld2.setID();
+		meld3.setID();
+		meld4.setID();
+		
+		assertEquals(1, meld1.getID());
+		assertEquals(2, meld2.getID());
+		assertEquals(3, meld3.getID());
+		assertEquals(4, meld4.getID());
 		
 	}
 	

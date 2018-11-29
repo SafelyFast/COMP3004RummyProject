@@ -24,19 +24,11 @@ public abstract class AI extends Entity implements AIType {
 			message += "Played: ";
 			
 			for(int i = 0; i < meldList.size(); i++) {		
-					
-				for(int j = 0; j < meldList.get(i).getSize(); j++)
-				{
-					if (meldList.get(i).getTileAt(j).getImage().isRotated() == true)
-					{
-						meldList.get(i).getTileAt(j).getImage().rotate(90);
-					}
-				}
 						
 				for(int j = 0; j < meldList.get(i).getSize(); j++)
 					message += (meldList.get(i).getTileAt(j).getColour() + " " + meldList.get(i).getTileAt(j).getRank() + ", ");
+				
 				tm.addMeldToBoardMeld(meldList.get(i));
-					
 				this.hand.tiles = removeFromHand(this.hand.tiles, meldList.get(i));
 					
 			}
@@ -44,7 +36,7 @@ public abstract class AI extends Entity implements AIType {
 			System.out.println(message.substring(0, message.length() - 2));
 		}
 		else {
-			System.out.println("AI Unable to play 30 points worth of melds");
+			System.out.println("AI is unable to play 30 points worth of melds");
 		}		
 	}
 	
@@ -57,7 +49,7 @@ public abstract class AI extends Entity implements AIType {
 	
 	// Adds all possible cards to board melds
 	public void addPossibleMelds(TileManager tm) 
-	{
+	{ 
 		int[] orderedSets = new int[tm.getBoardMeldSize()];
 		int index = 0;
 		int numSets = 0;
@@ -138,19 +130,17 @@ public abstract class AI extends Entity implements AIType {
 			if(playableTiles.size() > 0)
 			{
 				for(int n = 0;n< this.hand.tiles.size();n++)
+				{
+					if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
 					{
-						if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
-						{
 									
-							tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
-							System.out.println("Played " + this.hand.tiles.get(n).toString());
-							this.hand.tiles.remove(n);
-								
-						}
+						tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
+						System.out.println("Played " + this.hand.tiles.get(n).toString());
+						this.hand.tiles.remove(n);
+							
 					}
-									
-				}
-				
+				}						
+			}		
 		}
 	}
 
@@ -177,16 +167,25 @@ public abstract class AI extends Entity implements AIType {
 			
 		}
 		*/
-		
+	
 	}
 
 	// Create a new meld with only the hand
 	public void makeMeldFromHand(TileManager tm) {
 		List<Meld> meldList = getMaximumNumberOfMeldsFromHand();
 
-		for (int i = 0; i < meldList.size(); i++) {
-			tm.addMeldToBoardMeld(meldList.get(i));
-			this.hand.tiles = removeFromHand(this.hand.tiles, meldList.get(i));
+		if(meldList.size() > 0) {
+			String message = "Played: ";
+		
+			for (int i = 0; i < meldList.size(); i++) {
+			
+				for(int j = 0; j < meldList.get(i).getSize(); j++)
+					message += (meldList.get(i).getTileAt(j).getColour() + " " + meldList.get(i).getTileAt(j).getRank() + ", ");
+			
+				tm.addMeldToBoardMeld(meldList.get(i));
+				this.hand.tiles = removeFromHand(this.hand.tiles, meldList.get(i));
+			}
+			System.out.println(message.substring(0, message.length() - 2));
 		}
 	}
 

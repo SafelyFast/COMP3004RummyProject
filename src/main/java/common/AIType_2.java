@@ -22,10 +22,9 @@ public class AIType_2 extends AI{
 			 * Rearrange to make new melds
 			 * Add cards from your hand
 			 * */
+			
 			this.makeMeldFromHand(copyManager);
-			this.addPossibleMelds(copyManager);
-			this.rearrangeMelds(copyManager);
-			this.addPossibleMelds(copyManager);
+			this.hand = copyHand;
 			
 			// If the copied hand is empty, do the same on the real hand
 			// Otherwise just rearrange melds and add from your hand

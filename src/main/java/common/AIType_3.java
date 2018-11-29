@@ -24,9 +24,7 @@ public class AIType_3 extends AI{
 			 * */
 			
 			this.makeMeldFromHand(copyManager);
-			this.addPossibleMelds(copyManager);
-			this.rearrangeMelds(copyManager);
-			this.addPossibleMelds(copyManager);
+			this.hand = copyHand;
 			
 			// If the copied hand is empty, do the same on the real hand
 			// Otherwise just rearrange melds and add from your hand

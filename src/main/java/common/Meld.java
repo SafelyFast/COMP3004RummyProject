@@ -16,14 +16,14 @@ public class Meld extends DisplayObject {
 	{
 		super(0,0);
 		this.tiles = new ArrayList<Tile>();
-		ID = lastUsedID++;
+		ID = 0;
 	}
 	
 	public Meld(Tile ... tiles)
 	{
 		super(0,0);
 		this.tiles = new ArrayList<Tile>();
-		ID = lastUsedID++;
+		ID = 0;
 		for(int i = 0; i < tiles.length; i++)
 		{
 			this.tiles.add(tiles[i]);
@@ -34,14 +34,14 @@ public class Meld extends DisplayObject {
 	{
 		super(x,y);
 		this.tiles = new ArrayList<Tile>();
-		ID = lastUsedID++;
+		ID = 0;
 	}
 	
 	public Meld(int x, int y, Tile ... tiles)
 	{
 		super(x,y);
 		this.tiles = new ArrayList<Tile>();
-		ID = lastUsedID++;
+		ID = 0;
 		for(int i = 0; i < tiles.length; i++)
 		{
 			this.tiles.add(tiles[i]);
@@ -353,4 +353,9 @@ public class Meld extends DisplayObject {
 			return answer;
 		}		
 	}
+	
+	public void setID() {
+		ID = ++lastUsedID;
+	}
+	
 }
