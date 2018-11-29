@@ -64,6 +64,10 @@ public class GameManager {
 	{
 		instance = new SnapShot();
 		instance.setPlayers(this.players);
+		for(int i = 0; i < players.size(); i++)
+		{
+			instance.getPlayers().get(i).hand.setTiles(this.players.get(i).hand.getTiles());
+		}
 		instance.setBoardMelds(this.TM.getBoardMelds());
 		instance.setDeck(this.TM.getDeck());
 		
@@ -72,6 +76,10 @@ public class GameManager {
 	public void revertSnapShot()
 	{
 		this.players = this.instance.getPlayers();
+		for(int i = 0; i < instance.getPlayers().size(); i++)
+		{
+			this.players.get(i).hand.setTiles(instance.getPlayers().get(i).hand.getTiles());
+		}
 		this.TM.setBoardMelds(this.instance.getBoardMelds());
 		this.TM.setDeck(this.instance.getDeck());
 	}

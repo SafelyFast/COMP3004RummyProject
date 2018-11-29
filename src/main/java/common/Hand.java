@@ -23,7 +23,14 @@ public class Hand {
 	{
 		return tiles.size();
 	}
-	
+	public void setTiles(List<Tile> t)
+	{
+		this.tiles = t;
+	}
+	public List<Tile> getTiles()
+	{
+		return this.tiles;
+	}
 	public Tile getTile(int i)
 	{
 		if (i >= this.tiles.size())
