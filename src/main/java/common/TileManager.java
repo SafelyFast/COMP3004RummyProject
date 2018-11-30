@@ -117,14 +117,6 @@ public class TileManager {
 			randomX = rand.nextInt(500) + 125;
 			randomY = rand.nextInt(530) + 10;
 			for (Meld n : boardMelds) {
-<<<<<<< HEAD
-				if (!MathUtils.meldOverlaps(randomX, randomY, m.getSize(), n)) {
-					m.updateMeldPosition(randomX, randomY);
-					System.out.println("Meld: " + m.ID + " was played at x: " + randomX + " y: " + randomY);
-					System.out.println("After " + attempts + " attempts");
-					return true;
-				}
-=======
 				success = success && (!MathUtils.meldOverlaps(randomX, randomY, m.getSize(), n));
 			}
 			if (success) {
@@ -132,7 +124,6 @@ public class TileManager {
 				System.out.println("Meld: " + m + " was played at x: " + randomX + " y: " + randomY);
 				System.out.println("After " + attempts + " attempts");
 				return true;
->>>>>>> 83f736db9a2dd7cb74ec30c5139e57abfaaf4d29
 			}
 			attempts++;
 		}

@@ -146,7 +146,7 @@ public abstract class AI extends Entity implements AIType {
 
 	// Use existing board melds to make new melds
 	public void rearrangeMelds(TileManager tm) {
-		
+		/*
 		List<Tile> tempHand = this.hand.tiles;	
 		List<Meld> boardMelds = tm.getBoardMelds();
 		List<Tile> boardTiles = convertMeldListToTileList(boardMelds);
@@ -163,7 +163,7 @@ public abstract class AI extends Entity implements AIType {
 			else {
 				System.out.println("\n\nSPLOOSH\n\n");
 			}
-		
+		*/
 	
 	}
 
