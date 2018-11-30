@@ -22,6 +22,7 @@ public class GameManager {
 	List<Entity> players;
 	List<Meld> melds;
 	TileManager TM;
+	SnapShot instance;
 	
 	// Default constructor
 	public GameManager() {
@@ -56,6 +57,31 @@ public class GameManager {
 	}
 	public Tile getTile(Meld m, int i) {
 		return m.getTileAt(i);
+	}
+	
+	//Take a snapshot of the current state of the board and players in order to be able to revert to it later
+	public void takeSnapShot()
+	{
+		instance = new SnapShot();
+		instance.setPlayers(this.players);
+		for(int i = 0; i < players.size(); i++)
+		{
+			instance.getPlayers().get(i).hand.setTiles(this.players.get(i).hand.getTiles());
+		}
+		instance.setBoardMelds(this.TM.getBoardMelds());
+		instance.setDeck(this.TM.getDeck());
+		
+	}
+	
+	public void revertSnapShot()
+	{
+		this.players = this.instance.getPlayers();
+		for(int i = 0; i < instance.getPlayers().size(); i++)
+		{
+			this.players.get(i).hand.setTiles(instance.getPlayers().get(i).hand.getTiles());
+		}
+		this.TM.setBoardMelds(this.instance.getBoardMelds());
+		this.TM.setDeck(this.instance.getDeck());
 	}
 	
 	// Initialize parameters and resources for a new game such player hands, tileManager melds 

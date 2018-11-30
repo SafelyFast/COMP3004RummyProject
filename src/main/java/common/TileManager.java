@@ -63,8 +63,10 @@ public class TileManager {
 	// getter/setters
 	public List<String> getDeck() { return deck; }
 	public List<Meld> getBoardMelds() { return boardMelds; }
+	public void setBoardMelds(List<Meld> m) { this.boardMelds = m; }
 	public int getBoardMeldSize() { return boardMelds.size(); }
 	public int getDeckSize() { return deck.size(); }
+	public void setDeck(List<String> d) { this.deck = d; }
 	
 	// Adding a meld to the board
 	// NOTE: This should only be used for AI, as it will automatically find a
@@ -97,6 +99,7 @@ public class TileManager {
 	public boolean relocateMeld(Meld m) {
 		int randomX, randomY;
 		int attempts = 0;
+		boolean success = true;
 		
 		Random rand = new Random();
 		
@@ -110,15 +113,26 @@ public class TileManager {
 		}
 		
 		while (attempts < 1000) {
+			success = true;
 			randomX = rand.nextInt(500) + 125;
 			randomY = rand.nextInt(530) + 10;
 			for (Meld n : boardMelds) {
+<<<<<<< HEAD
 				if (!MathUtils.meldOverlaps(randomX, randomY, m.getSize(), n)) {
 					m.updateMeldPosition(randomX, randomY);
 					System.out.println("Meld: " + m.ID + " was played at x: " + randomX + " y: " + randomY);
 					System.out.println("After " + attempts + " attempts");
 					return true;
 				}
+=======
+				success = success && (!MathUtils.meldOverlaps(randomX, randomY, m.getSize(), n));
+			}
+			if (success) {
+				m.updateMeldPosition(randomX, randomY);
+				System.out.println("Meld: " + m + " was played at x: " + randomX + " y: " + randomY);
+				System.out.println("After " + attempts + " attempts");
+				return true;
+>>>>>>> 83f736db9a2dd7cb74ec30c5139e57abfaaf4d29
 			}
 			attempts++;
 		}
