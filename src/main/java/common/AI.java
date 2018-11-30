@@ -29,7 +29,7 @@ public abstract class AI extends Entity implements AIType {
 					message += (meldList.get(i).getTileAt(j).getColour() + " " + meldList.get(i).getTileAt(j).getRank() + ", ");
 				
 				tm.addMeldToBoardMeld(meldList.get(i));
-				this.hand.tiles = removeFromMeld(this.hand.tiles, meldList.get(i));
+				this.removeFromHand(meldList.get(i));
 					
 			}
 				
@@ -192,7 +192,7 @@ public abstract class AI extends Entity implements AIType {
 					message += (meldList.get(i).getTileAt(j).getColour() + " " + meldList.get(i).getTileAt(j).getRank() + ", ");
 			
 				tm.addMeldToBoardMeld(meldList.get(i));
-				this.hand.tiles = removeFromMeld(this.hand.tiles, meldList.get(i));
+				this.removeFromHand(meldList.get(i));
 			}
 			System.out.println(message.substring(0, message.length() - 2));
 		}
@@ -287,29 +287,32 @@ public abstract class AI extends Entity implements AIType {
 			return false;
 		}
 	}
-/* TODO: for later usage
+
 	// Removes a Meld (i.e. a set of Tile objects) from the hand of an AI.
 	public void removeFromHand(Meld meld) {
 
-		if (this.hand.tiles == null || meld.tiles == null)
+		Meld tempMeld = new Meld();
+		tempMeld.tiles.addAll(meld.tiles);
+		
+		if (this.hand.tiles == null || tempMeld.tiles == null)
 			return;
 
-		if (this.hand.tiles.isEmpty() || meld.tiles.isEmpty() || this.hand.tiles.size() < meld.tiles.size())
+		if (this.hand.tiles.isEmpty() || tempMeld.tiles.isEmpty() || this.hand.tiles.size() < tempMeld.tiles.size())
 			return;
 
-		while (!meld.tiles.isEmpty()) {
+		while (!tempMeld.tiles.isEmpty()) {
 
 			for (int i = 0; i < this.hand.tiles.size(); i++) {
-				if (this.hand.tiles.get(i).getColour().equals(meld.tiles.get(0).getColour())
-				 && this.hand.tiles.get(i).getRank() == meld.tiles.get(0).getRank()) {
+				if (this.hand.tiles.get(i).getColour().equals(tempMeld.tiles.get(0).getColour())
+				 && this.hand.tiles.get(i).getRank() == tempMeld.tiles.get(0).getRank()) {
 					this.hand.tiles.remove(i);
 					break;
 				}
 			}
-			meld.tiles.remove(0);
+			tempMeld.tiles.remove(0);
 		}
 	}
-*/	
+	
 	public List<Tile> removeFromMeld(List<Tile> hand, Meld meld) {
 
 		List<Tile> tempHand = new ArrayList<Tile>();
