@@ -29,7 +29,7 @@ public abstract class AI extends Entity implements AIType {
 					message += (meldList.get(i).getTileAt(j).getColour() + " " + meldList.get(i).getTileAt(j).getRank() + ", ");
 				
 				tm.addMeldToBoardMeld(meldList.get(i));
-				this.hand.tiles = removeFromHand(this.hand.tiles, meldList.get(i));
+				this.hand.tiles = removeFromMeld(this.hand.tiles, meldList.get(i));
 					
 			}
 				
@@ -146,7 +146,7 @@ public abstract class AI extends Entity implements AIType {
 
 	// Use existing board melds to make new melds
 	public void rearrangeMelds(TileManager tm) {
-		/*
+	/*	
 		List<Tile> tempHand = this.hand.tiles;	
 		List<Meld> boardMelds = tm.getBoardMelds();
 		List<Tile> boardTiles = convertMeldListToTileList(boardMelds);
@@ -157,14 +157,26 @@ public abstract class AI extends Entity implements AIType {
 		List<Meld> answer = getMaximumNumberOfMeldsFromHand();
 		List<Tile> newBoard = convertMeldListToTileList(answer);
 		
-			if(containsSublist(newBoard, boardTiles)) {
-				System.out.println("\n\nsuccess\n\n");
+		this.hand.tiles = tempHand;
+		
+		if(containsSublist(newBoard, boardTiles)) {
+			
+			for(int i = 0; i < boardMelds.size(); i++) {
+				
+				for(int j = 0; j < answer.size(); i++) {
+					
+					if(containsSublist())
+						
+				}
+				
 			}
-			else {
-				System.out.println("\n\nSPLOOSH\n\n");
-			}
-		*/
-	
+			
+		}
+		else {
+			System.out.println("\n\nSPLOOSH\n\n");
+		}
+		
+	*/
 	}
 
 	// Create a new meld with only the hand
@@ -180,7 +192,7 @@ public abstract class AI extends Entity implements AIType {
 					message += (meldList.get(i).getTileAt(j).getColour() + " " + meldList.get(i).getTileAt(j).getRank() + ", ");
 			
 				tm.addMeldToBoardMeld(meldList.get(i));
-				this.hand.tiles = removeFromHand(this.hand.tiles, meldList.get(i));
+				this.hand.tiles = removeFromMeld(this.hand.tiles, meldList.get(i));
 			}
 			System.out.println(message.substring(0, message.length() - 2));
 		}
@@ -275,11 +287,30 @@ public abstract class AI extends Entity implements AIType {
 			return false;
 		}
 	}
-
+/* TODO: for later usage
 	// Removes a Meld (i.e. a set of Tile objects) from the hand of an AI.
+	public void removeFromHand(Meld meld) {
 
-	// TODO Should not be applying stuff to temporary things!
-	public List<Tile> removeFromHand(List<Tile> hand, Meld meld) {
+		if (this.hand.tiles == null || meld.tiles == null)
+			return;
+
+		if (this.hand.tiles.isEmpty() || meld.tiles.isEmpty() || this.hand.tiles.size() < meld.tiles.size())
+			return;
+
+		while (!meld.tiles.isEmpty()) {
+
+			for (int i = 0; i < this.hand.tiles.size(); i++) {
+				if (this.hand.tiles.get(i).getColour().equals(meld.tiles.get(0).getColour())
+				 && this.hand.tiles.get(i).getRank() == meld.tiles.get(0).getRank()) {
+					this.hand.tiles.remove(i);
+					break;
+				}
+			}
+			meld.tiles.remove(0);
+		}
+	}
+*/	
+	public List<Tile> removeFromMeld(List<Tile> hand, Meld meld) {
 
 		List<Tile> tempHand = new ArrayList<Tile>();
 		Meld tempMeld = new Meld();
@@ -564,7 +595,7 @@ public abstract class AI extends Entity implements AIType {
 
 			tempAnswer.add(tempMeldList.get(i));
 			answerCounter += tempMeldList.get(i).getSize();
-			tempList = removeFromHand(tempList, tempMeldList.get(i));
+			tempList = removeFromMeld(tempList, tempMeldList.get(i));
 			tempMeldList.remove(i);
 
 			for (int j = 0; j < tempMeldList.size(); j++) {
@@ -575,7 +606,7 @@ public abstract class AI extends Entity implements AIType {
 				if (containsSublist(tempList, tempMeldList.get(j).tiles)) {
 					tempAnswer.add(tempMeldList.get(j));
 					answerCounter += tempMeldList.get(j).getSize();
-					tempList = removeFromHand(tempList, tempMeldList.get(j));
+					tempList = removeFromMeld(tempList, tempMeldList.get(j));
 					tempMeldList.remove(j);
 					j--;
 				}
@@ -616,7 +647,7 @@ public abstract class AI extends Entity implements AIType {
 
 			tempAnswer.add(tempMeldList.get(i));
 			answerCounter += tempMeldList.get(i).getMeldValue();
-			tempList = removeFromHand(tempList, tempMeldList.get(i));
+			tempList = removeFromMeld(tempList, tempMeldList.get(i));
 			tempMeldList.remove(i);
 
 			for (int j = 0; j < tempMeldList.size(); j++) {
@@ -627,7 +658,7 @@ public abstract class AI extends Entity implements AIType {
 				if (containsSublist(tempList, tempMeldList.get(j).tiles)) {
 					tempAnswer.add(tempMeldList.get(j));
 					tempMeldList.get(j).getMeldValue();
-					tempList = removeFromHand(tempList, tempMeldList.get(j));
+					tempList = removeFromMeld(tempList, tempMeldList.get(j));
 					tempMeldList.remove(j);
 					j--;
 				}
@@ -666,14 +697,14 @@ public abstract class AI extends Entity implements AIType {
 			tempList.addAll(this.hand.tiles);
 
 			tempAnswer += tempMeldList.get(i).getMeldValue();
-			tempList = removeFromHand(tempList, tempMeldList.get(i));
+			tempList = removeFromMeld(tempList, tempMeldList.get(i));
 			tempMeldList.remove(i);
 
 			for (int j = 0; j < tempMeldList.size(); j++) {
 
 				if (containsSublist(tempList, tempMeldList.get(j).tiles)) {
 					tempAnswer += tempMeldList.get(j).getMeldValue();
-					tempList = removeFromHand(tempList, tempMeldList.get(j));
+					tempList = removeFromMeld(tempList, tempMeldList.get(j));
 					tempMeldList.remove(j);
 					j--;
 				}

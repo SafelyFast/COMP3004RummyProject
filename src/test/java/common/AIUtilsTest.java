@@ -35,6 +35,7 @@ import junit.framework.TestCase;
 			assertEquals(30, ((AI) GM.players.get(1)).calculateMaxPoints()); //4a1 <-- Should "Pass" - There is one set meld of 30 points exactly. 
 			((AI) GM.players.get(1)).playThirty(TM);			
 			assertEquals(0, GM.players.get(1).hand.getSize()); //Should "Pass" - The only meld in it's hand has been played.
+			assertEquals(1, TM.getBoardMeldSize());
 			
 			
 			

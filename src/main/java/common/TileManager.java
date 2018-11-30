@@ -121,7 +121,7 @@ public class TileManager {
 			}
 			if (success) {
 				m.updateMeldPosition(randomX, randomY);
-				System.out.println("Meld: " + m + " was played at x: " + randomX + " y: " + randomY);
+				System.out.println("Meld: " + m.ID + " was played at x: " + randomX + " y: " + randomY);
 				System.out.println("After " + attempts + " attempts");
 				return true;
 			}
