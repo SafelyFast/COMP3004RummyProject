@@ -93,7 +93,7 @@ public abstract class AI extends Entity implements AIType {
 					{
 						for (int n = 0;n< this.hand.tiles.size();n++)
 						{
-							if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+							if(this.hand.tiles.get(n).getColour().equals("Joker") || (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour())))
 							{
 								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
 								System.out.println("Played " + this.hand.tiles.get(n).toString());
@@ -131,7 +131,7 @@ public abstract class AI extends Entity implements AIType {
 			{
 				for(int n = 0;n< this.hand.tiles.size();n++)
 				{
-					if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+					if(this.hand.tiles.get(n).getColour().equals("Joker") || (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour())))
 					{
 									
 						tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
