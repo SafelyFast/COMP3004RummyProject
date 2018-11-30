@@ -146,9 +146,10 @@ public abstract class AI extends Entity implements AIType {
 
 	// Use existing board melds to make new melds
 	public void rearrangeMelds(TileManager tm) {
-		/*
+		
 		List<Tile> tempHand = this.hand.tiles;	
-		List<Tile> board = convertMeldListToTileList(tm.getBoardMelds());
+		List<Meld> boardMelds = tm.getBoardMelds();
+		List<Tile> boardTiles = convertMeldListToTileList(boardMelds);
 		List<Tile> allTiles = combineBoardAndHand(tm);
 		
 		this.hand.tiles = allTiles;
@@ -156,17 +157,13 @@ public abstract class AI extends Entity implements AIType {
 		List<Meld> answer = getMaximumNumberOfMeldsFromHand();
 		List<Tile> newBoard = convertMeldListToTileList(answer);
 		
-		if(containsSublist(newBoard, board)) {
-			
-			addNewTiles(answer, tm);
-			
-		}	
-		else {
-			
-			this.hand.tiles = tempHand;
-			
-		}
-		*/
+			if(containsSublist(newBoard, boardTiles)) {
+				System.out.println("\n\nsuccess\n\n");
+			}
+			else {
+				System.out.println("\n\nSPLOOSH\n\n");
+			}
+		
 	
 	}
 

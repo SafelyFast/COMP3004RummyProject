@@ -115,7 +115,7 @@ public class TileManager {
 			for (Meld n : boardMelds) {
 				if (!MathUtils.meldOverlaps(randomX, randomY, m.getSize(), n)) {
 					m.updateMeldPosition(randomX, randomY);
-					System.out.println("Meld: " + m + " was played at x: " + randomX + " y: " + randomY);
+					System.out.println("Meld: " + m.ID + " was played at x: " + randomX + " y: " + randomY);
 					System.out.println("After " + attempts + " attempts");
 					return true;
 				}
@@ -138,4 +138,13 @@ public class TileManager {
 			}
 		}
 	}
+	
+	public void removeEmptyMelds() {
+		for(Meld m : boardMelds) {
+			if(m.getSize() == 0) {
+				boardMelds.remove(m);
+			}
+		}
+	}
+	
 }

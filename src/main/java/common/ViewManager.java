@@ -189,7 +189,16 @@ public class ViewManager extends Application{
 							}
 							if (onMeld == false)
 							{
-								boardMelds.add(heldMeld);
+								if(heldMeld.ID == 0) {
+									heldMeld.setID();
+									System.out.println("Player: Meld " + heldMeld.ID + " created.");
+								}
+								else {
+									System.out.println("Player: Meld " + heldMeld.ID + " returned to board.");
+								}
+							
+								boardMelds.add(heldMeld);	
+								
 							}
 							hasPlayerPlayed = true;
 						}
@@ -199,7 +208,7 @@ public class ViewManager extends Application{
 					{
 						initialX = mouseX;
 						initialY = mouseY;
-						System.out.println("clicked the mouse. Hand size: " + gm.players.get(0).hand.getSize() + " " + mouseX + " " + mouseY);
+						System.out.println("clicked the mouse. " + mouseX + " " + mouseY);
 						for(int i = 0; i < gm.players.get(0).hand.getSize(); i++)
 						{
 							TileImage currentTile = gm.players.get(0).hand.getTile(i).getImage();
