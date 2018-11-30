@@ -98,10 +98,11 @@ import junit.framework.TestCase;
 		GameManager GM = new GameManager();
 		GM.gameInit();
 		//empty ai1s hand
-		for(int i = 0;i<14;i++)
+		for(int i = 0;i<15;i++)
 		{
 			GM.players.get(1).hand.tiles.remove(0);
 		}
+		assertEquals(0,GM.players.get(1).hand.getSize());
 		
 		//set of 4s
 		Meld meld1 = new Meld();
