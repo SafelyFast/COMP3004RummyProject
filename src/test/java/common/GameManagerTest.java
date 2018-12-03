@@ -62,8 +62,16 @@ public class GameManagerTest extends TestCase {
 		gm.revertSnapShot();
 		assertEquals("Green 1",gm.players.get(0).hand.tiles.get(0).toString());
 		assertEquals("Green 1",gm.instance.getPlayers().get(0).hand.tiles.get(0).toString());
-		assertEquals("Red 1",gm.TM.getBoardMelds().get(0).getTileAt(0).toString());
+		//size check
+		
+		//should be 2 here
 		assertEquals(2,gm.TM.getBoardMelds().get(0).getSize());
+		assertEquals(2,gm.instance.getBoardMelds().get(0).getSize());
+		//
+		assertEquals("Red 1",gm.TM.getBoardMelds().get(0).getTileAt(0).toString());
+		assertEquals("Red 2",gm.TM.getBoardMelds().get(0).getTileAt(1).toString());
+		System.out.println("----------------------------------------------------");
+		//System.out.println();
 		assertEquals("Red 1",gm.instance.getBoardMelds().get(0).getTileAt(0).toString());
 		assertEquals("Red 2",gm.instance.getBoardMelds().get(0).getTileAt(1).toString());
 		

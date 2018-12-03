@@ -66,7 +66,7 @@ public class GameManager {
 		instance = new SnapShot();
 		instance.setPlayers(this.players);
 		instance.setBoardMelds(this.TM.getBoardMelds());
-		instance.setDeck(this.TM.getDeck());
+		//instance.setDeck(this.TM.getDeck());
 		
 	}
 	
@@ -93,17 +93,29 @@ public class GameManager {
 		{
 			this.players.get(3).hand.tiles.add(i,instance.getPlayers().get(3).hand.tiles.get(i));
 		}
+		//System.out.println(this.melds.get(0).getTileAt(0).toString());
+		//System.out.println(this.melds.get(0).getTileAt(1).toString());
+		
 		
 		//sets melds
-		this.melds = new ArrayList<Meld>();
+		this.TM.getBoardMelds().clear();
+		//System.out.println(this.melds.get(0).getTileAt(0).toString());
+		System.out.println("--------------------------------------------------");
+		System.out.println("Instance number of melds =" + instance.getBoardMelds().size());
+		
 		for(int i = 0; i < instance.getBoardMelds().size();i++)
 		{
 			
-			melds.add(new Meld());
+			//melds.add(new Meld());
+			this.TM.addMeldToBoardMeld(new Meld());
 			for(int n = 0; n < instance.getBoardMelds().get(i).getSize();n++)
 			{
+				System.out.println("This meld size is  = " + instance.getBoardMelds().get(i).getSize());
 				Tile tile = instance.getBoardMelds().get(i).getTileAt(n);
-				melds.get(i).addMeldTile(tile);
+				System.out.println("Added:" + tile.toString());
+				this.TM.getBoardMelds().get(i).addMeldTile(tile);
+				System.out.println("Tile in meld:" + this.TM.getBoardMelds().get(i).getTileAt(n).toString());
+				
 			}
 		}
 		
