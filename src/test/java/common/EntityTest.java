@@ -51,4 +51,22 @@ public class EntityTest extends TestCase {
 	}
 	
 	
+	public void testHandHasJoker() 
+	{
+		
+		AI ent = new AIType_1();
+		ent.hand.tiles.add(new Tile("O", 3));
+		ent.hand.tiles.add(new Tile("R", 4));
+		ent.hand.tiles.add(new Tile("R", 6));
+		ent.hand.tiles.add(new Tile("G", 10));
+		ent.hand.tiles.add(new Tile("R", 7));
+		ent.hand.tiles.add(new Tile("B", 11));
+		ent.hand.tiles.add(new Tile("J", -1));
+		
+		assertEquals(1,ent.handHasJoker());
+		ent.hand.tiles.add(new Tile("J", -1));
+		assertEquals(2,ent.handHasJoker());
+	}
+	
+	
 }

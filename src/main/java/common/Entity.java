@@ -19,6 +19,8 @@ public class Entity {
 		hand = new Hand();
 	}
 	
+	
+	
 	public boolean addTile(Tile t)
 	{
 		return hand.addTileToHand(t);
