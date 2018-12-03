@@ -69,11 +69,15 @@ public class Meld extends DisplayObject {
 	public void addMeldTileToFront(Tile tile)
 	{
 		this.tiles.add(0, tile);
+		this.sortByRank();
+		this.alignTiles();
 	}
 	
 	public void addMeldTile(Tile tile)
 	{
 		this.tiles.add(tile);
+		this.sortByRank();
+		this.alignTiles();
 		this.updateMeldPosition(this.getX(), this.getY());
 	}
 	
@@ -83,7 +87,9 @@ public class Meld extends DisplayObject {
 		{
 			return null;
 		}
+		this.alignTiles();
 		return this.tiles.remove(i);
+		
 	}
 	
 	public void updateMeldPosition(int x, int y)
@@ -314,7 +320,7 @@ public class Meld extends DisplayObject {
 		}
 		this.alignTiles();
 	}
-	
+
 	public void addMeldFront(Meld m) {
 		for (int i = 0; i < m.getSize(); i++) {
 			this.addMeldTileToFront(m.getTileAt(i));

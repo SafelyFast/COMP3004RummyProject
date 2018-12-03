@@ -28,12 +28,9 @@ public class AIType_2 extends AI{
 			
 			// If the copied hand is empty, do the same on the real hand
 			// Otherwise just rearrange melds and add from your hand
-			if (copyHand.tiles.size() == 0) {
+			if (copyHand.tiles.size() == 0) { 
 				System.out.println("AI 2 tries to play...");
-				this.makeMeldFromHand(tm);
-				this.addPossibleMelds(tm);
 				this.rearrangeMelds(tm);
-				this.addPossibleMelds(tm);
 				playedCard = true;
 			}
 			else

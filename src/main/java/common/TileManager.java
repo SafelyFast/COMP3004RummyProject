@@ -79,6 +79,20 @@ public class TileManager {
 	public Meld getMeldFromBoardAt(int index) { return boardMelds.get(index) ; }
 	public void addTileToBoardMeldAt(Tile t,int index) { boardMelds.get(index).addMeldTile(t);}
 	
+	public Meld getMeldFromBoardFromID(int id) { 
+		
+		for(Meld m : this.boardMelds) {
+			
+			if(id == m.ID)
+				return m; 
+			
+		}
+		
+		return null;
+	 
+	}
+	public void addTileToBoardMeldFromID(Tile t,int id) { this.getMeldFromBoardFromID(id).addMeldTile(t);}
+	
 	// Get the next card in the deck, and return it as a tile
 	public Tile getNext() {
 		if (deck.size() == 0)

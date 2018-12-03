@@ -9,7 +9,7 @@ public class AIType_3 extends AI{
 	}
 
 	public void performAction(TileManager tm, GameManager gm) {
-		
+	
 		int handSize = this.hand.getSize();
 		int preHandSize = handSize;
 		playedCard = false;
@@ -30,10 +30,7 @@ public class AIType_3 extends AI{
 			// Otherwise just rearrange melds and add from your hand
 			if (copyHand.tiles.size() == 0) {
 				System.out.println("AI 3 tries to play...");
-				this.makeMeldFromHand(tm);
-				this.addPossibleMelds(tm);
 				this.rearrangeMelds(tm);
-				this.addPossibleMelds(tm);
 				playedCard = true;
 			}
 			// If any other player has 3 fewer cards

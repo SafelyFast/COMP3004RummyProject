@@ -1,9 +1,10 @@
 package common;
- import java.util.List;
+ import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.TestCase;
  public class AIUtilsTest extends TestCase {
-	 	
+	 	/*
 	 public void testPlayThirty()
 		{
 			GameManager GM = new GameManager();
@@ -220,13 +221,12 @@ import junit.framework.TestCase;
 		
 		
 	}
- 	
+ 	*/
  	public void testRearrangeMelds() {
  		
  		GameManager GM = new GameManager();
-		TileManager TM = GM.TM;
 		GM.gameInit();
-		
+		/*
 		//empty hand for all AIs
 		for(int i = 1; i < 4; i++)
 		{
@@ -258,9 +258,113 @@ import junit.framework.TestCase;
 		assertEquals(1, GM.players.get(2).hand.getSize()); //Should "Pass" - The only meld in it's hand has been played.
 		assertEquals(2, TM.getBoardMeldSize()); //Should "Pass" - The only meld in it's hand has been played.
 		
+		GM.players.get(2).hand.addTileToHand(new Tile("R",10));
 		((AI) GM.players.get(2)).rearrangeMelds(TM);
 		assertEquals(0, GM.players.get(2).hand.getSize()); //Should "Pass" - Added the tile to the board, spitting a large meld into two.
+		
+		
+		//empty hand for all AIs
+		for(int i = 1; i < 4; i++)
+		{
+			for(int j = 0; j < 15; j++)
+			{
+			GM.players.get(i).hand.tiles.remove(0);
+			}
+		}
  		
+ 		//The following AI uses AI 1's hand.			
+		assertTrue(GM.players.get(1) instanceof AI);
+		
+		GM.players.get(1).hand.addTileToHand(new Tile("R",8));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",9));		
+		GM.players.get(1).hand.addTileToHand(new Tile("R",10));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",1));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",2));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",3));
+		
+		
+		GM.players.get(2).hand.addTileToHand(new Tile("B",10));
+		GM.players.get(2).hand.addTileToHand(new Tile("G",10));		
+		GM.players.get(2).hand.addTileToHand(new Tile("R",4));
+		GM.players.get(2).hand.addTileToHand(new Tile("G",13));	
+		GM.players.get(2).hand.addTileToHand(new Tile("R",13));	
+		GM.players.get(2).hand.addTileToHand(new Tile("B",13));	
+		
+		((AI) GM.players.get(1)).playThirty(GM.TM);	
+		((AI) GM.players.get(2)).playThirty(GM.TM);	
+		assertEquals(3, GM.players.get(2).hand.getSize()); //Should "Pass" - The only meld in it's hand has been played.
+		assertEquals(3, GM.TM.getBoardMeldSize()); //Should "Pass" - The only meld in it's hand has been played.
+		
+		
+		GM.players.get(2).hand.addTileToHand(new Tile("G",12));	
+		GM.players.get(2).hand.addTileToHand(new Tile("R",12));	
+		GM.players.get(2).hand.addTileToHand(new Tile("B",12));	
+		((AI) GM.players.get(2)).rearrangeMelds(GM.TM);
+		//assertEquals(2, GM.players.get(2).hand.getSize()); //Should "Pass" - Added the tile to the board, spitting a large meld into two.
+		*/
+		
+		//empty hand for all AIs
+		for(int i = 1; i < 4; i++)
+		{
+			for(int j = 0; j < 15; j++)
+			{
+			GM.players.get(i).hand.tiles.remove(0);
+			}
+		}
+		 		
+		//The following AI uses AI 1's hand.			
+		assertTrue(GM.players.get(1) instanceof AI);
+		
+		GM.players.get(1).hand.addTileToHand(new Tile("O",5));
+		GM.players.get(1).hand.addTileToHand(new Tile("O",6));		
+		GM.players.get(1).hand.addTileToHand(new Tile("O",7));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",2));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",3));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",4));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",5));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",11));		
+		GM.players.get(1).hand.addTileToHand(new Tile("B",12));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",13));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",10));
+		GM.players.get(1).hand.addTileToHand(new Tile("G",10));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",10));
+		GM.players.get(1).hand.addTileToHand(new Tile("B",8));		
+		GM.players.get(1).hand.addTileToHand(new Tile("O",8));
+		GM.players.get(1).hand.addTileToHand(new Tile("R",8));				
+			
+		GM.players.get(2).hand.addTileToHand(new Tile("R",12));
+		GM.players.get(2).hand.addTileToHand(new Tile("O",12));		
+		GM.players.get(2).hand.addTileToHand(new Tile("G",12));						
+		
+		((AI) GM.players.get(1)).playThirty(GM.TM);	
+		((AI) GM.players.get(2)).playThirty(GM.TM);	
+		assertEquals(0, GM.players.get(1).hand.getSize()); //Should "Pass" - The only meld in it's hand has been played.
+		assertEquals(0, GM.players.get(2).hand.getSize()); //Should "Pass" - The only meld in it's hand has been played.
+		
+		GM.players.get(2).hand.addTileToHand(new Tile("B",1));
+		GM.players.get(2).hand.addTileToHand(new Tile("B",2));		
+		GM.players.get(2).hand.addTileToHand(new Tile("B",5));		
+		GM.players.get(2).hand.addTileToHand(new Tile("B",9));
+		GM.players.get(2).hand.addTileToHand(new Tile("G",2));		
+		GM.players.get(2).hand.addTileToHand(new Tile("G",3));		
+		GM.players.get(2).hand.addTileToHand(new Tile("G",12));
+		GM.players.get(2).hand.addTileToHand(new Tile("O",1));		
+		GM.players.get(2).hand.addTileToHand(new Tile("O",10));
+		GM.players.get(2).hand.addTileToHand(new Tile("O",11));
+		GM.players.get(2).hand.addTileToHand(new Tile("R",7));		
+		GM.players.get(2).hand.addTileToHand(new Tile("R",3));	
+
+		((AI) GM.players.get(2)).rearrangeMelds(GM.TM);
+		
+		System.out.println("\nANSWER"); //REMOVE
+		System.out.println(GM.TM.getBoardMeldSize());
+		for(Meld m : GM.TM.getBoardMelds()) {
+			for(Tile t : m.tiles)
+				System.out.print(t.toString() + " ");
+			System.out.println();
+		}
+		System.out.println();
+		
  	}
  	
  	

@@ -22,12 +22,9 @@ public class AIType_1 extends AI{
 			 * Add cards from your hand to existing melds
 			 * */
 			System.out.println("AI 1 tries to play...");
-			this.makeMeldFromHand(tm);
-			this.addPossibleMelds(tm);
 			this.rearrangeMelds(tm);
-			this.addPossibleMelds(tm);
 			handSize = this.hand.getSize();
-			if(handSize < preHandSize)
+			if(handSize < preHandSize) 
 			{
 				playedCard = true;
 			}
