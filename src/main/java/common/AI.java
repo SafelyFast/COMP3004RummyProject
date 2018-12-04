@@ -456,7 +456,7 @@ public abstract class AI extends Entity implements AIType {
 			for (int i = 0; i < handList.size(); i++) {
 
 				// Breaks the loop when comparing two different coloured tiles
-				if (!run.tiles.get(0).getColour().equals(handList.get(i).getColour()))
+				if (!run.tiles.get(0).getColour().equals(handList.get(i).getColour()) && !handList.get(i).isJoker())
 					break;
 
 				// Counts every time a duplicate card is encountered
@@ -464,7 +464,7 @@ public abstract class AI extends Entity implements AIType {
 					duplicateList.add(handList.get(i));
 
 				// Checks to see if a tile can be added to the to the run meld here.
-				if (run.tiles.get(run.tiles.size() - 1).getRank() + 1 == handList.get(i).getRank())
+				if (run.tiles.get(run.tiles.size() - 1).getRank() + 1 == handList.get(i).getRank() || handList.get(i).isJoker())
 					run.tiles.add(handList.get(i));
 
 			}
@@ -560,7 +560,7 @@ public abstract class AI extends Entity implements AIType {
 			for (int i = 0; i < handList.size(); i++) {
 
 				// Breaks the loop when comparing two different coloured tiles
-				if (set.tiles.get(0).getRank() != (handList.get(i).getRank()))
+				if (set.tiles.get(0).getRank() != (handList.get(i).getRank()) && !handList.get(i).isJoker())
 					break;
 
 				// Counts every time a duplicate card is encountered
@@ -568,7 +568,7 @@ public abstract class AI extends Entity implements AIType {
 					duplicateCounter++;
 
 				// Checks to see if a tile can be added to the to the run meld here.
-				if (!set.tiles.get(set.tiles.size() - 1).getColour().equals(handList.get(i).getColour()))
+				if (!set.tiles.get(set.tiles.size() - 1).getColour().equals(handList.get(i).getColour()) || handList.get(i).isJoker())
 					set.tiles.add(handList.get(i));
 
 			}
