@@ -12,6 +12,7 @@ import view.TileImage;
 import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import common.MathUtils;
@@ -225,7 +226,14 @@ public class ViewManager extends Application{
 							Meld currentMeld = gm.TM.getBoardMelds().get(i);
 							if (MathUtils.withinBounds(initialX, initialY, currentMeld.getX(), 25 * currentMeld.getSize(), currentMeld.getY(), 40))
 							{
-								heldMeld = gm.TM.getBoardMelds().remove(i);
+								if (e.getButton() == MouseButton.SECONDARY) {
+									int indexToRemove = (initialX - currentMeld.getX()) / 25;
+									heldMeld = new Meld(gm.TM.getBoardMelds().get(i).removeMeldTile(indexToRemove));
+									gm.TM.getBoardMelds().get(i).alignTiles();
+								}
+								else {
+									heldMeld = gm.TM.getBoardMelds().remove(i);
+								}
 								break;
 							}
 						}
