@@ -38,7 +38,8 @@ public class AIType_3 extends AI{
 			// As of now, only works if AI3 is the last player
 			else if (gm.players.get(0).hand.getSize() - this.hand.getSize() >= 3
 					|| gm.players.get(1).hand.getSize() - this.hand.getSize() >= 3
-					|| gm.players.get(2).hand.getSize() - this.hand.getSize() >= 3) {
+					|| gm.players.get(2).hand.getSize() - this.hand.getSize() >= 3
+					|| gm.players.get(3).hand.getSize() - this.hand.getSize() >= 3) {
 				System.out.println("AI 3 tries to play because another player has 3 fewer cards...");
 				this.rearrangeMelds(tm);
 				this.addPossibleMelds(tm);
