@@ -149,6 +149,10 @@ public abstract class AI extends Entity implements AIType {
 	}
 	
 	// Use existing board melds to make new melds
+	/*
+	 * NOTE: As of December 4th, this function is useless because we did not realize
+	 * AI does not need board reuse, only the player does. 
+	 */
 	public void rearrangeMelds(TileManager tm) {
 		/*
 		List<Tile> tempHand = this.hand.tiles;	

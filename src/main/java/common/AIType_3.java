@@ -30,7 +30,8 @@ public class AIType_3 extends AI{
 			// Otherwise just rearrange melds and add from your hand
 			if (copyHand.tiles.size() == 0) {
 				System.out.println("AI 3 tries to play...");
-				this.rearrangeMelds(tm);
+				this.makeMeldFromHand(tm);
+				this.addPossibleMelds(tm);
 				playedCard = true;
 			}
 			// If any other player has 3 fewer cards
@@ -40,7 +41,6 @@ public class AIType_3 extends AI{
 					|| gm.players.get(1).hand.getSize() - this.hand.getSize() >= 3
 					|| gm.players.get(2).hand.getSize() - this.hand.getSize() >= 3) {
 				System.out.println("AI 3 tries to play because another player has 3 fewer cards...");
-				this.rearrangeMelds(tm);
 				this.addPossibleMelds(tm);
 				handSize = this.hand.getSize();
 				if(handSize < preHandSize)
@@ -51,8 +51,6 @@ public class AIType_3 extends AI{
 			else {
 				System.out.println("AI 3 tries to play...");
 				this.makeMeldFromHand(tm);
-				this.addPossibleMelds(tm);
-				this.rearrangeMelds(tm);
 				this.addPossibleMelds(tm);
 				handSize = this.hand.getSize();
 				if(handSize < preHandSize)

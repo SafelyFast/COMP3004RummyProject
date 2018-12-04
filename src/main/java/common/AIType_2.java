@@ -30,12 +30,13 @@ public class AIType_2 extends AI{
 			// Otherwise just rearrange melds and add from your hand
 			if (copyHand.tiles.size() == 0) { 
 				System.out.println("AI 2 tries to play...");
-				this.rearrangeMelds(tm);
+				this.addPossibleMelds(tm);
 				playedCard = true;
 			}
 			else
 			{
 				System.out.println("AI 2 tries to play...");
+				this.makeMeldFromHand(tm);
 				this.addPossibleMelds(tm);
 				handSize = this.hand.getSize();
 				if(handSize < preHandSize)
