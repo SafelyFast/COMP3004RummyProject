@@ -8,11 +8,13 @@ public class Tile {
 	private int rank;
 	private int xPosition;
 	private int yPosition;
+	private boolean isJoker;
 	
 	private TileImage image;
 	
 	public Tile(String colour,int rank)
 	{
+		isJoker = false;
 		if(colour.equals("R") || colour.equals("r") || colour.equals("Red"))
 		{
 			this.colour = "Red";
@@ -30,6 +32,12 @@ public class Tile {
 			this.colour = "Orange";
 		}
 		
+		else if(colour.equals("J") || colour.equals("j")|| colour.equals("Joker"))
+		{
+			this.colour = "Joker";
+			isJoker = true;
+		}
+		
 		else
 		{
 			this.colour = "NULL";
@@ -44,6 +52,7 @@ public class Tile {
 	
 	public Tile(String colour,int rank,int xPos, int yPos)
 	{
+		isJoker = false;
 		if(colour.equals("R") || colour.equals("r")|| colour.equals("Red"))
 		{
 			this.colour = "Red";
@@ -60,6 +69,11 @@ public class Tile {
 		{
 			this.colour = "Orange";
 		}
+		else if(colour.equals("J") || colour.equals("j")|| colour.equals("Joker"))
+		{
+			this.colour = "Joker";
+			isJoker = true;
+		}
 		else
 		{
 			this.colour = "NULL";
@@ -74,6 +88,11 @@ public class Tile {
 	public int getRank()
 	{
 		return this.rank;
+	}
+	
+	public boolean isJoker()
+	{
+		return this.isJoker;
 	}
 	
 	public String getColour()
@@ -95,7 +114,14 @@ public class Tile {
 	
 	public String toString()
 	{
+		if(this.colour.equals("Joker"))
+		{
+			return "Joker";
+		}
+		else
+		{
 		return this.colour + " " + this.rank;
+		}
 	}
 
 }

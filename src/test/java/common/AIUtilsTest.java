@@ -4,7 +4,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
  public class AIUtilsTest extends TestCase {
-	 	/*
+	 	
 	 public void testPlayThirty()
 		{
 			GameManager GM = new GameManager();
@@ -99,10 +99,11 @@ import junit.framework.TestCase;
 		GameManager GM = new GameManager();
 		GM.gameInit();
 		//empty ai1s hand
-		for(int i = 0;i<14;i++)
+		for(int i = 0;i<15;i++)
 		{
 			GM.players.get(1).hand.tiles.remove(0);
 		}
+		assertEquals(0,GM.players.get(1).hand.getSize());
 		
 		//set of 4s
 		Meld meld1 = new Meld();
@@ -138,9 +139,7 @@ import junit.framework.TestCase;
 		Tile tile11 = new Tile("G",6);
 		meld4.addMeldTile(tile11);
 		Tile tile12 = new Tile("G",7);
-		meld4.addMeldTile(tile12);
-		
-		
+		meld4.addMeldTile(tile12);	
 		
 		GM.TM.addMeldToBoardMeld(meld1);
 		GM.TM.addMeldToBoardMeld(meld2);
@@ -217,16 +216,26 @@ import junit.framework.TestCase;
 		assertEquals(7,GM.TM.getMeldFromBoardAt(3).getSize());
 		assertEquals(3,GM.players.get(1).hand.getSize());	
 		
+		//in this case joker gets played onto meld 4 as G9 since its highest value
+		GM.players.get(1).hand.addTileToHand(new Tile("J",-1));
+		
+		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
+		
+		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
+		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
+		assertEquals(7,GM.TM.getMeldFromBoardAt(2).getSize());
+		assertEquals(8,GM.TM.getMeldFromBoardAt(3).getSize());
+		assertEquals(3,GM.players.get(1).hand.getSize());	
 		
 		
 		
 	}
- 	*/
+ 	
  	public void testRearrangeMelds() {
- 		
+ 		System.out.println("\n\nTESTREAGGA\n\n");
  		GameManager GM = new GameManager();
 		GM.gameInit();
-		/*
+		
 		//empty hand for all AIs
 		for(int i = 1; i < 4; i++)
 		{
@@ -253,15 +262,19 @@ import junit.framework.TestCase;
 		GM.players.get(2).hand.addTileToHand(new Tile("O",10));
 		GM.players.get(2).hand.addTileToHand(new Tile("R",5));
 		
-		((AI) GM.players.get(1)).playThirty(TM);	
-		((AI) GM.players.get(2)).playThirty(TM);	
+		((AI) GM.players.get(1)).playThirty(GM.TM);	
+		((AI) GM.players.get(2)).playThirty(GM.TM);	
+		assertEquals(0, GM.players.get(1).hand.getSize()); //Should "Pass" - The only meld in it's hand has been played.
 		assertEquals(1, GM.players.get(2).hand.getSize()); //Should "Pass" - The only meld in it's hand has been played.
-		assertEquals(2, TM.getBoardMeldSize()); //Should "Pass" - The only meld in it's hand has been played.
 		
 		GM.players.get(2).hand.addTileToHand(new Tile("R",10));
-		((AI) GM.players.get(2)).rearrangeMelds(TM);
+		System.out.println("\n\n\n" + GM.players.get(2).hand.getSize() + "\n\n\n");
+		((AI) GM.players.get(2)).rearrangeMelds(GM.TM);
+		System.out.println("\n\n\n" + GM.players.get(2).hand.getSize() + "\n\n\n");
 		assertEquals(0, GM.players.get(2).hand.getSize()); //Should "Pass" - Added the tile to the board, spitting a large meld into two.
 		
+ 		GM = new GameManager();
+		GM.gameInit();
 		
 		//empty hand for all AIs
 		for(int i = 1; i < 4; i++)
@@ -300,8 +313,10 @@ import junit.framework.TestCase;
 		GM.players.get(2).hand.addTileToHand(new Tile("R",12));	
 		GM.players.get(2).hand.addTileToHand(new Tile("B",12));	
 		((AI) GM.players.get(2)).rearrangeMelds(GM.TM);
-		//assertEquals(2, GM.players.get(2).hand.getSize()); //Should "Pass" - Added the tile to the board, spitting a large meld into two.
-		*/
+		assertEquals(2, GM.players.get(2).hand.getSize()); //Should "Pass" - Added the tile to the board, spitting a large meld into two.
+		
+		GM = new GameManager();
+		GM.gameInit();
 		
 		//empty hand for all AIs
 		for(int i = 1; i < 4; i++)
@@ -355,15 +370,6 @@ import junit.framework.TestCase;
 		GM.players.get(2).hand.addTileToHand(new Tile("R",3));	
 
 		((AI) GM.players.get(2)).rearrangeMelds(GM.TM);
-		
-		System.out.println("\nANSWER"); //REMOVE
-		System.out.println(GM.TM.getBoardMeldSize());
-		for(Meld m : GM.TM.getBoardMelds()) {
-			for(Tile t : m.tiles)
-				System.out.print(t.toString() + " ");
-			System.out.println();
-		}
-		System.out.println();
 		
  	}
  	

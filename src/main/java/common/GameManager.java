@@ -62,26 +62,64 @@ public class GameManager {
 	//Take a snapshot of the current state of the board and players in order to be able to revert to it later
 	public void takeSnapShot()
 	{
+		//come back to this line in case of memory leak
 		instance = new SnapShot();
 		instance.setPlayers(this.players);
-		for(int i = 0; i < players.size(); i++)
-		{
-			instance.getPlayers().get(i).hand.setTiles(this.players.get(i).hand.getTiles());
-		}
 		instance.setBoardMelds(this.TM.getBoardMelds());
-		instance.setDeck(this.TM.getDeck());
+		//instance.setDeck(this.TM.getDeck());
 		
 	}
 	
 	public void revertSnapShot()
 	{
-		this.players = this.instance.getPlayers();
-		for(int i = 0; i < instance.getPlayers().size(); i++)
+		//this.players = this.instance.getPlayers();
+		//player1
+		for(int i = 0; i < instance.getPlayers().get(0).hand.tiles.size();i++)
 		{
-			this.players.get(i).hand.setTiles(instance.getPlayers().get(i).hand.getTiles());
+			this.players.get(0).hand.tiles.add(i,instance.getPlayers().get(0).hand.tiles.get(i));
 		}
-		this.TM.setBoardMelds(this.instance.getBoardMelds());
-		this.TM.setDeck(this.instance.getDeck());
+		//player2
+		for(int i = 0; i < instance.getPlayers().get(1).hand.tiles.size();i++)
+		{
+			this.players.get(1).hand.tiles.add(i,instance.getPlayers().get(1).hand.tiles.get(i));
+		}
+		//player3
+		for(int i = 0; i < instance.getPlayers().get(2).hand.tiles.size();i++)
+		{
+			this.players.get(2).hand.tiles.add(i,instance.getPlayers().get(2).hand.tiles.get(i));
+		}
+		//player4
+		for(int i = 0; i < instance.getPlayers().get(3).hand.tiles.size();i++)
+		{
+			this.players.get(3).hand.tiles.add(i,instance.getPlayers().get(3).hand.tiles.get(i));
+		}
+		//System.out.println(this.melds.get(0).getTileAt(0).toString());
+		//System.out.println(this.melds.get(0).getTileAt(1).toString());
+		
+		
+		//sets melds
+		this.TM.getBoardMelds().clear();
+		//System.out.println(this.melds.get(0).getTileAt(0).toString());
+		System.out.println("--------------------------------------------------");
+		System.out.println("Instance number of melds =" + instance.getBoardMelds().size());
+		
+		for(int i = 0; i < instance.getBoardMelds().size();i++)
+		{
+			
+			//melds.add(new Meld());
+			this.TM.addMeldToBoardMeld(new Meld());
+			for(int n = 0; n < instance.getBoardMelds().get(i).getSize();n++)
+			{
+				System.out.println("This meld size is  = " + instance.getBoardMelds().get(i).getSize());
+				Tile tile = instance.getBoardMelds().get(i).getTileAt(n);
+				System.out.println("Added:" + tile.toString());
+				this.TM.getBoardMelds().get(i).addMeldTile(tile);
+				System.out.println("Tile in meld:" + this.TM.getBoardMelds().get(i).getTileAt(n).toString());
+				
+			}
+		}
+		
+		//this.TM.setDeck(this.instance.getDeck());
 	}
 	
 	// Initialize parameters and resources for a new game such player hands, tileManager melds 

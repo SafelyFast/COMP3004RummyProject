@@ -52,91 +52,105 @@ public abstract class AI extends Entity implements AIType {
 	};
 	
 	// Adds all possible cards to board melds
-	public void addPossibleMelds(TileManager tm) {
-		
-		List<Tile> tempHand = this.hand.tiles;	
-	
-		List<Meld> boardMelds = new ArrayList<Meld>();
-		boardMelds.addAll(tm.getBoardMelds());
-	
-		List<Tile> boardTiles = convertMeldListToTileList(boardMelds);
-		List<Tile> allTiles = combineMeldListAndHand(boardMelds);
-		List<Tile> unchangeableTiles;
-		boolean removedUnchangeables;
-	
-		this.hand.tiles = allTiles;
-	
-		List<Meld> answer = getMaximumNumberOfMeldsFromHand();
-		List<Tile> newBoard = convertMeldListToTileList(answer);
-	
-		this.hand.tiles = tempHand;
-	
-		if(newBoard.size() == boardTiles.size())
-			return;
-	
-		//Removes Melds that are on the board and cannot be changed with the AI's current Hand
-		while(!containsSublist(newBoard, boardTiles)) {
-		
-			unchangeableTiles = returnDifferentTiles(boardTiles, newBoard);			
-		
-			for(int i = 0; i < boardMelds.size(); i++) {
-			
-				removedUnchangeables = false;
-			
-				for(int j = 0; j < unchangeableTiles.size(); j++) {
+	public void addPossibleMelds(TileManager tm) 
+	{ 
+		int[] orderedSets = new int[tm.getBoardMeldSize()];
+		int index = 0;
+		int numSets = 0;
+		//get a list of indices to check against all sets and then all runs
+		for(int i = 0;i<tm.getBoardMeldSize();i++)
+		{
+			if(tm.getBoardMelds().get(i).getMeldType() == 1)
+			{
+				orderedSets[index] = i;
+				index++;
+			}
+		}
+		//determines number of sets
+		numSets = index;
 				
-					if(containsTile(boardMelds.get(i).tiles, unchangeableTiles.get(j))) {
-					
-						unchangeableTiles.remove(j);
-						removedUnchangeables = true;
-					
-					}					
-				}
-			
-				if(removedUnchangeables) {
+		for(int i = 0;i<tm.getBoardMeldSize();i++)
+		{
+			if(tm.getBoardMelds().get(i).getMeldType() == 0)
+			{
+				orderedSets[index] = i;
+				index++;
+			}
+		}
 				
-					boardMelds.remove(i);					
-					tempHand = this.hand.tiles;				
-					allTiles = combineMeldListAndHand(boardMelds);
-					this.hand.tiles = allTiles;
-					answer = getMaximumNumberOfMeldsFromHand();
-					newBoard = convertMeldListToTileList(answer);
-					boardTiles = convertMeldListToTileList(boardMelds);					
-					this.hand.tiles = tempHand;
-
-				}				
-			}		
-		}		
-	
-		//Adds Tiles to existing Melds
-		for(int i = 0; i < boardMelds.size(); i++) {
-		
-			for(int j = 0; j < answer.size(); j++) {
+		for(int i =0;i < tm.getBoardMeldSize();i++)
+		{
+			if(i < numSets)
+			{
+				int handSize = this.hand.getSize();
+				int preHandSize = 0;
+				ArrayList<Tile> playableTiles = new ArrayList<Tile>();
 				
-				if(containsSublist(answer.get(j).tiles, boardMelds.get(i).tiles)) {	
-					
-					for(int k = 0; k < this.hand.tiles.size(); k++) {	
-					
-						if(k == this.hand.tiles.size())
-							break;
-					
-						if(containsTile(answer.get(j).tiles, this.hand.tiles.get(k)) && !containsTile(boardMelds.get(i).tiles, this.hand.tiles.get(k))) {								
-							
-							tm.addTileToBoardMeldFromID(this.hand.tiles.get(k), boardMelds.get(i).ID);
-							System.out.println("Added " + this.hand.tiles.get(k).toString());
-							this.hand.tiles.remove(k);
-							k--;
-														
-						}							
+				//measures difference in hand size to see if it should continue to try to play tiles onto set
+				while (handSize != preHandSize)
+				{
+					preHandSize = handSize;
+					tm.getBoardMelds().get(orderedSets[i]).sortByRank();
+					playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
+						
+					if(playableTiles.size() > 0)
+					{
+						for (int n = 0;n< this.hand.tiles.size();n++)
+						{
+							if(this.hand.tiles.get(n).getColour().equals("Joker") || (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour())))
+							{
+								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
+								System.out.println("Played " + this.hand.tiles.get(n).toString());
+								this.hand.tiles.remove(n);
+								if(playableTiles.size() == 2)
+								{
+									for (int m = 0;m< this.hand.tiles.size();m++)
+									{
+										if(this.hand.tiles.get(n).getColour().equals("Joker") || (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour())))
+										{
+											tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(m));
+											System.out.println("Played " + this.hand.tiles.get(m).toString());
+											this.hand.tiles.remove(m);
+										}
+									}
+								}
+							}
+						}
+						
 					}
+					handSize = this.hand.getSize();
 				}
-			}				
+				
+				//goes through all melds on board and orders them
+				
+				for(int p = 0;p<tm.getBoardMeldSize();p++)
+				{
+					tm.getBoardMelds().get(p).sortByRank();
+				}
+				
+			}
+			//section for checking for runs
+			ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
+			if(playableTiles.size() > 0)
+			{
+				for(int n = 0;n< this.hand.tiles.size();n++)
+				{
+					if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+					{
+									
+						tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
+						System.out.println("Played " + this.hand.tiles.get(n).toString());
+						this.hand.tiles.remove(n);
+							
+					}
+				}						
+			}		
 		}
 	}
 	
 	// Use existing board melds to make new melds
 	public void rearrangeMelds(TileManager tm) {
-		
+		/*
 		List<Tile> tempHand = this.hand.tiles;	
 		
 		List<Meld> boardMelds = new ArrayList<Meld>();
@@ -168,10 +182,14 @@ public abstract class AI extends Entity implements AIType {
 				
 				for(int j = 0; j < unchangeableTiles.size(); j++) {
 					
+					if(j == unchangeableTiles.size())
+						break;
+					
 					if(containsTile(boardMelds.get(i).tiles, unchangeableTiles.get(j))) {
 						
 						unchangeableTiles.remove(j);
 						removedUnchangeables = true;
+						j--;
 						
 					}					
 				}
@@ -218,9 +236,16 @@ public abstract class AI extends Entity implements AIType {
 		
 		//Removes redundant (i.e. already played) Melds
 		for(Meld m : tm.getBoardMelds())
-			for(int i = 0; i < boardMelds.size(); i++)
-				if(containsList(m.tiles, boardMelds.get(i).tiles))
-					boardMelds.remove(i);		
+			for(int i = 0; i < answer.size(); i++)
+				if(containsList(m.tiles, boardMelds.get(i).tiles)) {
+					for(int j = 0; j < answer.size(); j++) {
+						if(containsList(boardMelds.get(i).tiles, answer.get(j).tiles)) {
+							answer.remove(j);
+							break;
+						}		
+					}
+					boardMelds.remove(i);
+				}
 		
 		//Adds new Melds to Board
 		if(answer.size() > 0) {						
@@ -229,13 +254,14 @@ public abstract class AI extends Entity implements AIType {
 				this.hand.tiles.addAll(tm.getMeldFromBoardFromID(boardMelds.get(i).ID).tiles);				
 				
 			this.makeMeldFromHand(tm);	
-		}		
+		}	*/
 	}
 
 	// Create a new meld with only the hand
 	public void makeMeldFromHand(TileManager tm) {
+		
 		List<Meld> meldList = getMaximumNumberOfMeldsFromHand();
-
+		
 		if(meldList.size() > 0) {
 			String message = "Played: ";
 		
@@ -619,7 +645,7 @@ public abstract class AI extends Entity implements AIType {
 
 		meldList.addAll(findRuns(this.hand.tiles));
 		meldList.addAll(findSets(this.hand.tiles));
-		meldList = GameUtils.sortByLesserPointValue(meldList);
+		meldList = GameUtils.sortByGreaterPointValue(meldList);
 
 		return meldList;
 	}

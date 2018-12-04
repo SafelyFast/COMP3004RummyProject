@@ -19,6 +19,8 @@ public class Entity {
 		hand = new Hand();
 	}
 	
+	
+	
 	public boolean addTile(Tile t)
 	{
 		return hand.addTileToHand(t);
@@ -36,5 +38,18 @@ public class Entity {
 	public String toString()
 	{
 		return ""; //Edit this later
+	}
+	
+	public int handHasJoker()
+	{
+		int jokerCount = 0;
+		for(int i = 0; i < this.hand.getSize();i++)
+		{
+			if(this.hand.getTile(i).isJoker())
+			{
+				jokerCount++;
+			}
+		}
+		return jokerCount;
 	}
 }
