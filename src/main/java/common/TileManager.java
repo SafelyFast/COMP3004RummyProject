@@ -154,6 +154,9 @@ public class TileManager {
 				{
 					this.getMeldFromBoardAt(i).getTileAt(j).getImage().addToDrawingTable(g);
 				}
+				else {
+					this.getMeldFromBoardAt(i).getTileAt(j).getImage().rotate(360);
+				}
 			}
 		}
 	}
