@@ -34,7 +34,7 @@ public class JText extends DisplayObject{
 		{
 			this.text.setFill(Color.RED);
 		}
-		else if (color.toLowerCase().equals("black"))
+		else if (color.toLowerCase().equals("black") || color.toLowerCase().equals("joker"))
 		{
 			this.text.setFill(Color.BLACK);
 		}

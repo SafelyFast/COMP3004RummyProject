@@ -114,7 +114,7 @@ public class Meld extends DisplayObject {
 			ArrayList<Tile> result = new ArrayList<Tile>();
 			if(tiles.get(0).getRank() == tiles.get(1).getRank() && this.getSize() == 3)
 			{
-				String possibleColours = "RGBO";
+				String possibleColours = "RGBOJ";
 				
 				for(int i =0;i<3;i++)
 				{
@@ -133,6 +133,10 @@ public class Meld extends DisplayObject {
 					else if(tiles.get(i).getColour().equals("Orange"))
 					{
 						possibleColours = possibleColours.replace("O","");
+					}
+					else if(tiles.get(i).getColour().equals("Joker"))
+					{
+						possibleColours = possibleColours.replace("J","");
 					}
 					else
 					{
