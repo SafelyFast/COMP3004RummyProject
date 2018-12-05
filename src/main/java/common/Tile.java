@@ -120,7 +120,7 @@ public class Tile {
 	{
 		if(this.colour.equals("Joker"))
 		{
-			return "Joker";
+			return "Joker :value " + this.rank;
 		}
 		else
 		{
