@@ -70,7 +70,7 @@ public class AIType_3 extends AI{
 		if (!playedCard) {
 			this.drawCard(tm);
 		}
-		this.hand.alignTiles(3);
+		this.hand.alignTiles(playerNumber);
 	}
 	
 	public String toString() {

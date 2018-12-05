@@ -57,7 +57,7 @@ public class Hand {
 		{
 			System.out.println("Drawing Tile!");
 			tiles.add(t);
-			//t.addHighlight(-1.0);
+			t.addHighlight(-1.0);
 			return true;
 		}
 		
@@ -70,7 +70,7 @@ public class Hand {
 		{
 			for(int i = 0; i < this.getSize(); i++)
 			{
-				//this.getTile(i).addHighlight(-1.0);
+				this.getTile(i).addHighlight(-1.0);
 				this.getTile(i).getImage().setPosition((entityNumber % 2) * 675 + (i % 5) * 25, (entityNumber / 2) * 300 + (i/5) * 40 + 50);
 			}
 		}
