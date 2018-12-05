@@ -68,6 +68,7 @@ public class Meld extends DisplayObject {
 	
 	public void addMeldTileToFront(Tile tile)
 	{
+		tile.addHighlight(0.8);
 		this.tiles.add(0, tile);
 		this.sortByRank();
 		this.alignTiles();
@@ -75,11 +76,19 @@ public class Meld extends DisplayObject {
 	
 	public void addMeldTile(Tile tile)
 	{
+		tile.addHighlight(0.8);
 		this.tiles.add(tile);
 		this.sortByRank();
 		this.alignTiles();
 		this.updateMeldPosition(this.getX(), this.getY());
 	}
+	
+	public void addMeldTileWOHighlight(Tile tile) {
+		this.tiles.add(tile);
+		this.sortByRank();
+		this.alignTiles();
+		this.updateMeldPosition(this.getX(), this.getY());
+;	}
 	
 	public Tile removeMeldTile(int i)
 	{
@@ -367,6 +376,12 @@ public class Meld extends DisplayObject {
 	
 	public void setID() {
 		ID = ++lastUsedID;
+	}
+	
+	public void addHighlight(double h) {
+		 for (Tile e : tiles) {
+			 e.addHighlight(h);
+		 }
 	}
 	
 }

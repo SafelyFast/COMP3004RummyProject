@@ -112,6 +112,10 @@ public class Tile {
 		return this.image;
 	}
 	
+	public void addHighlight(double h) {
+		this.image.highlightTile(h);
+	}
+	
 	public String toString()
 	{
 		if(this.colour.equals("Joker"))

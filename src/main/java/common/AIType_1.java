@@ -46,7 +46,7 @@ public class AIType_1 extends AI{
 			
 			this.drawCard(tm);
 		}
-		this.hand.alignTiles(1);
+		this.hand.alignTiles(playerNumber);
 	}	
 	
 	public String toString() {

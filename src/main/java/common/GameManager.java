@@ -6,6 +6,7 @@
 package common;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import common.Entity;
@@ -19,6 +20,7 @@ public class GameManager {
 	**/
 	List<Entity> players;
 	List<Meld> melds;
+	List<Tile> recentTiles;
 	TileManager TM;
 	SnapShot instance;
 	SnapShot possibleMeldInstance;
@@ -28,24 +30,14 @@ public class GameManager {
 	// Default constructor
 	public GameManager() {
 		TM = new TileManager();
-		players = new ArrayList<Entity>();
 		melds = new ArrayList<Meld>();
-		
-		players.add(new Player());
-		players.add(new AIType_1());
-		players.add(new AIType_2());
-		players.add(new AIType_3());
+		recentTiles = new LinkedList<Tile>();
 	}
 	
 	public GameManager(String filename) {
 		TM = new TileManager(filename);
-		players = new ArrayList<Entity>();
 		melds = new ArrayList<Meld>();
-		
-		players.add(new Player());
-		players.add(new AIType_1());
-		players.add(new AIType_2());
-		players.add(new AIType_3());
+		recentTiles = new LinkedList<Tile>();
 	}
 	
 	/**TODO
@@ -68,12 +60,23 @@ public class GameManager {
 		instance = new SnapShot();
 		instance.setPlayers(this.players);
 		instance.setBoardMelds(this.TM.getBoardMelds());
+		instance.setDeck(TM.getDeck());
 		//instance.setDeck(this.TM.getDeck());
 	}
 	
 	
 	public void revertSnapShot()
 	{
+		for (int i = 0; i < players.size(); i++)
+		{
+			this.players.get(i).hand.tiles.clear();
+			for (int j = 0; j < instance.getPlayers().get(i).hand.tiles.size(); j++)
+			{
+				this.players.get(i).hand.tiles.add(j,instance.getPlayers().get(i).hand.tiles.get(j));
+			}
+		}
+		
+		/*
 		//this.players = this.instance.getPlayers();
 		//player1
 		this.players.get(0).hand.tiles.clear();
@@ -101,9 +104,14 @@ public class GameManager {
 		}
 		//System.out.println(this.melds.get(0).getTileAt(0).toString());
 		//System.out.println(this.melds.get(0).getTileAt(1).toString());
-		
+		*/
+		// Sets deck
+		this.TM.setDeck(instance.getDeck());
 		
 		//sets melds
+		
+		this.TM.setBoardMelds(instance.getBoardMelds());
+		/*
 		this.TM.getBoardMelds().clear();
 		//System.out.println(this.melds.get(0).getTileAt(0).toString());
 		System.out.println("--------------------------------------------------");
@@ -124,6 +132,8 @@ public class GameManager {
 				
 			}
 		}
+		
+		*/
 		
 		//this.TM.setDeck(this.instance.getDeck());
 	}
@@ -147,13 +157,18 @@ public class GameManager {
 	
 	public void nextTurn()
 	{
+		//for (Meld l : TM.getBoardMelds()) {
+		//	l.addHighlight(-0.3);
+		//}
 		this.players.get(currentPlayer).playing = false;
 		currentPlayer++;
-		if (currentPlayer > 3)
+		if (currentPlayer > this.players.size() - 1)
 		{
 			currentPlayer = 0;
 		}
 		this.players.get(currentPlayer).playing = true;
+		
+		takeSnapShot();
 	}
 
 	// Deal a hand of tiles to each player
@@ -191,14 +206,13 @@ public class GameManager {
 		int playerFound = -1;
 		while (playerFound == -1)
 		{
-			for(int i = 0; i < 4; i++)
+			Tile tiles[] = new Tile[players.size()];
+			for(int i = 0; i < players.size(); i++)
 			{
 				this.deal(players.get(i));
+				tiles[i] = players.get(i).hand.tiles.get(players.get(i).hand.tiles.size() - 1);
 			}
-			playerFound = whoHasHighestCard(players.get(0).hand.tiles.get(players.get(0).hand.tiles.size() - 1),
-											players.get(1).hand.tiles.get(players.get(1).hand.tiles.size() - 1),
-											players.get(2).hand.tiles.get(players.get(2).hand.tiles.size() - 1),
-											players.get(3).hand.tiles.get(players.get(3).hand.tiles.size() - 1));
+			playerFound = whoHasHighestCard(tiles);
 		}
 		//TODO Change this so it determines the starting player properly
 		players.get(playerFound).playing = true;
@@ -206,7 +220,7 @@ public class GameManager {
 		return playerFound;
 	}
 	
-	public int whoHasHighestCard(Tile ... tiles)
+	public int whoHasHighestCard(Tile tiles[])
 	{
 		int highestCard = -1;
 		int player = -1;
@@ -246,7 +260,7 @@ public class GameManager {
 	
 	public void updateTable(Group g)
 	{
-		for(int i = 0; i < 4; i++)
+		for(int i = 0; i < players.size(); i++)
 		{
 			Entity currentPlayer = this.players.get(i);
 			//System.out.println(currentPlayer.hand + "i is : " + (i + 1));
@@ -264,28 +278,30 @@ public class GameManager {
 
 	public void setupPlayers(int[] playerType)
 	{
+		players = new ArrayList<Entity>();
+		boolean getThisPlayer = true;
 		for(int i = 0; i < 4; i++)
 		{
 			switch (playerType[i])
 			{
 				case 0:
 				{
-					players.set(i, new Player());
+					players.add(new Player());
 					break;
 				}
 				case 1:
 				{
-					players.set(i, new AIType_1());
+					players.add(new AIType_1());
 					break;
 				}
 				case 2:
 				{
-					players.set(i, new AIType_2());
+					players.add(new AIType_2());
 					break;
 				}
 				case 3:
 				{
-					players.set(i, new AIType_3());
+					players.add(new AIType_3());
 					break;
 				}
 				case 4:
@@ -294,10 +310,20 @@ public class GameManager {
 					//players.set(i, new AI(new AIType_4()));
 					
 					//Just in case the person picking gets cheeky
-					players.set(i, new AIType_3());
+					players.add(new AIType_3());
+					break;
+				}
+				case 5:
+				{
+					getThisPlayer = false;
 					break;
 				}
 			}
+			if (getThisPlayer == true)
+			{
+				players.get(i).setPlayerNumber(i);
+			}
+			getThisPlayer = true;
 		}
 	}
 
