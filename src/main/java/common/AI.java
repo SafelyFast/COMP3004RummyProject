@@ -62,6 +62,7 @@ public abstract class AI extends Entity implements AIType {
 		int index = 0;
 		int numSets = 0;
 		int numJokers = this.handHasJoker();
+		if (numJokers > 0) {numJokers = 1;}
 		int numJokersPlayed = 0;
 		int resultArray[][] = new int[2*tm.getBoardMeldSize()][2];
 		int resultIndex = 0;
@@ -74,6 +75,7 @@ public abstract class AI extends Entity implements AIType {
 			{
 				if(this.hand.tiles.get(i).isJoker() && this.hand.tiles.get(i).getRank() == -1)
 				{
+					System.out.println("Removed Joker---------------------------------------------------------------------------------------");
 					this.hand.tiles.remove(i);
 				}
 				else if(this.hand.tiles.get(i).isJoker() && this.hand.tiles.get(i).getRank() != -1)
@@ -82,7 +84,7 @@ public abstract class AI extends Entity implements AIType {
 				}
 			}
 		}
-		
+		System.out.println("Num Jokers "+numJokers);
 		
 		//get a list of indices to check against all sets and then all runs
 		for(int i = 0;i<tm.getBoardMeldSize();i++)
@@ -104,6 +106,12 @@ public abstract class AI extends Entity implements AIType {
 				index++;
 			}
 		}
+		System.out.println("Ordered sets indices-----------------");
+		for(int i =0;i < orderedSets.length;i++)
+		{
+			System.out.println(orderedSets[i]);
+		}
+		System.out.println("numSets: " + numSets);
 		
 		//does the same as if there was no joker except it allows it to iterate once more after having plugged in the joker
 		if(numJokers == 1)
@@ -151,11 +159,10 @@ public abstract class AI extends Entity implements AIType {
 						handSize = this.hand.getSize();
 					}
 					//played everything that it can onto a meld, now we try adding the joker to the head then tail and see how many cards we play from hand.
-					for(int j = 0; j < tm.getBoardMeldSize();j++)
-					{
 						//head end
-						tm.getBoardMelds().get(j).sortByRank();
-						if(tm.getBoardMelds().get(j).tiles.get(0).getRank() >= 2)//larger than 2
+						tm.getBoardMelds().get(orderedSets[i]).sortByRank();
+						System.out.println("head of the set:---------------"+ tm.getBoardMelds().get(orderedSets[i]).tiles.get(0).getRank() );
+						if(tm.getBoardMelds().get(orderedSets[i]).tiles.get(0).getRank() >= 2)//larger than 2
 						{
 							//copy the state of this meld and hand
 							Entity tempPlayer = new Entity();
@@ -176,9 +183,9 @@ public abstract class AI extends Entity implements AIType {
 							//end copy the state of this meld and hand
 						
 							//add joker to head with value of head minus one and sort so its in the proper spot
-							int jokerVal = tm.getBoardMelds().get(j).tiles.get(0).getRank()-1;
-							tm.getBoardMelds().get(j).addMeldTile(new Tile("j",jokerVal));
-							tm.getBoardMelds().get(j).sortByRank();
+							int jokerVal = tm.getBoardMelds().get(orderedSets[i]).tiles.get(0).getRank()-1;
+							tm.getBoardMelds().get(orderedSets[i]).addMeldTile(new Tile("j",jokerVal));
+							tm.getBoardMelds().get(orderedSets[i]).sortByRank();
 							//end add joker to head with value of head minus one and sort so its in the proper spot
 							
 							//call addpossibleMelds to put all other tiles that can 
@@ -188,8 +195,8 @@ public abstract class AI extends Entity implements AIType {
 							
 							//set the resulting hand size and joker value
 							//how many tiles we played
-							resultArray[(2*j)][0] = tempPlayer.hand.getSize() - this.hand.getSize();
-							resultArray[(2*j)][1] = jokerVal;
+							resultArray[(2*i)][0] = tempPlayer.hand.getSize() - this.hand.getSize();
+							resultArray[(2*i)][1] = jokerVal;
 							
 							//revert to original meld and hand
 							this.hand.tiles.clear();
@@ -197,11 +204,25 @@ public abstract class AI extends Entity implements AIType {
 							{
 								this.hand.tiles.add(k,tempPlayer.hand.tiles.get(k));
 							}
+							
+							tm.getBoardMelds().clear();
+							for(int k = 0; k < tempBoardMelds.size();k++)
+							{
+								
+								tm.getBoardMelds().add(new Meld());
+								for(int l = 0; l < tempBoardMelds.get(k).getSize();l++)
+								{
+									Tile tile = tempBoardMelds.get(k).getTileAt(l);
+									tm.getBoardMelds().get(k).addMeldTile(tile);
+								}
+							}
+							
+							
 						}
 						
 						//tail end
-						tm.getBoardMelds().get(j).sortByRank();
-						if(tm.getBoardMelds().get(j).tiles.get(tm.getBoardMelds().get(j).getSize()-1).getRank() <= 13)//larger than 13
+						tm.getBoardMelds().get(orderedSets[i]).sortByRank();
+						if(tm.getBoardMelds().get(orderedSets[i]).tiles.get(tm.getBoardMelds().get(orderedSets[i]).getSize()-1).getRank() <= 13)//larger than 13
 						{
 							//copy the state of this meld and hand
 							Entity tempPlayer = new Entity();
@@ -222,9 +243,9 @@ public abstract class AI extends Entity implements AIType {
 							//end copy the state of this meld and hand
 						
 							//add joker to head with value of head minus one and sort so its in the proper spot
-							int jokerVal = tm.getBoardMelds().get(j).tiles.get(tm.getBoardMelds().get(j).getSize()-1).getRank()+1;
-							tm.getBoardMelds().get(j).addMeldTile(new Tile("j",jokerVal));
-							tm.getBoardMelds().get(j).sortByRank();
+							int jokerVal = tm.getBoardMelds().get(orderedSets[i]).tiles.get(tm.getBoardMelds().get(orderedSets[i]).getSize()-1).getRank()+1;
+							tm.getBoardMelds().get(orderedSets[i]).addMeldTile(new Tile("j",jokerVal));
+							tm.getBoardMelds().get(orderedSets[i]).sortByRank();
 							//end add joker to head with value of head minus one and sort so its in the proper spot
 							
 							//call addpossibleMelds to put all other tiles that can 
@@ -234,26 +255,38 @@ public abstract class AI extends Entity implements AIType {
 							
 							//set the resulting hand size and joker value
 							//how many tiles we played
-							resultArray[(2*j)+1][0] =  tempPlayer.hand.getSize() - this.hand.getSize();
-							resultArray[(2*j)+1][1] = jokerVal;
+							resultArray[(2*i)+1][0] =  tempPlayer.hand.getSize() - this.hand.getSize();
+							resultArray[(2*i)+1][1] = jokerVal;
 							
 							//revert to original meld and hand
 							this.hand.tiles.clear();
 							for(int k = 0; k < tempPlayer.hand.tiles.size();k++)
 							{
 								this.hand.tiles.add(k,tempPlayer.hand.tiles.get(k));
+							}
+							
+							tm.getBoardMelds().clear();
+							for(int k = 0; k < tempBoardMelds.size();k++)
+							{
+								
+								tm.getBoardMelds().add(new Meld());
+								for(int l = 0; l < tempBoardMelds.get(k).getSize();l++)
+								{
+									Tile tile = tempBoardMelds.get(k).getTileAt(l);
+									tm.getBoardMelds().get(k).addMeldTile(tile);
+								}
 							}
 						}
 						
 						//throughout keep track of a smallest hand size so far value
-						
-						
-					}
 					
 					//go through the results and apply the joker to a run if it makes sense otherwise were putting it into a set
 					int bestValue = 10000;
+					System.out.println("ResultArray VAlues---------------------");
 					for(int p = 0; p < 2*tm.getBoardMeldSize();p++)
 					{
+						
+						System.out.println( p + " index " +resultArray[p][0] + " + " + resultArray[p][1]);
 						if (resultArray[p][0] < bestValue)
 						{
 							bestValue = resultArray[p][0];
@@ -262,27 +295,34 @@ public abstract class AI extends Entity implements AIType {
 					}
 					
 					//if we actually played anything from our hand 
-					if(bestValue < this.hand.getSize())
+					if(bestValue < this.hand.getSize() && numJokersPlayed == 0)
 					{
-						this.hand.addTileToHand(new Tile("j",resultArray[resultIndex][1]));
+	
+						Tile t = new Tile("j",resultArray[resultIndex][1]);
+						System.out.println("-----------JOKER Played in  " + t.toString());
+						
+						this.hand.addTileToHand(t);
+						
 						addPossibleMelds(tm);
 						numJokersPlayed++;
 					}
 					//otherwise we want it to carry on into sets	
 				}
 				
-				
+				else
+				{
+					
 				//section for checking for runs
 				//will only play a joker if none went into sets
 				if(numJokersPlayed == 0)
 				{
-					
+					System.out.println("Adding to set-----------------------------------------------------------------------------------");
 					ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
 					if(playableTiles.size() > 0)
 					{
 						for(int n = 0;n< this.hand.tiles.size();n++)
 						{
-							if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+							if((this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour())))
 							{
 											
 								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
@@ -298,8 +338,13 @@ public abstract class AI extends Entity implements AIType {
 					}	
 				}
 			}
+			}
 			//if we got here and numJokersPlayed is still 0 we add it back to the hand and dont play it
+			System.out.println("---------------JOKER Played in  " );
+			if(numJokersPlayed == 0)
+			{
 			this.hand.addTileToHand(new Tile("j",-1));
+			}
 		}
 		else if(numJokers == 2)
 		{
@@ -326,7 +371,7 @@ public abstract class AI extends Entity implements AIType {
 						{
 							for (int n = 0;n< this.hand.tiles.size();n++)
 							{
-								if (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+								if ((this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).isJoker()) || (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour())))
 								{
 									tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
 									System.out.println("Played " + this.hand.tiles.get(n).toString());
@@ -335,7 +380,7 @@ public abstract class AI extends Entity implements AIType {
 									{
 										for (int m = 0;m< this.hand.tiles.size();m++)
 										{
-											if(this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
+											if((this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).isJoker()) || (this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).getColour().equals(playableTiles.get(1).getColour())))
 											{
 												tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(m));
 												System.out.println("Played " + this.hand.tiles.get(m).toString());
@@ -358,6 +403,8 @@ public abstract class AI extends Entity implements AIType {
 					}
 					
 				}
+				else
+				{
 				//section for checking for runs
 				ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
 				if(playableTiles.size() > 0)
@@ -365,7 +412,7 @@ public abstract class AI extends Entity implements AIType {
 					System.out.println("Checking for sets");
 					for(int n = 0;n< this.hand.tiles.size();n++)
 					{
-						if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+						if((this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).isJoker()) || (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour())))
 						{
 							tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
 							System.out.println("Played " + this.hand.tiles.get(n).toString());
@@ -373,7 +420,8 @@ public abstract class AI extends Entity implements AIType {
 								
 						}
 					}						
-				}		
+				}	
+			}
 			}
 		}
 	}
