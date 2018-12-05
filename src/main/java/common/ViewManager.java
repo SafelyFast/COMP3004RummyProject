@@ -12,6 +12,7 @@ import view.TileImage;
 import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -25,6 +26,8 @@ public class ViewManager extends Application{
 	private boolean hasPlayerPlayed;
 	private Group root;
 	private int state, numHumans;
+	
+	private boolean isTimerRunning = true;
 	
 	private boolean initialized = false;
 	
@@ -41,8 +44,8 @@ public class ViewManager extends Application{
 	private JImage playerType[];
 	private int playerTypeInteger[];
 	
-	int numSeconds = 15;
-	int numMinutes = 0;
+	int numSeconds = 0;
+	int numMinutes = 2;
 	
 	int framesPassed = 0;
 	int numNeeded = 60;
@@ -284,6 +287,19 @@ public class ViewManager extends Application{
 			}
 		};
 		
+		EventHandler<KeyEvent> keyPressHandler = new EventHandler<KeyEvent>()
+		{
+			@Override
+			public void handle(KeyEvent arg0) {
+				String returnCode = arg0.getText();
+				System.out.println(returnCode);
+				if (returnCode.equals("t"))
+				{
+					isTimerRunning = !isTimerRunning;
+				}	
+			}
+		};
+		
 		try
 		{
 			root = new Group();
@@ -291,6 +307,7 @@ public class ViewManager extends Application{
 			scene.setFill(Color.DARKGREEN);
 			scene.addEventFilter(MouseEvent.MOUSE_CLICKED, tilePressHandler);
 			scene.addEventFilter(MouseEvent.MOUSE_MOVED, mouseMoveHandler);
+			scene.addEventFilter(KeyEvent.KEY_PRESSED, keyPressHandler);
 			primaryStage.setTitle("Rummy Game");
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -381,7 +398,7 @@ public class ViewManager extends Application{
 							initialized = true;
 						}
 						
-						if (gm.isPlayer(gm.players.get(gm.findWhoIsPlaying())) == true)
+						if (gm.isPlayer(gm.players.get(gm.findWhoIsPlaying())) == true && isTimerRunning)
 						{
 							framesPassed++;
 							if (framesPassed == numNeeded)
