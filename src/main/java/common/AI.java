@@ -3,6 +3,8 @@ package common;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.javafx.scene.control.skin.TitledPaneSkin;
+
 public abstract class AI extends Entity implements AIType {
 
 	boolean hasPlayedThirty;
@@ -53,6 +55,29 @@ public abstract class AI extends Entity implements AIType {
 		int[] orderedSets = new int[tm.getBoardMeldSize()];
 		int index = 0;
 		int numSets = 0;
+		int numJokers = this.handHasJoker();
+		int numJokersPlayed = 0;
+		int resultArray[][] = new int[2*tm.getBoardMeldSize()][2];
+		int resultIndex = 0;
+		
+		//if there are jokers in hand with default value then take them out to make further steps easier
+		//TODO add back in if it doesnt get played
+		if(numJokers > 0)
+		{
+			for(int i =0; i < this.hand.getSize();i++)
+			{
+				if(this.hand.tiles.get(i).isJoker() && this.hand.tiles.get(i).getRank() == -1)
+				{
+					this.hand.tiles.remove(i);
+				}
+				else if(this.hand.tiles.get(i).isJoker() && this.hand.tiles.get(i).getRank() != -1)
+				{
+					numJokers--;
+				}
+			}
+		}
+		
+		
 		//get a list of indices to check against all sets and then all runs
 		for(int i = 0;i<tm.getBoardMeldSize();i++)
 		{
@@ -73,74 +98,277 @@ public abstract class AI extends Entity implements AIType {
 				index++;
 			}
 		}
-				
-		for(int i =0;i < tm.getBoardMeldSize();i++)
-		{
-			if(i < numSets)
+		
+		//does the same as if there was no joker except it allows it to iterate once more after having plugged in the joker
+		if(numJokers == 1)
+		{	
+			for(int i =0;i < tm.getBoardMeldSize();i++)
 			{
-				int handSize = this.hand.getSize();
-				int preHandSize = 0;
-				ArrayList<Tile> playableTiles = new ArrayList<Tile>();
-				
-				//measures difference in hand size to see if it should continue to try to play tiles onto set
-				while (handSize != preHandSize)
+				if(i < numSets)
 				{
-					preHandSize = handSize;
-					tm.getBoardMelds().get(orderedSets[i]).sortByRank();
-					playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
-						
-					if(playableTiles.size() > 0)
+					int handSize = this.hand.getSize();
+					int preHandSize = 0;
+					ArrayList<Tile> playableTiles = new ArrayList<Tile>();
+					
+					//measures difference in hand size to see if it should continue to try to play tiles onto set
+					while (handSize != preHandSize)
 					{
-						for (int n = 0;n< this.hand.tiles.size();n++)
+						preHandSize = handSize;
+						tm.getBoardMelds().get(orderedSets[i]).sortByRank();
+						playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
+							
+						if(playableTiles.size() > 0)
 						{
-							if(this.hand.tiles.get(n).getColour().equals("Joker") || (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour())))
+							for (int n = 0;n< this.hand.tiles.size();n++)
 							{
-								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
-								System.out.println("Played " + this.hand.tiles.get(n).toString());
-								this.hand.tiles.remove(n);
-								if(playableTiles.size() == 2)
+								if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
 								{
-									for (int m = 0;m< this.hand.tiles.size();m++)
+									tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
+									System.out.println("Played " + this.hand.tiles.get(n).toString());
+									this.hand.tiles.remove(n);
+									if(playableTiles.size() == 2)
 									{
-										if(this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
+										for (int m = 0;m< this.hand.tiles.size();m++)
 										{
-											tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(m));
-											System.out.println("Played " + this.hand.tiles.get(m).toString());
-											this.hand.tiles.remove(m);
+											if(this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
+											{
+												tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(m));
+												System.out.println("Played " + this.hand.tiles.get(m).toString());
+												this.hand.tiles.remove(m);
+											}
 										}
 									}
 								}
 							}
+							
+						}
+						handSize = this.hand.getSize();
+					}
+					//played everything that it can onto a meld, now we try adding the joker to the head then tail and see how many cards we play from hand.
+					for(int j = 0; j < tm.getBoardMeldSize();j++)
+					{
+						//head end
+						tm.getBoardMelds().get(j).sortByRank();
+						if(tm.getBoardMelds().get(j).tiles.get(0).getRank() >= 2)//larger than 2
+						{
+							//copy the state of this meld and hand
+							Entity tempPlayer = new Entity();
+							for(int k = 0; k < this.hand.getSize();k++)
+							{
+								tempPlayer.hand.tiles.add(k,this.hand.tiles.get(k));
+							}
+							ArrayList<Meld> tempBoardMelds = new ArrayList<Meld>();
+							for(int k = 0; k < tm.getBoardMeldSize();k++)
+							{
+								tempBoardMelds.add(new Meld());
+								for(int l = 0; l < tm.getBoardMelds().get(k).getSize();l++)
+								{
+									Tile tile = tm.getBoardMelds().get(k).getTileAt(l);
+									tempBoardMelds.get(k).addMeldTile(tile);
+								}
+							}
+							//end copy the state of this meld and hand
+						
+							//add joker to head with value of head minus one and sort so its in the proper spot
+							int jokerVal = tm.getBoardMelds().get(j).tiles.get(0).getRank()-1;
+							tm.getBoardMelds().get(j).addMeldTile(new Tile("j",jokerVal));
+							tm.getBoardMelds().get(j).sortByRank();
+							//end add joker to head with value of head minus one and sort so its in the proper spot
+							
+							//call addpossibleMelds to put all other tiles that can 
+							addPossibleMelds(tm);
+							//end call addpossibleMelds
+						
+							
+							//set the resulting hand size and joker value
+							//how many tiles we played
+							resultArray[(2*j)][0] = tempPlayer.hand.getSize() - this.hand.getSize();
+							resultArray[(2*j)][1] = jokerVal;
+							
+							//revert to original meld and hand
+							this.hand.tiles.clear();
+							for(int k = 0; k < tempPlayer.hand.tiles.size();k++)
+							{
+								this.hand.tiles.add(k,tempPlayer.hand.tiles.get(k));
+							}
 						}
 						
-					}
-					handSize = this.hand.getSize();
-				}
-				
-				//goes through all melds on board and orders them
-				
-				for(int p = 0;p<tm.getBoardMeldSize();p++)
-				{
-					tm.getBoardMelds().get(p).sortByRank();
-				}
-				
-			}
-			//section for checking for runs
-			ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
-			if(playableTiles.size() > 0)
-			{
-				for(int n = 0;n< this.hand.tiles.size();n++)
-				{
-					if(this.hand.tiles.get(n).getColour().equals("Joker") || (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour())))
-					{
-									
-						tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
-						System.out.println("Played " + this.hand.tiles.get(n).toString());
-						this.hand.tiles.remove(n);
+						//tail end
+						tm.getBoardMelds().get(j).sortByRank();
+						if(tm.getBoardMelds().get(j).tiles.get(tm.getBoardMelds().get(j).getSize()-1).getRank() <= 13)//larger than 13
+						{
+							//copy the state of this meld and hand
+							Entity tempPlayer = new Entity();
+							for(int k = 0; k < this.hand.getSize();k++)
+							{
+								tempPlayer.hand.tiles.add(k,this.hand.tiles.get(k));
+							}
+							ArrayList<Meld> tempBoardMelds = new ArrayList<Meld>();
+							for(int k = 0; k < tm.getBoardMeldSize();k++)
+							{
+								tempBoardMelds.add(new Meld());
+								for(int l = 0; l < tm.getBoardMelds().get(k).getSize();l++)
+								{
+									Tile tile = tm.getBoardMelds().get(k).getTileAt(l);
+									tempBoardMelds.get(k).addMeldTile(tile);
+								}
+							}
+							//end copy the state of this meld and hand
+						
+							//add joker to head with value of head minus one and sort so its in the proper spot
+							int jokerVal = tm.getBoardMelds().get(j).tiles.get(tm.getBoardMelds().get(j).getSize()-1).getRank()+1;
+							tm.getBoardMelds().get(j).addMeldTile(new Tile("j",jokerVal));
+							tm.getBoardMelds().get(j).sortByRank();
+							//end add joker to head with value of head minus one and sort so its in the proper spot
 							
+							//call addpossibleMelds to put all other tiles that can 
+							addPossibleMelds(tm);
+							//end call addpossibleMelds
+						
+							
+							//set the resulting hand size and joker value
+							//how many tiles we played
+							resultArray[(2*j)+1][0] =  tempPlayer.hand.getSize() - this.hand.getSize();
+							resultArray[(2*j)+1][1] = jokerVal;
+							
+							//revert to original meld and hand
+							this.hand.tiles.clear();
+							for(int k = 0; k < tempPlayer.hand.tiles.size();k++)
+							{
+								this.hand.tiles.add(k,tempPlayer.hand.tiles.get(k));
+							}
+						}
+						
+						//throughout keep track of a smallest hand size so far value
+						
+						
 					}
-				}						
-			}		
+					
+					//go through the results and apply the joker to a run if it makes sense otherwise were putting it into a set
+					int bestValue = 10000;
+					for(int p = 0; p < 2*tm.getBoardMeldSize();p++)
+					{
+						if (resultArray[p][0] < bestValue)
+						{
+							bestValue = resultArray[p][0];
+							resultIndex = p;
+						}
+					}
+					
+					//if we actually played anything from our hand 
+					if(bestValue < this.hand.getSize())
+					{
+						this.hand.addTileToHand(new Tile("j",resultArray[resultIndex][1]));
+						addPossibleMelds(tm);
+						numJokersPlayed++;
+					}
+					//otherwise we want it to carry on into sets	
+				}
+				
+				
+				//section for checking for runs
+				//will only play a joker if none went into sets
+				if(numJokersPlayed == 0)
+				{
+					
+					ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
+					if(playableTiles.size() > 0)
+					{
+						for(int n = 0;n< this.hand.tiles.size();n++)
+						{
+							if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+							{
+											
+								tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
+								System.out.println("Played " + this.hand.tiles.get(n).toString());
+								this.hand.tiles.remove(n);
+									
+							}
+				
+						}
+						//here we play the joker in the first available set
+						tm.getBoardMelds().get(orderedSets[i]).addMeldTile(new Tile("j",tm.getBoardMelds().get(orderedSets[i]).getTileAt(0).getRank()));
+						numJokersPlayed++;
+					}	
+				}
+			}
+			//if we got here and numJokersPlayed is still 0 we add it back to the hand and dont play it
+			this.hand.addTileToHand(new Tile("j",-1));
+		}
+		else if(numJokers == 2)
+		{
+			
+		}
+		else
+		{
+			for(int i =0;i < tm.getBoardMeldSize();i++)
+			{
+				if(i < numSets)
+				{
+					int handSize = this.hand.getSize();
+					int preHandSize = 0;
+					ArrayList<Tile> playableTiles = new ArrayList<Tile>();
+					
+					//measures difference in hand size to see if it should continue to try to play tiles onto set
+					while (handSize != preHandSize)
+					{
+						preHandSize = handSize;
+						tm.getBoardMelds().get(orderedSets[i]).sortByRank();
+						playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
+							
+						if(playableTiles.size() > 0)
+						{
+							for (int n = 0;n< this.hand.tiles.size();n++)
+							{
+								if (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).isJoker() || this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+								{
+									tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
+									System.out.println("Played " + this.hand.tiles.get(n).toString());
+									this.hand.tiles.remove(n);
+									if(playableTiles.size() == 2)
+									{
+										for (int m = 0;m< this.hand.tiles.size();m++)
+										{
+											if(this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).isJoker() ||this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
+											{
+												tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(m));
+												System.out.println("Played " + this.hand.tiles.get(m).toString());
+												this.hand.tiles.remove(m);
+											}
+										}
+									}
+								}
+							}
+							
+						}
+						handSize = this.hand.getSize();
+					}
+					
+					//goes through all melds on board and orders them
+					
+					for(int p = 0;p<tm.getBoardMeldSize();p++)
+					{
+						tm.getBoardMelds().get(p).sortByRank();
+					}
+					
+				}
+				//section for checking for runs
+				ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
+				if(playableTiles.size() > 0)
+				{
+					for(int n = 0;n< this.hand.tiles.size();n++)
+					{
+						if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).isJoker()  || this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+						{
+										
+							tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
+							System.out.println("Played " + this.hand.tiles.get(n).toString());
+							this.hand.tiles.remove(n);
+								
+						}
+					}						
+				}		
+			}
 		}
 	}
 

@@ -40,6 +40,7 @@ public class Entity {
 		return ""; //Edit this later
 	}
 	
+	//Checks the entire hand and returns an int based on how many jokers are in the hand
 	public int handHasJoker()
 	{
 		int jokerCount = 0;

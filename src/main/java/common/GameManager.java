@@ -23,6 +23,7 @@ public class GameManager {
 	List<Meld> melds;
 	TileManager TM;
 	SnapShot instance;
+	SnapShot possibleMeldInstance;
 	
 	// Default constructor
 	public GameManager() {
@@ -62,33 +63,38 @@ public class GameManager {
 	//Take a snapshot of the current state of the board and players in order to be able to revert to it later
 	public void takeSnapShot()
 	{
+		
 		//come back to this line in case of memory leak
 		instance = new SnapShot();
 		instance.setPlayers(this.players);
 		instance.setBoardMelds(this.TM.getBoardMelds());
 		//instance.setDeck(this.TM.getDeck());
-		
 	}
+	
 	
 	public void revertSnapShot()
 	{
 		//this.players = this.instance.getPlayers();
 		//player1
+		this.players.get(0).hand.tiles.clear();
 		for(int i = 0; i < instance.getPlayers().get(0).hand.tiles.size();i++)
 		{
 			this.players.get(0).hand.tiles.add(i,instance.getPlayers().get(0).hand.tiles.get(i));
 		}
 		//player2
+		this.players.get(1).hand.tiles.clear();
 		for(int i = 0; i < instance.getPlayers().get(1).hand.tiles.size();i++)
 		{
 			this.players.get(1).hand.tiles.add(i,instance.getPlayers().get(1).hand.tiles.get(i));
 		}
 		//player3
+		this.players.get(2).hand.tiles.clear();
 		for(int i = 0; i < instance.getPlayers().get(2).hand.tiles.size();i++)
 		{
 			this.players.get(2).hand.tiles.add(i,instance.getPlayers().get(2).hand.tiles.get(i));
 		}
 		//player4
+		this.players.get(3).hand.tiles.clear();
 		for(int i = 0; i < instance.getPlayers().get(3).hand.tiles.size();i++)
 		{
 			this.players.get(3).hand.tiles.add(i,instance.getPlayers().get(3).hand.tiles.get(i));
