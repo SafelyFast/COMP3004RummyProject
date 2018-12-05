@@ -13,8 +13,6 @@ import common.Meld;
 import javafx.scene.Group;
 import view.TileImage;
 
-import java.util.Random;
-
 public class GameManager {
 	/** TODO
 	 * 	Add any global variables
@@ -23,6 +21,8 @@ public class GameManager {
 	List<Meld> melds;
 	TileManager TM;
 	SnapShot instance;
+	
+	private int currentPlayer;
 	
 	// Default constructor
 	public GameManager() {
@@ -135,9 +135,21 @@ public class GameManager {
 		if (e instanceof Player == false)
 		{
 			((AI)e).performAction(TM, this);
+			this.nextTurn();
 		}
 	}
 	
+	private void nextTurn()
+	{
+		this.players.get(currentPlayer).playing = false;
+		currentPlayer++;
+		if (currentPlayer > 3)
+		{
+			currentPlayer = 0;
+		}
+		this.players.get(currentPlayer).playing = true;
+	}
+
 	// Deal a hand of tiles to each player
 	public void dealAll(int num) {
 		for (Entity e : players) {
@@ -184,6 +196,7 @@ public class GameManager {
 		}
 		//TODO Change this so it determines the starting player properly
 		players.get(playerFound).playing = true;
+		currentPlayer = playerFound;
 		return playerFound;
 	}
 	
@@ -223,11 +236,6 @@ public class GameManager {
 			}
 		}
 		return -1;
-	}
-
-	public void endHumanTurn() {
-		this.players.get(0).playing = false;
-		this.players.get(1).playing = true;
 	}
 	
 	public void updateTable(Group g)
@@ -274,6 +282,9 @@ public class GameManager {
 				{
 					//TODO add AIType_4
 					//players.set(i, new AI(new AIType_4()));
+					
+					//Just in case the person picking gets cheeky
+					players.set(i, new AIType_3());
 				}
 			}
 		}
