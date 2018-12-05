@@ -675,12 +675,12 @@ public abstract class AI extends Entity implements AIType {
 
 		Meld run = new Meld();
 		List<Meld> runList = new ArrayList<Meld>();
-		List<Tile> tempList = new ArrayList<Tile>();
-		List<Tile> duplicateList;
+		List<Tile> tempList = new ArrayList<Tile>(); //Keeps track of the original hand of the AI
+		List<Tile> duplicateList; //Keeps track of duplicate numbers;
 		int duplicateCounter;
 
 		tempList.addAll(handList);
-		handList = GameUtils.sortColourFirst(handList);
+		handList = GameUtils.sortColourFirst(handList); //Sorts by the hand by colour
 
 		while (handList.size() >= 2) {
 
@@ -704,11 +704,12 @@ public abstract class AI extends Entity implements AIType {
 					run.tiles.add(handList.get(i));
 
 			}
-			if (run.tiles.size() >= 3) {
+			if (run.tiles.size() >= 3) { 
 
 				Meld tempMeld = new Meld();
 				int iterator = 3;
 
+				//Creates all the possible run melds using one colour.
 				while (iterator != run.tiles.size()) {
 
 					for (int i = 0; i < run.tiles.size(); i++) {
@@ -723,7 +724,9 @@ public abstract class AI extends Entity implements AIType {
 							if (tempMeld.tiles.size() == iterator) {
 
 								runList.add(tempMeld);
-
+								
+								//Adds melds to the final list of runs that have duplicate values 
+								//(i.e. Tiles (1, 2, 2, 3) creates two runs of (1, 2 ,3)
 								if (duplicateList.size() > 0) {
 									duplicateCounter = 0;
 									for (int k = 0; k < duplicateList.size(); k++) {
@@ -762,6 +765,7 @@ public abstract class AI extends Entity implements AIType {
 				handList.remove(0);
 			run = new Meld();
 		}
+		//Clears the hand and re-adds all of it's original cards.
 		handList.clear();
 		handList.addAll(tempList);
 		return runList;
@@ -779,13 +783,14 @@ public abstract class AI extends Entity implements AIType {
 
 		Meld set = new Meld();
 		List<Meld> setList = new ArrayList<Meld>();
-		List<Tile> tempList = new ArrayList<Tile>();
-		List<Tile> duplicateList;
+		List<Tile> tempList = new ArrayList<Tile>(); //Used to hold the AI's hand while the function runs
+		List<Tile> duplicateList; //Used to hold duplicate tiles found
 		int duplicateCounter;
 
 		tempList.addAll(handList);
-		handList = GameUtils.sortRankFirst(handList);
+		handList = GameUtils.sortRankFirst(handList); //Sorts the hand by rank first
 
+		//Creates all the possible set melds using one rank.
 		while (handList.size() >= 2) {
 
 			set.tiles.add(handList.get(0));
@@ -828,6 +833,8 @@ public abstract class AI extends Entity implements AIType {
 
 								setList.add(tempMeld);
 
+								//Adds melds to the final list of sets that have duplicate values 
+								//(i.e. Tiles (B2, B2, R2, O2) creates two runs of (B2, R2 ,O2)
 								if (duplicateList.size() > 0) {
 									duplicateCounter = 0;
 									for (int k = 0; k < duplicateList.size(); k++) {
@@ -866,6 +873,7 @@ public abstract class AI extends Entity implements AIType {
 				handList.remove(0);
 			set = new Meld();
 		}
+		//Clears the hand and re-adds all of it's original cards.
 		handList.clear();
 		handList.addAll(tempList);
 		return setList;
