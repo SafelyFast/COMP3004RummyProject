@@ -130,7 +130,7 @@ public class GameManager {
 		return determineStartingPlayer();
 	}
 	
-	public void playTurn(Entity e, Group g)
+	public void playTurn(Entity e)
 	{
 		if (e instanceof Player == false)
 		{
@@ -139,7 +139,7 @@ public class GameManager {
 		}
 	}
 	
-	private void nextTurn()
+	public void nextTurn()
 	{
 		this.players.get(currentPlayer).playing = false;
 		currentPlayer++;
@@ -265,18 +265,22 @@ public class GameManager {
 				case 0:
 				{
 					players.set(i, new Player());
+					break;
 				}
 				case 1:
 				{
 					players.set(i, new AIType_1());
+					break;
 				}
 				case 2:
 				{
 					players.set(i, new AIType_2());
+					break;
 				}
 				case 3:
 				{
 					players.set(i, new AIType_3());
+					break;
 				}
 				case 4:
 				{
@@ -285,9 +289,15 @@ public class GameManager {
 					
 					//Just in case the person picking gets cheeky
 					players.set(i, new AIType_3());
+					break;
 				}
 			}
 		}
+	}
+
+	public boolean isPlayer(Entity entity)
+	{
+		return (entity instanceof Player);
 	}
 }
 
