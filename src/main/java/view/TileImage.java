@@ -20,7 +20,7 @@ public class TileImage extends DisplayObject {
 	private boolean isRotated;
 	private Glow glowEffect;
 	private DropShadow shadow;
-	private double level;
+	public double level;
 	
 	//Should always load a tile image
 	public TileImage(String faceValue, String color, int x, int y)
@@ -100,6 +100,18 @@ public class TileImage extends DisplayObject {
 	}
 	
 	public void highlightTile(double h) {
+		level += h;
+		
+		if (level > 1.0)
+		{
+			level = 1.0;
+		}
+		else if (level < 0.0)
+		{
+			level = 0.0;
+		}
+		
+		/*
 		if (level + h <= 0) {
 			level = 0;
 		}
@@ -109,9 +121,7 @@ public class TileImage extends DisplayObject {
 		else {
 			level += h;
 		}
-		glowEffect.setLevel(level);
+		*/
 		shadow.setColor(Color.rgb(255, 215, 0, level));
-		System.out.println(level);
-		System.out.println(glowEffect.getLevel());
 	}
 }

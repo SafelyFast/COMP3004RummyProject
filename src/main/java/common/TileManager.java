@@ -174,4 +174,13 @@ public class TileManager {
 		}
 	}
 	
+	public boolean isAllMeldsValid() {
+		for (Meld m : boardMelds) {
+			if (!m.isMeldValid()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
 }
