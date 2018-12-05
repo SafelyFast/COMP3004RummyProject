@@ -142,6 +142,9 @@ public class ViewManager extends Application{
 						hasPlayerPlayed = false;
 						
 						gm.endHumanTurn();
+						for (Meld l : gm.TM.getBoardMelds()) {
+							l.addHighlight(-0.3);
+						}
 						System.out.println("Clicking end turn!");
 						
 						if (gm.isGameOver() == true)
@@ -197,8 +200,9 @@ public class ViewManager extends Application{
 								else {
 									System.out.println("Player: Meld " + heldMeld.ID + " returned to board.");
 								}
-							
-								boardMelds.add(heldMeld);	
+								
+								gm.TM.addMeld(heldMeld);
+								//boardMelds.add(heldMeld);	
 								
 							}
 							hasPlayerPlayed = true;

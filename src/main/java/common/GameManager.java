@@ -6,6 +6,7 @@
 package common;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import common.Entity;
@@ -21,6 +22,7 @@ public class GameManager {
 	**/
 	List<Entity> players;
 	List<Meld> melds;
+	List<Tile> recentTiles;
 	TileManager TM;
 	SnapShot instance;
 	
@@ -29,6 +31,7 @@ public class GameManager {
 		TM = new TileManager();
 		players = new ArrayList<Entity>();
 		melds = new ArrayList<Meld>();
+		recentTiles = new LinkedList<Tile>();
 		
 		players.add(new Player());
 		players.add(new AIType_1());
@@ -40,6 +43,7 @@ public class GameManager {
 		TM = new TileManager(filename);
 		players = new ArrayList<Entity>();
 		melds = new ArrayList<Meld>();
+		recentTiles = new LinkedList<Tile>();
 		
 		players.add(new Player());
 		players.add(new AIType_1());

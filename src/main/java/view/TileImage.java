@@ -3,7 +3,14 @@ package view;
 import view.JText;
 import view.JImage;
 import javafx.scene.Group;
+import javafx.scene.effect.Bloom;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class TileImage extends DisplayObject {
@@ -11,6 +18,9 @@ public class TileImage extends DisplayObject {
 	private JText faceValue;
 	private boolean hasBeenDrawn;
 	private boolean isRotated;
+	private Glow glowEffect;
+	private DropShadow shadow;
+	private double level;
 	
 	//Should always load a tile image
 	public TileImage(String faceValue, String color, int x, int y)
@@ -20,6 +30,14 @@ public class TileImage extends DisplayObject {
 		this.tile = new JImage("tilewhite.png", x, y);
 		this.faceValue = new JText(faceValue, color, x + 1, y + 27);
 		this.hasBeenDrawn = false;
+		level = 0;
+		glowEffect = new Glow(level);
+		shadow = new DropShadow();
+		shadow.setColor(Color.rgb(255, 215, 0, level));
+		shadow.setSpread(0.7);
+		//shadow.setInput(glowEffect);
+		//this.faceValue.getView().setEffect(shadow);
+		this.tile.getView().setEffect(shadow);
 	}
 	
 	public ImageView getImageView()
@@ -79,5 +97,21 @@ public class TileImage extends DisplayObject {
 	{
 		g.getChildren().addAll(this.getImageView(), this.getTextView());
 		this.hasBeenDrawn = true;
+	}
+	
+	public void highlightTile(double h) {
+		if (level + h <= 0) {
+			level = 0;
+		}
+		else if (level + h >= 1) {
+			level = 1;
+		}
+		else {
+			level += h;
+		}
+		glowEffect.setLevel(level);
+		shadow.setColor(Color.rgb(255, 215, 0, level));
+		System.out.println(level);
+		System.out.println(glowEffect.getLevel());
 	}
 }

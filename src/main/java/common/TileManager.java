@@ -72,9 +72,14 @@ public class TileManager {
 	// NOTE: This should only be used for AI, as it will automatically find a
 	// location for the meld
 	public void addMeldToBoardMeld(Meld m) {
-		m.setID();
+		addMeld(m);
 		relocateMeld(m);
+	}
+	
+	public void addMeld(Meld m) {
+		m.setID();
 		boardMelds.add(m);
+		m.addHighlight(0.8);
 	}
 	public Meld getMeldFromBoardAt(int index) { return boardMelds.get(index) ; }
 	public void addTileToBoardMeldAt(Tile t,int index) { boardMelds.get(index).addMeldTile(t);}
