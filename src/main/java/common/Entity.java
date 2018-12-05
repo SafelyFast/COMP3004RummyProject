@@ -36,7 +36,6 @@ public class Entity {
 	}
 
 	public String toString()
-<<<<<<< Updated upstream
 	{
 		return ""; //Edit this later
 	}
@@ -52,29 +51,5 @@ public class Entity {
 			}
 		}
 		return jokerCount;
-=======
-	{	
-		if (this instanceof Player)
-		{
-			return "Player";
-		}
-		else
-		{
-			AI ai = (AI)this;
-			if (ai.behaviour instanceof AIType_1)
-			{
-				return "AIType_1";
-			}
-			else if (ai.behaviour instanceof AIType_2)
-			{
-				return "AIType_2";
-			}
-			else if (ai.behaviour instanceof AIType_3)
-			{
-				return "AIType_3";
-			}
-			return "We have a problem here!";
-		}
->>>>>>> Stashed changes
 	}
 }

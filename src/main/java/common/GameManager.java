@@ -24,8 +24,6 @@ public class GameManager {
 	TileManager TM;
 	SnapShot instance;
 	
-	int currentPlayer;
-	
 	// Default constructor
 	public GameManager() {
 		TM = new TileManager();
@@ -132,16 +130,11 @@ public class GameManager {
 		return determineStartingPlayer();
 	}
 	
-	public void playTurn(Entity e)
+	public void playTurn(Entity e, Group g)
 	{
 		if (e instanceof Player == false)
 		{
-<<<<<<< Updated upstream
 			((AI)e).performAction(TM, this);
-=======
-			((AI)e).performAction(TM, e.hand, this);
-			this.nextTurn();
->>>>>>> Stashed changes
 		}
 	}
 	
@@ -191,7 +184,6 @@ public class GameManager {
 		}
 		//TODO Change this so it determines the starting player properly
 		players.get(playerFound).playing = true;
-		currentPlayer = playerFound;
 		return playerFound;
 	}
 	
@@ -265,11 +257,9 @@ public class GameManager {
 				case 0:
 				{
 					players.set(i, new Player());
-					break;
 				}
 				case 1:
 				{
-<<<<<<< Updated upstream
 					players.set(i, new AIType_1());
 				}
 				case 2:
@@ -279,48 +269,14 @@ public class GameManager {
 				case 3:
 				{
 					players.set(i, new AIType_3());
-=======
-					players.set(i, new AI(new AIType_1()));
-					break;
-				}
-				case 2:
-				{
-					players.set(i, new AI(new AIType_2()));
-					break;
-				}
-				case 3:
-				{
-					players.set(i, new AI(new AIType_3()));
-					break;
->>>>>>> Stashed changes
 				}
 				case 4:
 				{
 					//TODO add AIType_4
 					//players.set(i, new AI(new AIType_4()));
-					
-					//Just in case someone gets cheeky breeki and uses AI 4 when it doesn't exist
-					players.set(i, new AI(new AIType_3()));
-					break;
 				}
 			}
 		}
-	}
-	
-	public boolean isPlayer(Entity e)
-	{
-		return (e instanceof Player);
-	}
-
-	public void nextTurn()
-	{
-		this.players.get(currentPlayer).playing = false;
-		currentPlayer++;
-		if (currentPlayer > 3)
-		{
-			currentPlayer = 0;
-		}
-		this.players.get(currentPlayer).playing = true;
 	}
 }
 
