@@ -12,11 +12,13 @@ public class Entity {
 	 
 	Hand hand;
 	boolean playing;
+	int playerNumber;
 	
 	public Entity()
 	{
 		playing = false;
 		hand = new Hand();
+		playerNumber = 0;
 	}
 	
 	
@@ -68,5 +70,13 @@ public class Entity {
 			}
 		}
 		return jokerCount;
+	}
+	
+	public void setPlayerNumber(int i) {
+		playerNumber = i;
+	}
+	
+	public int getPlayerNumber() {
+		return playerNumber;
 	}
 }

@@ -315,6 +315,7 @@ public class GameManager {
 					break;
 				}
 			}
+			players.get(i).setPlayerNumber(i);
 		}
 	}
 
