@@ -45,7 +45,7 @@ public class ViewManager extends Application{
 	int numMinutes = 0;
 	
 	int framesPassed = 0;
-	int numNeeded = 1000/32;
+	int numNeeded = 60;
 	
 	public ViewManager()
 	{
@@ -434,7 +434,7 @@ public class ViewManager extends Application{
 					
 					try
 					{
-						Thread.sleep(1000/16);
+						Thread.sleep(1000/60);
 					}
 					catch(InterruptedException e)
 					{
