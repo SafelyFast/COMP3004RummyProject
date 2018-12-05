@@ -41,6 +41,12 @@ public class ViewManager extends Application{
 	private JImage playerType[];
 	private int playerTypeInteger[];
 	
+	int numSeconds = 15;
+	int numMinutes = 0;
+	
+	int framesPassed = 0;
+	int numNeeded = 1000/32;
+	
 	public ViewManager()
 	{
 		gm = new GameManager();
@@ -338,6 +344,8 @@ public class ViewManager extends Application{
 			
 			JImage finishButton = new JImage("finish.png", 290, 581);
 			
+			JText timer = new JText(numMinutes + ":" + numSeconds, "black", 250, 581);
+			
 			new AnimationTimer()
 			{
 				@Override
@@ -372,8 +380,33 @@ public class ViewManager extends Application{
 							}
 							turnIndicator.addToDrawingTable(root);
 							endTurnButton.addToDrawingTable(root);
+							timer.addToDrawingTable(root);
 							initialized = true;
 						}
+						
+						if (gm.isPlayer(gm.players.get(gm.findWhoIsPlaying())) == true)
+						{
+							framesPassed++;
+							if (framesPassed == numNeeded)
+							{
+								framesPassed = 0;
+								numSeconds -= 1;
+								if (numSeconds < 0)
+								{
+									numSeconds = 59;
+									numMinutes--;
+									if (numMinutes < 0)
+									{
+										gm.revertSnapShot();
+										gm.nextTurn();
+										numMinutes = 2;
+										numSeconds = 0;
+									}
+								}
+							}
+						}
+						
+						timer.setText(numMinutes + ":" + numSeconds);
 						
 						gm.updateTable(root);
 						
@@ -401,7 +434,7 @@ public class ViewManager extends Application{
 					
 					try
 					{
-						Thread.sleep(16);
+						Thread.sleep(1000/16);
 					}
 					catch(InterruptedException e)
 					{
