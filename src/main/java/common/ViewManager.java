@@ -33,13 +33,15 @@ public class ViewManager extends Application{
 	private static final int PLAYGAME = 3;
 	
 	private static final String typesOfPlayers[] = {"human", "type1", "type2", "type3", "type4", "blank"};
-	
+	private static final String typesOfDecks[] = {"deck", "rigged"};
 	//Y is incremented by 250
 	private static final int playerHandLocationsX[] = { 0, 675,   0, 675};
 	private static final int playerHandLocationsY[] = {50,  50, 350, 350};
 	
 	private JImage playerType[];
+	private JImage deckType;
 	private int playerTypeInteger[];
+	private int deckInteger;
 	
 	int numSeconds = 15;
 	int numMinutes = 0;
@@ -53,6 +55,7 @@ public class ViewManager extends Application{
 		root = null;
 		hasPlayerPlayed = false;
 		state = STARTGAME;
+		deckInteger = 0;
 	}
 	
 	public void mainLoop(String[] args)
@@ -86,6 +89,17 @@ public class ViewManager extends Application{
 								state++;
 							}
 						}
+					}
+					if (MathUtils.withinBounds(mouseX, mouseY, 450, 100, 400, 19)) {
+						deckInteger++;
+						if (deckInteger > 1)
+						{
+							deckInteger = 0;
+						}
+						
+						deckType.removeFromDrawingTable(root);
+						deckType = new JImage(typesOfDecks[deckInteger] + ".png", 450, 400);
+						deckType.addToDrawingTable(root);
 					}
 				}
 				else if (state == GAMESETUP)
@@ -125,6 +139,7 @@ public class ViewManager extends Application{
 						
 						if (numPlayers == numHumans)
 						{
+							gm.TM.loadFile(typesOfDecks[deckInteger]);
 							gm.setupPlayers(playerTypeInteger);
 							gm.gameInit();
 							gm.takeSnapShot();
@@ -301,6 +316,9 @@ public class ViewManager extends Application{
 			
 			JText turnIndicator = new JText("Player's Turn", "black", 400, 595);
 			
+			this.deckType = new JImage("deck.png", 450, 400);
+			deckType.addToDrawingTable(root);
+			
 			JImage playerNumbers[] = new JImage[4];
 			for(int i = 0; i < 4; i++)
 			{
@@ -364,6 +382,7 @@ public class ViewManager extends Application{
 							}
 							//playerNumbers[4].removeFromDrawingTable(root);
 							finishButton.addToDrawingTable(root);
+							deckType.removeFromDrawingTable(root);
 							initialized = true;
 						}
 					}
