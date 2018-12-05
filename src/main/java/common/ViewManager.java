@@ -165,16 +165,13 @@ public class ViewManager extends Application{
 							
 							hasPlayerPlayed = false;
 							if (gm.TM.isAllMeldsValid()) {
-								gm.nextTurn();
+								numMinutes = 2;
+								numSeconds = 0;
+								gm.nextTurn();	
 								
-								for (int i = 0; i < gm.TM.getBoardMeldSize(); i++)
-								{
-									gm.TM.getBoardMelds().get(i).addHighlight(-0.3);
+								for (Meld l : gm.TM.getBoardMelds()) {
+									l.addHighlight(-0.3);
 								}
-								
-								//for (Meld l : TM.getBoardMelds()) {
-								//	l.addHighlight(-0.3);
-								//}
 							}
 							else {
 								gm.revertSnapShot();
@@ -353,7 +350,7 @@ public class ViewManager extends Application{
 			
 			JImage finishButton = new JImage("finish.png", 290, 581);
 			
-			JText timer = new JText(numMinutes + ":" + numSeconds, "black", 250, 581);
+			JText timer = new JText(numMinutes + ":" + numSeconds, "black", 240, 600);
 			gm.takeSnapShot();
 			
 			new AnimationTimer()
@@ -416,7 +413,9 @@ public class ViewManager extends Application{
 							}
 						}
 						
-						timer.setText(numMinutes + ":" + numSeconds);
+						String timerText = String.format("%02d:%02d", numMinutes, numSeconds);
+						
+						timer.setText(timerText);
 						
 						gm.updateTable(root);
 						
