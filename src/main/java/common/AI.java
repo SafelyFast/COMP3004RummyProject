@@ -53,6 +53,8 @@ public abstract class AI extends Entity implements AIType {
 		System.out.println("AI Drawing a card! Has it been drawn? " + succDraw);
 	};
 	
+	
+	
 	// Adds all possible cards to board melds
 	public void addPossibleMelds(TileManager tm) 
 	{ 
@@ -132,11 +134,7 @@ public abstract class AI extends Entity implements AIType {
 									this.hand.tiles.remove(n);
 									if(playableTiles.size() == 2)
 									{
-<<<<<<< HEAD
 										for (int m = 0;m< this.hand.tiles.size();m++)
-=======
-										if(this.hand.tiles.get(n).getColour().equals("Joker") || (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour())))
->>>>>>> 4ab35c274fb81c5007cfb7fbacba49accbc6d83b
 										{
 											if(this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
 											{
@@ -313,16 +311,12 @@ public abstract class AI extends Entity implements AIType {
 			{
 				if(i < numSets)
 				{
-<<<<<<< HEAD
 					int handSize = this.hand.getSize();
 					int preHandSize = 0;
 					ArrayList<Tile> playableTiles = new ArrayList<Tile>();
 					
 					//measures difference in hand size to see if it should continue to try to play tiles onto set
 					while (handSize != preHandSize)
-=======
-					if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
->>>>>>> 4ab35c274fb81c5007cfb7fbacba49accbc6d83b
 					{
 						preHandSize = handSize;
 						tm.getBoardMelds().get(orderedSets[i]).sortByRank();
@@ -332,7 +326,7 @@ public abstract class AI extends Entity implements AIType {
 						{
 							for (int n = 0;n< this.hand.tiles.size();n++)
 							{
-								if (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).isJoker() || this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+								if (this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
 								{
 									tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
 									System.out.println("Played " + this.hand.tiles.get(n).toString());
@@ -341,7 +335,7 @@ public abstract class AI extends Entity implements AIType {
 									{
 										for (int m = 0;m< this.hand.tiles.size();m++)
 										{
-											if(this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).isJoker() ||this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
+											if(this.hand.tiles.get(m).getRank() == playableTiles.get(1).getRank() && this.hand.tiles.get(m).getColour().equals(playableTiles.get(1).getColour()))
 											{
 												tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(m));
 												System.out.println("Played " + this.hand.tiles.get(m).toString());
@@ -368,11 +362,11 @@ public abstract class AI extends Entity implements AIType {
 				ArrayList<Tile> playableTiles = tm.getBoardMelds().get(orderedSets[i]).getMeldExtensions();
 				if(playableTiles.size() > 0)
 				{
+					System.out.println("Checking for sets");
 					for(int n = 0;n< this.hand.tiles.size();n++)
 					{
-						if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).isJoker()  || this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
+						if(this.hand.tiles.get(n).getRank() == playableTiles.get(0).getRank() && this.hand.tiles.get(n).getColour().equals(playableTiles.get(0).getColour()))
 						{
-										
 							tm.getBoardMelds().get(orderedSets[i]).addMeldTile(this.hand.tiles.get(n));
 							System.out.println("Played " + this.hand.tiles.get(n).toString());
 							this.hand.tiles.remove(n);
@@ -383,6 +377,7 @@ public abstract class AI extends Entity implements AIType {
 			}
 		}
 	}
+
 	
 	// Use existing board melds to make new melds
 	/*
