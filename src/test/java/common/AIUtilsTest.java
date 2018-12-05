@@ -217,14 +217,14 @@ import junit.framework.TestCase;
 		assertEquals(3,GM.players.get(1).hand.getSize());	
 		
 		//in this case joker gets played onto meld 4 as G9 since its highest value
-		GM.players.get(1).hand.addTileToHand(new Tile("J",-1));
+	//	GM.players.get(1).hand.addTileToHand(new Tile("j",-1));
 		
-		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
+		//((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
 		
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(7,GM.TM.getMeldFromBoardAt(2).getSize());
-		assertEquals(8,GM.TM.getMeldFromBoardAt(3).getSize());
+		assertEquals(7,GM.TM.getMeldFromBoardAt(3).getSize());
 		assertEquals(3,GM.players.get(1).hand.getSize());	
 		
 		

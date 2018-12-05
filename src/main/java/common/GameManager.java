@@ -14,8 +14,6 @@ import common.Meld;
 import javafx.scene.Group;
 import view.TileImage;
 
-import java.util.Random;
-
 public class GameManager {
 	/** TODO
 	 * 	Add any global variables
@@ -25,6 +23,9 @@ public class GameManager {
 	List<Tile> recentTiles;
 	TileManager TM;
 	SnapShot instance;
+	SnapShot possibleMeldInstance;
+	
+	private int currentPlayer;
 	
 	// Default constructor
 	public GameManager() {
@@ -66,33 +67,38 @@ public class GameManager {
 	//Take a snapshot of the current state of the board and players in order to be able to revert to it later
 	public void takeSnapShot()
 	{
+		
 		//come back to this line in case of memory leak
 		instance = new SnapShot();
 		instance.setPlayers(this.players);
 		instance.setBoardMelds(this.TM.getBoardMelds());
 		//instance.setDeck(this.TM.getDeck());
-		
 	}
+	
 	
 	public void revertSnapShot()
 	{
 		//this.players = this.instance.getPlayers();
 		//player1
+		this.players.get(0).hand.tiles.clear();
 		for(int i = 0; i < instance.getPlayers().get(0).hand.tiles.size();i++)
 		{
 			this.players.get(0).hand.tiles.add(i,instance.getPlayers().get(0).hand.tiles.get(i));
 		}
 		//player2
+		this.players.get(1).hand.tiles.clear();
 		for(int i = 0; i < instance.getPlayers().get(1).hand.tiles.size();i++)
 		{
 			this.players.get(1).hand.tiles.add(i,instance.getPlayers().get(1).hand.tiles.get(i));
 		}
 		//player3
+		this.players.get(2).hand.tiles.clear();
 		for(int i = 0; i < instance.getPlayers().get(2).hand.tiles.size();i++)
 		{
 			this.players.get(2).hand.tiles.add(i,instance.getPlayers().get(2).hand.tiles.get(i));
 		}
 		//player4
+		this.players.get(3).hand.tiles.clear();
 		for(int i = 0; i < instance.getPlayers().get(3).hand.tiles.size();i++)
 		{
 			this.players.get(3).hand.tiles.add(i,instance.getPlayers().get(3).hand.tiles.get(i));
@@ -134,14 +140,29 @@ public class GameManager {
 		return determineStartingPlayer();
 	}
 	
-	public void playTurn(Entity e, Group g)
+	public void playTurn(Entity e)
 	{
 		if (e instanceof Player == false)
 		{
 			((AI)e).performAction(TM, this);
+			this.nextTurn();
 		}
 	}
 	
+	public void nextTurn()
+	{
+		for (Meld l : TM.getBoardMelds()) {
+			l.addHighlight(-0.3);
+		}
+		this.players.get(currentPlayer).playing = false;
+		currentPlayer++;
+		if (currentPlayer > 3)
+		{
+			currentPlayer = 0;
+		}
+		this.players.get(currentPlayer).playing = true;
+	}
+
 	// Deal a hand of tiles to each player
 	public void dealAll(int num) {
 		for (Entity e : players) {
@@ -188,6 +209,7 @@ public class GameManager {
 		}
 		//TODO Change this so it determines the starting player properly
 		players.get(playerFound).playing = true;
+		currentPlayer = playerFound;
 		return playerFound;
 	}
 	
@@ -228,11 +250,6 @@ public class GameManager {
 		}
 		return -1;
 	}
-
-	public void endHumanTurn() {
-		this.players.get(0).playing = false;
-		this.players.get(1).playing = true;
-	}
 	
 	public void updateTable(Group g)
 	{
@@ -261,26 +278,39 @@ public class GameManager {
 				case 0:
 				{
 					players.set(i, new Player());
+					break;
 				}
 				case 1:
 				{
 					players.set(i, new AIType_1());
+					break;
 				}
 				case 2:
 				{
 					players.set(i, new AIType_2());
+					break;
 				}
 				case 3:
 				{
 					players.set(i, new AIType_3());
+					break;
 				}
 				case 4:
 				{
 					//TODO add AIType_4
 					//players.set(i, new AI(new AIType_4()));
+					
+					//Just in case the person picking gets cheeky
+					players.set(i, new AIType_3());
+					break;
 				}
 			}
 		}
+	}
+
+	public boolean isPlayer(Entity entity)
+	{
+		return (entity instanceof Player);
 	}
 }
 
