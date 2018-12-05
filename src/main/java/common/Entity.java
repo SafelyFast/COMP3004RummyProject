@@ -37,7 +37,23 @@ public class Entity {
 
 	public String toString()
 	{
-		return ""; //Edit this later
+		if (this instanceof Player)
+		{
+			return "Player";
+		}
+		else if (this instanceof AIType_1)
+		{
+			return "AIType_1";
+		}
+		else if (this instanceof AIType_2)
+		{
+			return "AIType_2";
+		}
+		else if (this instanceof AIType_3)
+		{
+			return "AIType_3";
+		}
+		return "We got a problem here!";
 	}
 	
 	public int handHasJoker()
