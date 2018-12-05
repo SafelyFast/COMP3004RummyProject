@@ -66,10 +66,12 @@ public class SnapShot {
 		for(int i = 0; i < m.size();i++)
 		{
 			snapBoardMelds.add(new Meld());
+			snapBoardMelds.get(i).setX(m.get(i).getX());
+			snapBoardMelds.get(i).setY(m.get(i).getY());
 			for(int n = 0; n < m.get(i).getSize();n++)
 			{
 				Tile tile = m.get(i).getTileAt(n);
-				snapBoardMelds.get(i).addMeldTile(tile);
+				snapBoardMelds.get(i).addMeldTileWOHighlight(tile);
 			}
 		}
 	}

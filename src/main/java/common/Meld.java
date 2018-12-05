@@ -83,6 +83,13 @@ public class Meld extends DisplayObject {
 		this.updateMeldPosition(this.getX(), this.getY());
 	}
 	
+	public void addMeldTileWOHighlight(Tile tile) {
+		this.tiles.add(tile);
+		this.sortByRank();
+		this.alignTiles();
+		this.updateMeldPosition(this.getX(), this.getY());
+;	}
+	
 	public Tile removeMeldTile(int i)
 	{
 		if (i >= this.tiles.size())

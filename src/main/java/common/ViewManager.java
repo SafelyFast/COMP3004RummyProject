@@ -164,8 +164,21 @@ public class ViewManager extends Application{
 							}
 							
 							hasPlayerPlayed = false;
-							
-							gm.nextTurn();
+							if (gm.TM.isAllMeldsValid()) {
+								gm.nextTurn();
+								
+								for (int i = 0; i < gm.TM.getBoardMeldSize(); i++)
+								{
+									gm.TM.getBoardMelds().get(i).addHighlight(-0.3);
+								}
+								
+								//for (Meld l : TM.getBoardMelds()) {
+								//	l.addHighlight(-0.3);
+								//}
+							}
+							else {
+								gm.revertSnapShot();
+							}
 							System.out.println("Clicking end turn!");
 							
 							if (gm.isGameOver() == true)
@@ -213,9 +226,7 @@ public class ViewManager extends Application{
 										currentMeld.addMeld(heldMeld);
 										break;
 									}
-								}								
-								gm.TM.addMeld(heldMeld);
-								//boardMelds.add(heldMeld);	
+								}
 
 								if (onMeld == false)
 								{
@@ -226,7 +237,7 @@ public class ViewManager extends Application{
 									else {
 										System.out.println("Player: Meld " + heldMeld.ID + " returned to board.");
 									}
-									boardMelds.add(heldMeld);	
+									gm.TM.addMeld(heldMeld);
 									
 								}
 								hasPlayerPlayed = true;
@@ -296,8 +307,6 @@ public class ViewManager extends Application{
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
-			List<Entity> players = gm.players;
-			
 			System.out.println("Done setup");
 			
 			JImage endTurnButton = new JImage("EndTurn.png", 290, 581);
@@ -345,6 +354,7 @@ public class ViewManager extends Application{
 			JImage finishButton = new JImage("finish.png", 290, 581);
 			
 			JText timer = new JText(numMinutes + ":" + numSeconds, "black", 250, 581);
+			gm.takeSnapShot();
 			
 			new AnimationTimer()
 			{

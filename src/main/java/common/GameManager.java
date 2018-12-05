@@ -72,6 +72,7 @@ public class GameManager {
 		instance = new SnapShot();
 		instance.setPlayers(this.players);
 		instance.setBoardMelds(this.TM.getBoardMelds());
+		instance.setDeck(TM.getDeck());
 		//instance.setDeck(this.TM.getDeck());
 	}
 	
@@ -106,8 +107,13 @@ public class GameManager {
 		//System.out.println(this.melds.get(0).getTileAt(0).toString());
 		//System.out.println(this.melds.get(0).getTileAt(1).toString());
 		
+		// Sets deck
+		this.TM.setDeck(instance.getDeck());
 		
 		//sets melds
+		
+		this.TM.setBoardMelds(instance.getBoardMelds());
+		/*
 		this.TM.getBoardMelds().clear();
 		//System.out.println(this.melds.get(0).getTileAt(0).toString());
 		System.out.println("--------------------------------------------------");
@@ -128,6 +134,8 @@ public class GameManager {
 				
 			}
 		}
+		
+		*/
 		
 		//this.TM.setDeck(this.instance.getDeck());
 	}
@@ -151,9 +159,9 @@ public class GameManager {
 	
 	public void nextTurn()
 	{
-		for (Meld l : TM.getBoardMelds()) {
-			l.addHighlight(-0.3);
-		}
+		//for (Meld l : TM.getBoardMelds()) {
+		//	l.addHighlight(-0.3);
+		//}
 		this.players.get(currentPlayer).playing = false;
 		currentPlayer++;
 		if (currentPlayer > 3)
@@ -161,6 +169,8 @@ public class GameManager {
 			currentPlayer = 0;
 		}
 		this.players.get(currentPlayer).playing = true;
+		
+		takeSnapShot();
 	}
 
 	// Deal a hand of tiles to each player
