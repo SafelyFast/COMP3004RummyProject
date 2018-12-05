@@ -69,11 +69,15 @@ public class Meld extends DisplayObject {
 	public void addMeldTileToFront(Tile tile)
 	{
 		this.tiles.add(0, tile);
+		this.sortByRank();
+		this.alignTiles();
 	}
 	
 	public void addMeldTile(Tile tile)
 	{
 		this.tiles.add(tile);
+		this.sortByRank();
+		this.alignTiles();
 		this.updateMeldPosition(this.getX(), this.getY());
 	}
 	
@@ -83,7 +87,9 @@ public class Meld extends DisplayObject {
 		{
 			return null;
 		}
+		this.alignTiles();
 		return this.tiles.remove(i);
+		
 	}
 	
 	public void updateMeldPosition(int x, int y)
@@ -108,7 +114,7 @@ public class Meld extends DisplayObject {
 			ArrayList<Tile> result = new ArrayList<Tile>();
 			if(tiles.get(0).getRank() == tiles.get(1).getRank() && this.getSize() == 3)
 			{
-				String possibleColours = "RGBO";
+				String possibleColours = "RGBOJ";
 				
 				for(int i =0;i<3;i++)
 				{
@@ -127,6 +133,10 @@ public class Meld extends DisplayObject {
 					else if(tiles.get(i).getColour().equals("Orange"))
 					{
 						possibleColours = possibleColours.replace("O","");
+					}
+					else if(tiles.get(i).getColour().equals("Joker"))
+					{
+						possibleColours = possibleColours.replace("J","");
 					}
 					else
 					{
@@ -314,7 +324,7 @@ public class Meld extends DisplayObject {
 		}
 		this.alignTiles();
 	}
-	
+
 	public void addMeldFront(Meld m) {
 		for (int i = 0; i < m.getSize(); i++) {
 			this.addMeldTileToFront(m.getTileAt(i));

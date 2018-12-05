@@ -12,6 +12,7 @@ import view.TileImage;
 import javafx.scene.*;
 import javafx.scene.paint.Color;
 import javafx.event.EventHandler;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import common.MathUtils;
@@ -20,7 +21,6 @@ public class ViewManager extends Application{
 	private GameManager gm;
 	private Meld heldMeld;
 	private int initialX, initialY;
-	private boolean playerTurn;
 	private boolean gameOver;
 	private boolean hasPlayerPlayed;
 	private Group root;
@@ -33,6 +33,10 @@ public class ViewManager extends Application{
 	private static final int PLAYGAME = 3;
 	
 	private static final String typesOfPlayers[] = {"human", "type1", "type2", "type3", "type4"};
+	
+	//Y is incremented by 250
+	private static final int playerHandLocationsX[] = { 0, 675,   0, 675};
+	private static final int playerHandLocationsY[] = {50,  50, 350, 350};
 	
 	private JImage playerType[];
 	private int playerTypeInteger[];
@@ -63,6 +67,8 @@ public class ViewManager extends Application{
 				
 				if (state == STARTGAME)
 				{
+					boolean clicked = false;
+					
 					for(int i = 0; i < 2; i++) //i is y
 					{
 						for (int j = 0; j < 2; j++) //j is x
@@ -73,10 +79,20 @@ public class ViewManager extends Application{
 								numHumans = (i * 2 + j) + 1;
 								state++;
 							}
+							else if (MathUtils.withinBounds(mouseX, mouseY, 350, 100, 250, 19) == true)
+							{
+								System.out.println("clicking 0 players");
+								numHumans = 0;
+								if (!clicked)
+								{
+									state++;
+									clicked = !clicked;
+								}
+							}
 						}
 					}
 				}
-				if (state == GAMESETUP)
+				else if (state == GAMESETUP)
 				{
 					for(int i = 0; i < 2; i++) //i is y
 					{
@@ -116,117 +132,130 @@ public class ViewManager extends Application{
 							gm.setupPlayers(playerTypeInteger);
 							gm.gameInit();
 							state++;
+							initialized = false;
 						}
 					}
 				}
 				
-				if (playerTurn == true)
+				else if (state == PLAYGAME)
 				{
-					if (mouseX > 290 && mouseY > 580)
+					int whoIsPlaying = gm.findWhoIsPlaying();
+					Entity currentPlayer = gm.players.get(whoIsPlaying);
+					if (gm.isPlayer(currentPlayer) == true)
 					{
-						if (hasPlayerPlayed == false)
+						if (mouseX > 290 && mouseY > 580)
 						{
-							Entity p = gm.players.get(0);
-							boolean properlyAddedTile = p.addTile(gm.TM.getNext());
-							if (properlyAddedTile == true)
+							if (hasPlayerPlayed == false)
 							{
-								p.hand.alignTiles(0);
-								p.hand.getTile(p.hand.getSize() - 1).getImage().addToDrawingTable(root);
-								
+								Entity p = currentPlayer;
+								boolean properlyAddedTile = p.addTile(gm.TM.getNext());
+								if (properlyAddedTile == true)
+								{
+									p.hand.alignTiles(whoIsPlaying);
+									p.hand.getTile(p.hand.getSize() - 1).getImage().addToDrawingTable(root);
+									
+								}
 							}
-
-							playerTurn = false;
-						}
-						
-						hasPlayerPlayed = false;
-						
-						gm.endHumanTurn();
-						System.out.println("Clicking end turn!");
-						
-						if (gm.isGameOver() == true)
-						{
-							gameOver = true;
-						}
-					}
-					
-					if (heldMeld != null)
-					{
-						Hand humanHand = gm.players.get(0).hand;
-						if (heldMeld.getTileAt(0).getImage().getY() <= ((humanHand.getSize() / 5) + 1) * 40 && heldMeld.getTileAt(0).getImage().getX() <= 125)
-						{
-							if (heldMeld.getSize() == 1)
+							
+							hasPlayerPlayed = false;
+							
+							gm.nextTurn();
+							System.out.println("Clicking end turn!");
+							
+							if (gm.isGameOver() == true)
 							{
-								System.out.println("Adding tile to hand");
-								Tile t = heldMeld.getTileAt(0);
-								gm.players.get(0).hand.addTileToHand(t);
+								gameOver = true;
+							}
+						}
+						
+						if (heldMeld != null)
+						{
+							Hand humanHand = currentPlayer.hand;
+							//This line needs to change to accomodate an arbitrary hand
+							TileImage tile = heldMeld.getTileAt(0).getImage();
+							if (MathUtils.withinBounds(tile.getX(), tile.getY(), playerHandLocationsX[whoIsPlaying], 125, playerHandLocationsY[whoIsPlaying], 250))
+							{
+								if (heldMeld.getSize() == 1)
+								{
+									System.out.println("Adding tile to hand");
+									Tile t = heldMeld.getTileAt(0);
+									humanHand.addTileToHand(t);
+								}
+								else
+								{
+									System.out.println("Cant add a meld of size > 1 to the hand");
+									heldMeld.updateMeldPosition(initialX, initialY);
+									gm.TM.getBoardMelds().add(heldMeld);
+								}
 							}
 							else
 							{
-								System.out.println("Cant add a meld of size > 1 to the hand");
-								heldMeld.updateMeldPosition(initialX, initialY);
-								gm.TM.getBoardMelds().add(heldMeld);
+								boolean onMeld = false;
+								List<Meld> boardMelds = gm.TM.getBoardMelds();
+								for(int i = 0; i < gm.TM.getBoardMeldSize(); i++)
+								{
+									Meld currentMeld = boardMelds.get(i);
+									if (MathUtils.withinBounds(mouseX, mouseY, currentMeld.getX(), (int) (25 * 0.5 * currentMeld.getSize()), currentMeld.getY(), 40))
+									{
+										onMeld = true;
+										currentMeld.addMeldFront(heldMeld);
+										break;
+									}
+									else if (MathUtils.withinBounds(mouseX, mouseY, (int) (currentMeld.getX() + 25 * 0.5 * currentMeld.getSize()), (int) (25 * 0.5 * currentMeld.getSize()), currentMeld.getY(), 40))
+									{
+										onMeld = true;
+										currentMeld.addMeld(heldMeld);
+										break;
+									}
+								}
+								if (onMeld == false)
+								{
+									if(heldMeld.ID == 0) {
+										heldMeld.setID();
+										System.out.println("Player: Meld " + heldMeld.ID + " created.");
+									}
+									else {
+										System.out.println("Player: Meld " + heldMeld.ID + " returned to board.");
+									}
+								
+									boardMelds.add(heldMeld);	
+									
+								}
+								hasPlayerPlayed = true;
 							}
+							heldMeld = null;
 						}
 						else
 						{
-							boolean onMeld = false;
-							List<Meld> boardMelds = gm.TM.getBoardMelds();
+							initialX = mouseX;
+							initialY = mouseY;
+							System.out.println("clicked the mouse. " + mouseX + " " + mouseY);
+							for(int i = 0; i < currentPlayer.hand.getSize(); i++)
+							{
+								TileImage currentTile = currentPlayer.hand.getTile(i).getImage();
+								if (MathUtils.withinBounds(initialX, initialY, currentTile.getX(), 25, currentTile.getY(), 40))
+								{
+									Tile t = currentPlayer.hand.removeTile(i);
+									currentPlayer.hand.alignTiles(whoIsPlaying);
+									heldMeld = new Meld(t.getXPosition(), t.getYPosition(), t);
+									break;
+								}
+							}
 							for(int i = 0; i < gm.TM.getBoardMeldSize(); i++)
 							{
-								Meld currentMeld = boardMelds.get(i);
-								if (MathUtils.withinBounds(mouseX, mouseY, currentMeld.getX(), (int) (25 * 0.5 * currentMeld.getSize()), currentMeld.getY(), 40))
+								Meld currentMeld = gm.TM.getBoardMelds().get(i);
+								if (MathUtils.withinBounds(initialX, initialY, currentMeld.getX(), 25 * currentMeld.getSize(), currentMeld.getY(), 40))
 								{
-									onMeld = true;
-									currentMeld.addMeldFront(heldMeld);
+									if (e.getButton() == MouseButton.SECONDARY) {
+										int indexToRemove = (initialX - currentMeld.getX()) / 25;
+										heldMeld = new Meld(gm.TM.getBoardMelds().get(i).removeMeldTile(indexToRemove));
+										gm.TM.getBoardMelds().get(i).alignTiles();
+									}
+									else {
+										heldMeld = gm.TM.getBoardMelds().remove(i);
+									}
 									break;
 								}
-								else if (MathUtils.withinBounds(mouseX, mouseY, (int) (currentMeld.getX() + 25 * 0.5 * currentMeld.getSize()), (int) (25 * 0.5 * currentMeld.getSize()), currentMeld.getY(), 40))
-								{
-									onMeld = true;
-									currentMeld.addMeld(heldMeld);
-									break;
-								}
-							}
-							if (onMeld == false)
-							{
-								if(heldMeld.ID == 0) {
-									heldMeld.setID();
-									System.out.println("Player: Meld " + heldMeld.ID + " created.");
-								}
-								else {
-									System.out.println("Player: Meld " + heldMeld.ID + " returned to board.");
-								}
-							
-								boardMelds.add(heldMeld);	
-								
-							}
-							hasPlayerPlayed = true;
-						}
-						heldMeld = null;
-					}
-					else
-					{
-						initialX = mouseX;
-						initialY = mouseY;
-						System.out.println("clicked the mouse. " + mouseX + " " + mouseY);
-						for(int i = 0; i < gm.players.get(0).hand.getSize(); i++)
-						{
-							TileImage currentTile = gm.players.get(0).hand.getTile(i).getImage();
-							if (MathUtils.withinBounds(initialX, initialY, currentTile.getX(), 25, currentTile.getY(), 40))
-							{
-								Tile t = gm.players.get(0).hand.removeTile(i);
-								gm.players.get(0).hand.alignTiles(0);
-								heldMeld = new Meld(t.getXPosition(), t.getYPosition(), t);
-								break;
-							}
-						}
-						for(int i = 0; i < gm.TM.getBoardMeldSize(); i++)
-						{
-							Meld currentMeld = gm.TM.getBoardMelds().get(i);
-							if (MathUtils.withinBounds(initialX, initialY, currentMeld.getX(), 25 * currentMeld.getSize(), currentMeld.getY(), 40))
-							{
-								heldMeld = gm.TM.getBoardMelds().remove(i);
-								break;
 							}
 						}
 					}
@@ -250,7 +279,6 @@ public class ViewManager extends Application{
 		
 		try
 		{
-			
 			root = new Group();
 			Scene scene = new Scene(root, 800, 600);
 			scene.setFill(Color.DARKGREEN);
@@ -261,36 +289,14 @@ public class ViewManager extends Application{
 			primaryStage.show();
 			
 			List<Entity> players = gm.players;
-
-			players.get(0).playing = true;
-			
-			/*
-			for(int i = 0; i < 4; i++)
-			{
-				Entity p = players.get(i);
-				for(int drawnCards = 0; drawnCards < 14; drawnCards++)
-				{
-					p.addTile(gm.TM.getNext());
-					
-					if (i == 0)
-					{
-						p.playing = true;
-					}
-				}
-				GameUtils.sortColourFirst(p.hand.tiles);
-				p.hand.alignTiles(i);
-			}
-			*/
 			
 			System.out.println("Done setup");
 			
 			JImage endTurnButton = new JImage("EndTurn.png", 290, 581);
-			//endTurnButton.addToDrawingTable(root);
 			
 			JText turnIndicator = new JText("Player's Turn", "black", 400, 595);
-			//turnIndicator.addToDrawingTable(root);
 			
-			JImage playerNumbers[] = new JImage[4];
+			JImage playerNumbers[] = new JImage[5];
 			for(int i = 0; i < 4; i++)
 			{
 				int xOffset = 0;
@@ -307,11 +313,14 @@ public class ViewManager extends Application{
 				playerNumbers[i].addToDrawingTable(root);
 			}
 			
+			//Sorta shoehorned in at the last moment! Deadlines ftw
+			playerNumbers[4] = new JImage("0p.png", 350, 250);
+			playerNumbers[4].addToDrawingTable(root);
+			
 			JText playerLabels[] = new JText[4];
 			for(int i = 0; i < 4; i++)
 			{
 				playerLabels[i] = new JText("Player " + (i + 1), "black", (i % 2) * 675, (i / 2) * 300 + 30);
-				//playerLabels[i].addToDrawingTable(root);
 			}
 			
 			playerType = new JImage[4];
@@ -346,15 +355,27 @@ public class ViewManager extends Application{
 								playerLabels[i].addToDrawingTable(root);
 								playerType[i].addToDrawingTable(root);
 							}
+							playerNumbers[4].removeFromDrawingTable(root);
 							finishButton.addToDrawingTable(root);
 							initialized = true;
 						}
 					}
 					else
 					{
+						if (initialized == false)
+						{
+							for (int i = 0; i < 4; i++)
+							{
+								playerType[i].removeFromDrawingTable(root);
+							}
+							turnIndicator.addToDrawingTable(root);
+							endTurnButton.addToDrawingTable(root);
+							initialized = true;
+						}
+						
 						gm.updateTable(root);
 						
-						if (gameOver == true)
+						if (gm.isGameOver() == true || gameOver == true)
 						{
 							this.stop();
 						}
@@ -362,30 +383,13 @@ public class ViewManager extends Application{
 						int whoIsPlaying = gm.findWhoIsPlaying();
 						if (whoIsPlaying != -1)
 						{
-							if (whoIsPlaying == 0)
-							{
-								GameUtils.sortColourFirst(gm.players.get(0).hand.tiles);
-								gm.players.get(0).hand.alignTiles(0);
-								turnIndicator.setText("Player's turn");
-								playerTurn = true;							
-							}
-							else
-							{
-								turnIndicator.setText("AI #" + whoIsPlaying + "'s turn");
-								gm.playTurn(gm.players.get(whoIsPlaying), root);
-								GameUtils.sortColourFirst(gm.players.get(whoIsPlaying).hand.tiles);
-								gm.players.get(whoIsPlaying).hand.alignTiles(whoIsPlaying);
-								gm.TM.refreshBoard(root);
-								gm.players.get(whoIsPlaying).playing = false;
-								gm.players.get((whoIsPlaying + 1) % 4).playing = true;
-								
-								if (gm.isGameOver() == true)
-								{
-									turnIndicator.setText("Game Over!");
-									//turnIndicator.addToDrawingTable(root);
-									this.stop();
-								}
-							}
+							Entity currentPlayer = gm.players.get(whoIsPlaying);
+							
+							turnIndicator.setText("Player " + (whoIsPlaying + 1) + " is of type " + currentPlayer);
+							
+							GameUtils.sortColourFirst(currentPlayer.hand.tiles);
+							currentPlayer.hand.alignTiles(whoIsPlaying);
+							gm.playTurn(currentPlayer);
 						}
 						else
 						{
@@ -395,7 +399,7 @@ public class ViewManager extends Application{
 					
 					try
 					{
-						Thread.sleep(100);
+						Thread.sleep(16);
 					}
 					catch(InterruptedException e)
 					{
