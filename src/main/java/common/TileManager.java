@@ -104,7 +104,7 @@ public class TileManager {
 		{
 			return null;
 		}
-		String cardToDraw = deck.remove(deck.size() - 1);
+		String cardToDraw = deck.remove(0);
 		String colour;
 		int rank;
 		// Extract the colour and rank of the next card, then remove it from the list

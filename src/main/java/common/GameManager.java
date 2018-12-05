@@ -141,9 +141,10 @@ public class GameManager {
 	// Initialize parameters and resources for a new game such player hands, tileManager melds 
 	//returns an int representing the entity that goes first
 	public int gameInit() {
+		int starting = determineStartingPlayer();
 		dealAll(14);
 		
-		return determineStartingPlayer();
+		return starting;
 	}
 	
 	public void playTurn(Entity e)
