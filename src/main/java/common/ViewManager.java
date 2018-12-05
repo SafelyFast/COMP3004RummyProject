@@ -32,7 +32,7 @@ public class ViewManager extends Application{
 	private static final int GAMESETUP = 2;
 	private static final int PLAYGAME = 3;
 	
-	private static final String typesOfPlayers[] = {"human", "type1", "type2", "type3", "type4"};
+	private static final String typesOfPlayers[] = {"human", "type1", "type2", "type3", "type4", "blank"};
 	
 	//Y is incremented by 250
 	private static final int playerHandLocationsX[] = { 0, 675,   0, 675};
@@ -85,16 +85,6 @@ public class ViewManager extends Application{
 								numHumans = (i * 2 + j) + 1;
 								state++;
 							}
-							else if (MathUtils.withinBounds(mouseX, mouseY, 350, 100, 250, 19) == true)
-							{
-								System.out.println("clicking 0 players");
-								numHumans = 0;
-								if (!clicked)
-								{
-									state++;
-									clicked = !clicked;
-								}
-							}
 						}
 					}
 				}
@@ -109,7 +99,7 @@ public class ViewManager extends Application{
 								int index = (i * 2 + j);
 								System.out.println("i: " + i + ", j: " + j + ", total: " + index);
 								playerTypeInteger[index] = playerTypeInteger[index] + 1;
-								if (playerTypeInteger[index] > 4)
+								if (playerTypeInteger[index] > 5)
 								{
 									playerTypeInteger[index] = 0;
 								}
@@ -122,21 +112,22 @@ public class ViewManager extends Application{
 					
 					if (MathUtils.withinBounds(mouseX, mouseY, 290, 100, 581, 19) == true)
 					{
-						int numAI = 0;
-						for (int i = 0; i < 4; i++)
+						int numPlayers = 0;
+						for(int i = 0; i < 4; i++)
 						{
-							if (playerTypeInteger[i] > 0)
+							if (playerTypeInteger[i] != 5)
 							{
-								numAI++;
+								numPlayers++;
 							}
 						}
 						
-						System.out.println("AI's: " + numAI + ", humans: " + numHumans);
+						System.out.println("Number of players: " + numPlayers + " expected " + numHumans + " of them.");
 						
-						if (numAI == 4 - numHumans)
+						if (numPlayers == numHumans)
 						{
 							gm.setupPlayers(playerTypeInteger);
 							gm.gameInit();
+							gm.takeSnapShot();
 							state++;
 							initialized = false;
 						}
@@ -310,7 +301,7 @@ public class ViewManager extends Application{
 			
 			JText turnIndicator = new JText("Player's Turn", "black", 400, 595);
 			
-			JImage playerNumbers[] = new JImage[5];
+			JImage playerNumbers[] = new JImage[4];
 			for(int i = 0; i < 4; i++)
 			{
 				int xOffset = 0;
@@ -328,8 +319,8 @@ public class ViewManager extends Application{
 			}
 			
 			//Sorta shoehorned in at the last moment! Deadlines ftw
-			playerNumbers[4] = new JImage("0p.png", 350, 250);
-			playerNumbers[4].addToDrawingTable(root);
+			//playerNumbers[4] = new JImage("0p.png", 350, 250);
+			//playerNumbers[4].addToDrawingTable(root);
 			
 			JText playerLabels[] = new JText[4];
 			for(int i = 0; i < 4; i++)
@@ -351,7 +342,6 @@ public class ViewManager extends Application{
 			JImage finishButton = new JImage("finish.png", 290, 581);
 			
 			JText timer = new JText(numMinutes + ":" + numSeconds, "black", 240, 600);
-			gm.takeSnapShot();
 			
 			new AnimationTimer()
 			{
@@ -372,7 +362,7 @@ public class ViewManager extends Application{
 								playerLabels[i].addToDrawingTable(root);
 								playerType[i].addToDrawingTable(root);
 							}
-							playerNumbers[4].removeFromDrawingTable(root);
+							//playerNumbers[4].removeFromDrawingTable(root);
 							finishButton.addToDrawingTable(root);
 							initialized = true;
 						}
@@ -421,6 +411,7 @@ public class ViewManager extends Application{
 						
 						if (gm.isGameOver() == true || gameOver == true)
 						{
+							turnIndicator.setText("Game over! Player " + gm.findWhoIsPlaying() + " won!");
 							this.stop();
 						}
 						
