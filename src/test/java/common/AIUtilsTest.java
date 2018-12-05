@@ -107,11 +107,11 @@ import junit.framework.TestCase;
 		
 		//set of 4s
 		Meld meld1 = new Meld();
-		Tile tile1 = new Tile("R",4);
+		Tile tile1 = new Tile("R",11);
 		meld1.addMeldTile(tile1);
-		Tile tile2 = new Tile("G",4);
+		Tile tile2 = new Tile("G",11);
 		meld1.addMeldTile(tile2);
-		Tile tile3 = new Tile("B",4);
+		Tile tile3 = new Tile("B",11);
 		meld1.addMeldTile(tile3);
 		
 		//run with room on both head and tail
@@ -150,7 +150,6 @@ import junit.framework.TestCase;
 		GM.players.get(1).hand.addTileToHand(new Tile("R",4));
 		GM.players.get(1).hand.addTileToHand(new Tile("O",3));
 		GM.players.get(1).hand.addTileToHand(new Tile("G",6));
-		GM.players.get(1).hand.addTileToHand(new Tile("G",2));
 		
 		//in this case does nothing
 		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
@@ -159,10 +158,10 @@ import junit.framework.TestCase;
 		assertEquals(3,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(2).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(3).getSize());
-		assertEquals(4,GM.players.get(1).hand.getSize());
+		assertEquals(3,GM.players.get(1).hand.getSize());
 		
 		//add tile that should goes into first meld
-		GM.players.get(1).hand.addTileToHand(new Tile("O",4));
+		GM.players.get(1).hand.addTileToHand(new Tile("O",11));
 		
 		//in this case adds O4 to meld1
 		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
@@ -171,7 +170,7 @@ import junit.framework.TestCase;
 		assertEquals(3,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(2).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(3).getSize());
-		assertEquals(4,GM.players.get(1).hand.getSize());
+		assertEquals(3,GM.players.get(1).hand.getSize());
 		
 		//add two tiles that should go into second meld
 		GM.players.get(1).hand.addTileToHand(new Tile("O",2));
@@ -184,7 +183,7 @@ import junit.framework.TestCase;
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(2).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(3).getSize());
-		assertEquals(4,GM.players.get(1).hand.getSize());
+		assertEquals(3,GM.players.get(1).hand.getSize());
 		
 		
 		//add tile that should goes into third meld
@@ -200,7 +199,7 @@ import junit.framework.TestCase;
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(7,GM.TM.getMeldFromBoardAt(2).getSize());
 		assertEquals(3,GM.TM.getMeldFromBoardAt(3).getSize());
-		assertEquals(4,GM.players.get(1).hand.getSize());		
+		assertEquals(3,GM.players.get(1).hand.getSize());		
 		
 		//add sequence of tiles that should goes into fourth meld at head and tail
 		GM.players.get(1).hand.addTileToHand(new Tile("G",4));
@@ -213,23 +212,66 @@ import junit.framework.TestCase;
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
 		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(7,GM.TM.getMeldFromBoardAt(2).getSize());
-		assertEquals(7,GM.TM.getMeldFromBoardAt(3).getSize());
+		assertEquals(6,GM.TM.getMeldFromBoardAt(3).getSize());
 		assertEquals(3,GM.players.get(1).hand.getSize());	
 		
 		//in this case joker gets played onto meld 4 as G9 since its highest value
-	//	GM.players.get(1).hand.addTileToHand(new Tile("j",-1));
 		
-		//((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
+		GM.players.get(1).hand.addTileToHand(new Tile("j",-1));
+		
+		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
+		
+		
 		
 		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
-		assertEquals(5,GM.TM.getMeldFromBoardAt(1).getSize());
+		assertEquals(6,GM.TM.getMeldFromBoardAt(1).getSize());
 		assertEquals(7,GM.TM.getMeldFromBoardAt(2).getSize());
-		assertEquals(7,GM.TM.getMeldFromBoardAt(3).getSize());
+		assertEquals(6,GM.TM.getMeldFromBoardAt(3).getSize());
 		assertEquals(3,GM.players.get(1).hand.getSize());	
+		
 		
 		
 		
 	}
+ 	
+ 	public void testAddPossibleMelds2()
+	{
+		GameManager GM = new GameManager();
+		GM.gameInit();
+		//empty ai1s hand
+		for(int i = 0;i<15;i++)
+		{
+			GM.players.get(1).hand.tiles.remove(0);
+		}
+		assertEquals(0,GM.players.get(1).hand.getSize());
+		
+		//set of 11s
+		Meld meld1 = new Meld();
+		Tile tile1 = new Tile("R",11);
+		meld1.addMeldTile(tile1);
+		Tile tile2 = new Tile("G",11);
+		meld1.addMeldTile(tile2);
+		Tile tile3 = new Tile("B",11);
+		meld1.addMeldTile(tile3);
+
+		GM.TM.addMeldToBoardMeld(meld1);
+
+		
+		//added joker that goes into this set
+		GM.players.get(1).hand.addTileToHand(new Tile("j",-1));
+		
+		//in this case adds joker to the set
+		((AI) GM.players.get(1)).addPossibleMelds(GM.TM);
+		
+		assertEquals(4,GM.TM.getMeldFromBoardAt(0).getSize());
+		assertEquals(0,GM.players.get(1).hand.getSize());
+		
+		
+		
+		
+	}
+ 	
+ 	
  	
  	public void testRearrangeMelds() {
  		System.out.println("\n\nTESTREAGGA\n\n");
